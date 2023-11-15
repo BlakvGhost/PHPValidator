@@ -1,0 +1,18 @@
+{
+    "name": "blakvghost/php-validator",
+    "description": "PHPValidator is a modern library for validating your data in your PHP applications based on predefined rules or by customizing them",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "BlakvGhost\\PHPValidator\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Kabirou ALASSANE",
+            "email": "kabirou2001@gmail.com"
+        }
+    ],
+    "require": {}
+}
