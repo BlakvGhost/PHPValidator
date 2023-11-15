@@ -1,6 +1,6 @@
 <?php
 
-namespace ValidationPackage;
+namespace BlakvGhost\PHPValidator;
 
 class Validator
 {
