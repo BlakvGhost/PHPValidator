@@ -14,5 +14,7 @@
             "email": "kabirou2001@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "php": ">=8.1"
+    }
 }
