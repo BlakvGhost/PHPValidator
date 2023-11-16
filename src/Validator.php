@@ -3,7 +3,7 @@
 /**
  * Validator - A modern library for validating your data in your PHP applications based on predefined rules or by customizing them
  *
- * @package blakvghost/php-validator
+ * @package BlakvGhost\PHPValidator
  * @author Kabirou ALASSANE
  * @website https://kabirou-alassane.com
  * @github https://github.com/BlakvGhost
