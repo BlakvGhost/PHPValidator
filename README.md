@@ -25,8 +25,8 @@ try {
         'score' => 42,
     ], [
         'username' => 'required|string:25',
-        'email' => [EmailRule::class],
-        'score' => new CustomRule(['30']),
+        'email' => 'required|email',
+        'score' => ['required','max_length:200', new CustomRule()],
     ]);
 
     if ($validator->isValid()) {
@@ -56,16 +56,16 @@ In addition to the predefined rules, you can create custom validation rules by i
 ### CustomRule.php
 
 ```php
-// CustomRule.php
+// CustomPasswordRule.php
 namespace BlakvGhost\PHPValidator\Rules;
 
 use BlakvGhost\PHPValidator\LangManager;
 
-class CustomRule implements RuleInterface
+class CustomPasswordRule implements RuleInterface
 {
     protected $field;
 
-    public function __construct(protected array $parameters)
+    public function __construct(protected array $parameters = [])
     {
     }
 
@@ -73,15 +73,13 @@ class CustomRule implements RuleInterface
     {
         $this->field = $field;
         // Implement your custom validation logic here
-        // Example: Check if the value is greater than a specified parameter
-        return $value > ($this->parameters[0] ?? 0);
+        // Example: Check if the password is equal to confirm_password
+        return $value === $data['confirm_password'];
     }
 
     public function message(): string
     {
-        return LangManager::getTranslation('validation.custom_rule', [
-            'attribute' => $this->field,
-        ]);
+        return "Vos deux mot de passes ne sont pas identiques";
     }
 }
 ```
@@ -90,15 +88,16 @@ class CustomRule implements RuleInterface
 ```php
 
 use BlakvGhost\PHPValidator\Validator;
-use BlakvGhost\PHPValidator\Rules\CustomRule;
+use BlakvGhost\PHPValidator\Rules\CustomPasswordRule;
 
 // ...
 
 try {
     $validator = new Validator([
-        'score' => 42,
+        'password' => '42',
+        'confirm_password' => '142',
     ], [
-        'score' => new CustomRule(['30']),
+        'password' => ['required', new CustomPasswordRule()],
     ]);
 
     if ($validator->isValid()) {

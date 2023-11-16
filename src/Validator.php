@@ -101,6 +101,11 @@ class Validator
             $rulesArray = is_array($fieldRules) ? $fieldRules : explode('|', $fieldRules);
 
             foreach ($rulesArray as $rule) {
+
+                if (is_a($rule, RuleInterface::class, true)) {
+                    return $this->checkPasses($rule, $field);
+                }
+
                 list($ruleName, $parameters) = $this->parseRule($rule);
                 $ruleClass = $this->resolveRuleClass($ruleName);
 
