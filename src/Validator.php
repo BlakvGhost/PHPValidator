@@ -69,9 +69,9 @@ class Validator
         }
     }
 
-    protected function checkPasses($field)
+    protected function checkPasses($validator, $field)
     {
-        if (!$field->passes($field, $this->data[$field] ?? null, $this->data)) {
+        if (!$validator->passes($field, $this->data[$field] ?? null, $this->data)) {
             $this->addError($field, $field->message());
         }
     }
@@ -80,7 +80,7 @@ class Validator
         foreach ($this->rules as $field => $fieldRules) {
 
             if (is_a($fieldRules, RuleInterface::class, true)) {
-                $this->checkPasses($fieldRules);
+                return $this->checkPasses($fieldRules, $field);
             }
 
             $rulesArray = is_array($fieldRules) ? $fieldRules : explode('|', $fieldRules);
@@ -91,7 +91,7 @@ class Validator
 
                 $validator = new $ruleClass($parameters);
 
-                $this->checkPasses($validator);
+                $this->checkPasses($validator, $field);
             }
         }
     }
