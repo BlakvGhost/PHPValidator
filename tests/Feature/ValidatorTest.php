@@ -18,13 +18,3 @@ it('throws exception if rule not found', function () {
     expect(fn () => new Validator(['name' => 'John'], ['name' => 'nonexistent']))
         ->toThrow(ValidatorException::class, LangManager::getTranslation('validation.rule_not_found', ['ruleName' => 'nonexistent']));
 });
-
-// it('validates string rule successfully', function () {
-//     $validator = new Validator(['name' => 'John'], ['name' => 'string']);
-//     expect($validator->isValid())->toBeTrue();
-// });
-
-// it('throws exception for invalid string rule', function () {
-//     expect(fn () => new Validator(['name' => 123], ['name' => 'string']))
-//         ->toThrow(ValidatorException::class, LangManager::getTranslation('validation.string_rule', ['attribute' => 'name']));
-// });
