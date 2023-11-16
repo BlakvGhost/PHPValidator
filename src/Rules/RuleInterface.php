@@ -18,7 +18,7 @@ interface RuleInterface
      *
      * @param array $parameters Parameters for the rule, if any.
      */
-    public function __construct(array $parameters);
+    public function __construct(...$parameters);
 
     /**
      * Check if the given field passes the validation rule.
