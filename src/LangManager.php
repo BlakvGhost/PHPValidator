@@ -11,6 +11,7 @@ class LangManager
             'validation.rule_not_found' => "La règle de validation ':ruleName' n'existe pas.",
             'validation.string_rule' => "Le champ :attribute doit être une chaîne de caractères.",
             'validation.required_rule' => "Le champ :attribute est requis.",
+            'validation.max_length_rule' => "Le champ :attribute ne doit pas dépasser :max caractères.",
         ],
         'en' => [
             'validation.empty_data' => 'Validation data cannot be empty.',
@@ -18,6 +19,7 @@ class LangManager
             'validation.rule_not_found' => "Validation rule ':ruleName' not found.",
             'validation.string_rule' => "The :attribute field must be a string.",
             'validation.required_rule' => "The :attribute field is required.",
+            'validation.max_length_rule' => "The :attribute field must not exceed :max characters.",
         ],
     ];
 
