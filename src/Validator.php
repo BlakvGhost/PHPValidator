@@ -14,25 +14,7 @@ class Validator
         $this->validate();
     }
 
-    public function validate()
-    {
-        foreach ($this->rules as $field => $fieldRules) {
-            $rulesArray = is_array($fieldRules) ? $fieldRules : explode('|', $fieldRules);
-
-            foreach ($rulesArray as $rule) {
-                list($ruleName, $parameters) = $this->parseRule($rule);
-                $ruleClass = $this->resolveRuleClass($ruleName);
-
-                $validator = new $ruleClass($parameters);
-
-                if (!$validator->passes($field, $this->data[$field] ?? null, $this->data, $parameters)) {
-                    $this->addError($field, $validator->message());
-                }
-            }
-        }
-    }
-
-    protected function parseRule($rule)
+    protected function parseRule(string $rule): array
     {
         $segments = explode(':', $rule, 2);
 
@@ -42,7 +24,7 @@ class Validator
         return [$ruleName, $parameters];
     }
 
-    protected function resolveRuleClass($ruleName)
+    protected function resolveRuleClass(string $ruleName): string
     {
         $className = ucfirst($ruleName) . 'Rule';
 
@@ -73,5 +55,33 @@ class Validator
         if (empty($this->rules)) {
             throw new ValidatorException(LangManager::getTranslation('validation.empty_rules'));
         }
+    }
+
+    public function validate()
+    {
+        foreach ($this->rules as $field => $fieldRules) {
+            $rulesArray = is_array($fieldRules) ? $fieldRules : explode('|', $fieldRules);
+
+            foreach ($rulesArray as $rule) {
+                list($ruleName, $parameters) = $this->parseRule($rule);
+                $ruleClass = $this->resolveRuleClass($ruleName);
+
+                $validator = new $ruleClass($parameters);
+
+                if (!$validator->passes($field, $this->data[$field] ?? null, $this->data, $parameters)) {
+                    $this->addError($field, $validator->message());
+                }
+            }
+        }
+    }
+
+    public static function getErrors(): array
+    {
+        return self::$errors;
+    }
+
+    public static function isValid(): bool
+    {
+        return count(self::$errors) < 1;
     }
 }
