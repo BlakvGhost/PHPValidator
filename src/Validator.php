@@ -16,7 +16,7 @@ use BlakvGhost\PHPValidator\ValidatorException;
 
 class Validator
 {
-    protected $errors = [];
+    protected static $errors = [];
 
     /**
      * Constructor of the Validator class.
@@ -59,11 +59,13 @@ class Validator
             return $ruleName::class;
         }
 
-        $className = ucfirst($ruleName) . 'Rule';
+        $ruleParts = explode('_', $ruleName);
+        $className = implode('', array_map('ucfirst', $ruleParts)) . 'Rule';
 
         $fullClassName = "BlakvGhost\\PHPValidator\\Rules\\$className";
-
+        
         if (!class_exists($fullClassName)) {
+
             $translatedMessage = LangManager::getTranslation('validation.rule_not_found', [
                 'ruleName' => $ruleName,
             ]);
@@ -82,7 +84,7 @@ class Validator
      */
     protected function addError($field, $message)
     {
-        $this->errors[$field][] = $message;
+        self::$errors[$field][] = $message;
     }
 
     /**
