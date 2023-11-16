@@ -5,7 +5,7 @@ namespace BlakvGhost\PHPValidator\Rules;
 use BlakvGhost\PHPValidator\LangManager;
 
 
-class StringRule implements RuleInterface
+class RequiredRule implements RuleInterface
 {
     protected $field;
 
@@ -16,12 +16,12 @@ class StringRule implements RuleInterface
     public function passes(string $field, $value, array $data): bool
     {
         $this->field = $field;
-        return is_string($value);
+        return isset($data[$field]) && !empty($data[$field]);
     }
 
     public function message(): string
     {
-        return LangManager::getTranslation('validation.string_rule', [
+        return LangManager::getTranslation('validation.required_rule', [
             'attribute' => $this->field,
         ]);
     }
