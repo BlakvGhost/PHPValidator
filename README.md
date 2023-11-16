@@ -56,12 +56,12 @@ In addition to the predefined rules, you can create custom validation rules by i
 ### CustomRule.php
 
 ```php
-// CustomRule.php
+// CustomPasswordRule.php
 namespace BlakvGhost\PHPValidator\Rules;
 
 use BlakvGhost\PHPValidator\LangManager;
 
-class CustomRule implements RuleInterface
+class CustomPasswordRule implements RuleInterface
 {
     protected $field;
 
@@ -90,15 +90,16 @@ class CustomRule implements RuleInterface
 ```php
 
 use BlakvGhost\PHPValidator\Validator;
-use BlakvGhost\PHPValidator\Rules\CustomRule;
+use BlakvGhost\PHPValidator\Rules\CustomPasswordRule;
 
 // ...
 
 try {
     $validator = new Validator([
-        'score' => 42,
+        'password' => '42',
+        'confirm_password' => '142',
     ], [
-        'score' => new CustomRule(['30']),
+        'password' => ['required', new CustomPasswordRule()],
     ]);
 
     if ($validator->isValid()) {
