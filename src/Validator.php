@@ -21,12 +21,12 @@ class Validator
 
     private function validateConstructorInputs()
     {
-        if (!isset($this->$data)) {
-            throw new ValidatorException("Les données de validation ne peuvent pas être vide");
+        if (!isset($this->data)) {
+            throw new ValidatorException(LangManager::getTranslation('validation.empty_data'));
         }
 
-        if (!isset($this->$rules) || count($this->rules) < 1) {
-            throw new ValidatorException("Les règles de validation ne peuvent pas être vide");
+        if (!isset($this->rules) || count($this->rules) < 1) {
+            throw new ValidatorException(LangManager::getTranslation('validation.empty_rules'));
         }
     }
 }
