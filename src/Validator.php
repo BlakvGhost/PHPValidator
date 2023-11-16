@@ -4,17 +4,15 @@ namespace BlakvGhost\PHPValidator;
 
 class Validator
 {
-    protected $data;
     protected $errors = [];
 
-    public function __construct($data)
+    public function __construct(protected array $data, protected array $rules)
     {
-        $this->data = $data;
+        $this->validate();
     }
 
     public function validate()
     {
         // TODO
     }
-
 }
