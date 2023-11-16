@@ -79,9 +79,7 @@ class CustomPasswordRule implements RuleInterface
 
     public function message(): string
     {
-        return LangManager::getTranslation('validation.custom_rule', [
-            'attribute' => $this->field,
-        ]);
+        return "Vos deux mot de passes ne sont pas identiques";
     }
 }
 ```
