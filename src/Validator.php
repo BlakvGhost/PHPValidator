@@ -6,6 +6,14 @@ use BlakvGhost\PHPValidator\Rules\RuleInterface;
 
 class Validator
 {
+    // new Validator([
+    //     'username' => 'BlakvGhost',
+    //     'email' => 'kabirou2001@gmail.com',
+    // ], [
+    //     'username' => "required|string:25",
+    //      'email' => new Email(),
+    // ]);
+
     protected $errors = [];
 
     public function __construct(private array $data, protected array $rules)
@@ -24,8 +32,12 @@ class Validator
         return [$ruleName, $parameters];
     }
 
-    protected function resolveRuleClass(string $ruleName): string
+    protected function resolveRuleClass($ruleName): string
     {
+        if (is_a($ruleName, RuleInterface::class, true)) {
+            return $ruleName::class;
+        }
+
         $className = ucfirst($ruleName) . 'Rule';
 
         $fullClassName = "BlakvGhost\\PHPValidator\\Rules\\$className";
@@ -57,9 +69,20 @@ class Validator
         }
     }
 
+    protected function checkPasses($field)
+    {
+        if (!$field->passes($field, $this->data[$field] ?? null, $this->data)) {
+            $this->addError($field, $field->message());
+        }
+    }
     public function validate()
     {
         foreach ($this->rules as $field => $fieldRules) {
+
+            if (is_a($fieldRules, RuleInterface::class, true)) {
+                $this->checkPasses($fieldRules);
+            }
+
             $rulesArray = is_array($fieldRules) ? $fieldRules : explode('|', $fieldRules);
 
             foreach ($rulesArray as $rule) {
@@ -68,9 +91,7 @@ class Validator
 
                 $validator = new $ruleClass($parameters);
 
-                if (!$validator->passes($field, $this->data[$field] ?? null, $this->data, $parameters)) {
-                    $this->addError($field, $validator->message());
-                }
+                $this->checkPasses($validator);
             }
         }
     }
