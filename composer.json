@@ -16,5 +16,17 @@
     ],
     "require": {
         "php": ">=8.1"
+    },
+    "require-dev": {
+        "pestphp/pest": "^2.24"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "scripts": {
+        "test": "pest"
     }
+    
 }
