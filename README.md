@@ -25,8 +25,8 @@ try {
         'score' => 42,
     ], [
         'username' => 'required|string:25',
-        'email' => [EmailRule::class],
-        'score' => new CustomRule(['30']),
+        'email' => 'required|email',
+        'score' => ['required','max_length:200', new CustomRule()],
     ]);
 
     if ($validator->isValid()) {
@@ -65,7 +65,7 @@ class CustomRule implements RuleInterface
 {
     protected $field;
 
-    public function __construct(protected array $parameters)
+    public function __construct(protected array $parameters = [])
     {
     }
 
@@ -73,8 +73,8 @@ class CustomRule implements RuleInterface
     {
         $this->field = $field;
         // Implement your custom validation logic here
-        // Example: Check if the value is greater than a specified parameter
-        return $value > ($this->parameters[0] ?? 0);
+        // Example: Check if the password is equal to confirm_password
+        return $value === $data['confirm_password'];
     }
 
     public function message(): string
