@@ -12,6 +12,7 @@
 namespace BlakvGhost\PHPValidator;
 
 use BlakvGhost\PHPValidator\Rules\RuleInterface;
+use BlakvGhost\PHPValidator\ValidatorException;
 
 class Validator
 {
