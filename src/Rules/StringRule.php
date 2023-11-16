@@ -1,15 +1,28 @@
 <?php
 
-namespace ValidationPackage\Rules;
+namespace BlakvGhost\PHPValidator\Rules;
 
-class StringRule extends RuleInterface
+use BlakvGhost\PHPValidator\LangManager;
+
+
+class StringRule implements RuleInterface
 {
-    
-    public function passes(string $field, $value, $data, $parameters) {
+    protected $field;
 
+    public function __construct(protected array $parameters)
+    {
     }
 
-    public function message() {
+    public function passes(string $field, $value, array $data): bool
+    {
+        $this->field = $field;
+        return is_string($value);
+    }
 
+    public function message(): string
+    {
+        return LangManager::getTranslation('validation.string_rule', [
+            'ruleName' => $this->field,
+        ]);
     }
 }

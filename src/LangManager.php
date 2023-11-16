@@ -9,11 +9,13 @@ class LangManager
             'validation.empty_data' => 'Les données de validation ne peuvent pas être vides.',
             'validation.empty_rules' => 'Les règles de validation ne peuvent pas être vides.',
             'validation.rule_not_found' => "La règle de validation ':ruleName' n'existe pas.",
+            'validation.string_rule' => "Le champ :attribute doit être une chaîne de caractères.",
         ],
         'en' => [
             'validation.empty_data' => 'Validation data cannot be empty.',
             'validation.empty_rules' => 'Validation rules cannot be empty.',
             'validation.rule_not_found' => "Validation rule ':ruleName' not found.",
+            'validation.string_rule' => "The :attribute field must be a string.",
         ],
     ];
 

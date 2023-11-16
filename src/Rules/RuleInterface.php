@@ -1,6 +1,6 @@
 <?php
 
-namespace ValidationPackage\Rules;
+namespace BlakvGhost\PHPValidator\Rules;
 
 interface RuleInterface
 {
