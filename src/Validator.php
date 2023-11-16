@@ -1,27 +1,40 @@
 <?php
 
+/**
+ * Validator - A modern library for validating your data in your PHP applications based on predefined rules or by customizing them
+ *
+ * @package blakvghost/php-validator
+ * @author Kabirou ALASSANE
+ * @website https://kabirou-alassane.com
+ * @github https://github.com/BlakvGhost
+ */
+
 namespace BlakvGhost\PHPValidator;
 
 use BlakvGhost\PHPValidator\Rules\RuleInterface;
 
 class Validator
 {
-    // new Validator([
-    //     'username' => 'BlakvGhost',
-    //     'email' => 'kabirou2001@gmail.com',
-    // ], [
-    //     'username' => "required|string:25",
-    //      'email' => new Email(),
-    // ]);
-
     protected $errors = [];
 
+    /**
+     * Constructor of the Validator class.
+     *
+     * @param array $data Data to be validated.
+     * @param array $rules Validation rules to apply.
+     */
     public function __construct(private array $data, protected array $rules)
     {
         $this->validateConstructorInputs();
         $this->validate();
     }
 
+    /**
+     * Parse a rule to extract the name and any parameters.
+     *
+     * @param string $rule Rule to parse.
+     * @return array Array containing the rule name and its parameters.
+     */
     protected function parseRule(string $rule): array
     {
         $segments = explode(':', $rule, 2);
@@ -32,6 +45,13 @@ class Validator
         return [$ruleName, $parameters];
     }
 
+    /**
+     * Resolve the name of a rule into a fully qualified class namespace.
+     *
+     * @param string $ruleName Rule name.
+     * @return string Fully qualified class namespace of the rule class.
+     * @throws ValidatorException If the rule does not exist.
+     */
     protected function resolveRuleClass($ruleName): string
     {
         if (is_a($ruleName, RuleInterface::class, true)) {
@@ -53,29 +73,21 @@ class Validator
         return $fullClassName;
     }
 
+    /**
+     * Add an error to the list of errors.
+     *
+     * @param string $field Field associated with the error.
+     * @param string $message Error message.
+     */
     protected function addError($field, $message)
     {
         $this->errors[$field][] = $message;
     }
 
-    protected function validateConstructorInputs()
-    {
-        if (empty($this->data)) {
-            throw new ValidatorException(LangManager::getTranslation('validation.empty_data'));
-        }
-
-        if (empty($this->rules)) {
-            throw new ValidatorException(LangManager::getTranslation('validation.empty_rules'));
-        }
-    }
-
-    protected function checkPasses($validator, $field)
-    {
-        if (!$validator->passes($field, $this->data[$field] ?? null, $this->data)) {
-            $this->addError($field, $field->message());
-        }
-    }
-    public function validate()
+    /**
+     * Validate fields based on specified rules.
+     */
+    protected function validate()
     {
         foreach ($this->rules as $field => $fieldRules) {
 
@@ -96,11 +108,50 @@ class Validator
         }
     }
 
+    /**
+     * Check if a rule passes validation and add an error if it fails.
+     *
+     * @param mixed $validator Instance of the rule to check.
+     * @param string $field Field associated with the rule.
+     */
+    protected function checkPasses(mixed $validator, string $field)
+    {
+        if (!$validator->passes($field, $this->data[$field] ?? null, $this->data)) {
+            $this->addError($field, $validator->message());
+        }
+    }
+
+    /**
+     * Validate constructor inputs to ensure required data and rules are provided.
+     *
+     * @throws ValidatorException If data or rules are empty.
+     */
+    protected function validateConstructorInputs()
+    {
+        if (empty($this->data)) {
+            throw new ValidatorException(LangManager::getTranslation('validation.empty_data'));
+        }
+
+        if (empty($this->rules)) {
+            throw new ValidatorException(LangManager::getTranslation('validation.empty_rules'));
+        }
+    }
+
+    /**
+     * Retrieve the list of errors.
+     *
+     * @return array List of errors.
+     */
     public static function getErrors(): array
     {
         return self::$errors;
     }
 
+    /**
+     * Check if validation is successful (no errors).
+     *
+     * @return bool True if validation is successful, otherwise false.
+     */
     public static function isValid(): bool
     {
         return count(self::$errors) < 1;
