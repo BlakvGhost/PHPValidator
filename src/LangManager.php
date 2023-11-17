@@ -37,6 +37,9 @@ class LangManager
             'validation.in_rule' => "Le champ :attribute doit être l'une des valeurs suivantes :values.",
             'validation.confirmed_rule' => "Le champ :attribute doit être confirmé par le champ :confirmedAttribute.",
             'validation.active_url' => "Le champ :attribute doit être une URL active.",
+            'validation.lowercase_rule' => "Le champ :attribute doit être en minuscules.",
+            'validation.uppercase_rule' => "Le champ :attribute doit être en majuscules.",
+            'validation.file_rule' => "Le champ :attribute doit être un fichier.",
         ],
         'en' => [
             // English translations
@@ -56,9 +59,12 @@ class LangManager
             'validation.in_rule' => "The :attribute field must be one of the following values: :values.",
             'validation.confirmed_rule' => "The :attribute field must be confirmed by the :confirmedAttribute field.",
             'validation.active_url' => "The :attribute field must be an active URL.",
+            'validation.lowercase_rule' => "The :attribute field must be lowercase.",
+            'validation.uppercase_rule' => "The :attribute field must be uppercase.",
+            'validation.file_rule' => "The :attribute field must be a file.",
         ],
     ];
-    
+
 
     /**
      * Get the current language.

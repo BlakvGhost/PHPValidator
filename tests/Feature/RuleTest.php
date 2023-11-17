@@ -7,7 +7,10 @@ use BlakvGhost\PHPValidator\Rules\ActiveURLRule;
 use BlakvGhost\PHPValidator\Rules\AlphaRule;
 use BlakvGhost\PHPValidator\Rules\ConfirmedRule;
 use BlakvGhost\PHPValidator\Rules\EmailRule;
+use BlakvGhost\PHPValidator\Rules\FileRule;
 use BlakvGhost\PHPValidator\Rules\InRule;
+use BlakvGhost\PHPValidator\Rules\LowercaseRule;
+use BlakvGhost\PHPValidator\Rules\LowerRule;
 use BlakvGhost\PHPValidator\Rules\StringRule;
 use BlakvGhost\PHPValidator\Rules\RequiredRule;
 use BlakvGhost\PHPValidator\Rules\MaxLengthRule;
@@ -16,6 +19,7 @@ use BlakvGhost\PHPValidator\Rules\NullableRule;
 use BlakvGhost\PHPValidator\Rules\NumericRule;
 use BlakvGhost\PHPValidator\Rules\PasswordRule;
 use BlakvGhost\PHPValidator\Rules\SameRule;
+use BlakvGhost\PHPValidator\Rules\UpperRule;
 
 it('validates required rule successfully', function () {
     $validator = new RequiredRule([]);
@@ -230,6 +234,45 @@ it('validates active URL rule successfully', function () {
 
     expect($validator->message())->toBe(
         LangManager::getTranslation('validation.active_url', [
+            'attribute' => 'field',
+        ])
+    );
+});
+
+it('validates lowercase rule successfully', function () {
+    $validator = new LowerRule([]);
+
+    expect($validator->passes('field', 'lowercase', []))->toBeTrue();
+    expect($validator->passes('field', 'UPPERCASE', []))->toBeFalse();
+
+    expect($validator->message())->toBe(
+        LangManager::getTranslation('validation.lowercase_rule', [
+            'attribute' => 'field',
+        ])
+    );
+});
+
+it('validates uppercase rule successfully', function () {
+    $validator = new UpperRule([]);
+
+    expect($validator->passes('field', 'lowercase', []))->toBeFalse();
+    expect($validator->passes('field', 'UPPERCASE', []))->toBeTrue();
+
+    expect($validator->message())->toBe(
+        LangManager::getTranslation('validation.uppercase_rule', [
+            'attribute' => 'field',
+        ])
+    );
+});
+
+it('validates file rule successfully', function () {
+    $validator = new FileRule([]);
+
+    expect($validator->passes('field', __FILE__, []))->toBeTrue();
+    expect($validator->passes('field', 'nonexistentfile.txt', []))->toBeFalse();
+
+    expect($validator->message())->toBe(
+        LangManager::getTranslation('validation.file_rule', [
             'attribute' => 'field',
         ])
     );
