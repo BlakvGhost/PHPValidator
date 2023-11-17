@@ -2,6 +2,10 @@
 
 PHPValidator is a modern PHP library for data validation in your PHP applications. It provides a flexible and extensible way to validate data using predefined rules or by creating custom validation rules.
 
+![Packagist Version (custom server)](https://img.shields.io/packagist/v/Blakvghost/php-validator?label=stable)
+![Packagist Version (custom server)](https://img.shields.io/packagist/l/Blakvghost/php-validator?label=Licence)
+![Packagist Version (custom server)](https://img.shields.io/packagist/dt/Blakvghost/php-validator?label=download)
+
 ## Installation
 
 Use [Composer](https://getcomposer.org/) to install PHPValidator:
@@ -115,6 +119,15 @@ In this example, we created a CustomRule that checks if a given value is greater
 ## Contributing
 
 If you would like to contribute to PHPValidator, please follow our [Contribution Guidelines](CONTRIBUTING.md).
+
+## Authors
+
+- [Kabirou ALASSANE](https://github.com/BlakvGhost)
+
+
+## Support
+
+For support, you can reach out to me by email at <dev@kabirou-alassane.com>. Feel free to contact me if you have any questions or need assistance with PHPValidator.
 
 ## License
 
