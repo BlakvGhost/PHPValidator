@@ -185,8 +185,66 @@ PHPValidator provides a variety of predefined rules that you can use for data va
 
     ```php
     'username' => 'min_length:8'
-  
+    ```	
+19. **Not In Rule**
+    - Validates that a field's value is not in a specified set.
 
+    ```php
+    'value' => 'not_in:["foo", "bar"]'
+    ```	
+20. **Required With Rule**
+    - Requires the field to be present if another specified field is present.
+
+
+    ```php
+    'firstname' => 'required_with:lastname',
+    ```	
+
+21. **Valid IP Rule**
+    - Validates that a field's value is a valid IP address.
+
+    ```php
+    'client_ip' => 'valid_ip',
+    ```
+
+22. **Json Rule**
+    - Validates that a field's value is a valid JSON string.
+
+    ```php
+    'config' => 'json',
+    ```	
+
+23. **URL Rule**
+    - Validates that a field's value is a valid URL.
+
+    ```php
+    'website' => 'url',
+    ```	
+24. **Alpha Numeric Rule**
+    - Validates that a field's value contains only alphanumeric characters.
+
+    ```php
+    'pseudo' => 'alpha_numeric',
+    ```	
+
+25. **Boolean Rule**
+    - Validates that a field's value is a boolean.
+
+    ```php
+    'is_admin' => 'boolean',
+    ```	
+
+26. **Size Rule**
+    - Validates that the size of a string, integer, array, or file is equal to a specified value.
+
+    ```php
+        [
+            'string' =>'size:7', // strlen(string) == 7
+            'integer' =>'size:7', // integer == 7
+            'array' =>'size:7', // count(array) == 7
+            'file' =>'size:512', // file size (kb) == 512
+        ]
+    ```	
 ## Custom Rule
 
 In addition to the predefined rules, you can create custom validation rules by implementing the `RuleInterface`. Here's an example of how to create and use a custom rule:
