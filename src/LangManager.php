@@ -28,7 +28,15 @@ class LangManager
             'validation.required_rule' => "Le champ :attribute est requis.",
             'validation.max_length_rule' => "Le champ :attribute ne doit pas dépasser :max caractères.",
             'validation.min_length_rule' => "Le champ :attribute doit dépasser :min caractères.",
-            'validation.email_rule' => "Le champ :attribute doit être un e-mail."
+            'validation.email_rule' => "Le champ :attribute doit être un e-mail.",
+            'validation.accepted' => "Le champ :attribute doit être accepté.",
+            'validation.same_rule' => "Le champ :attribute doit être identique au champ :otherAttribute.",
+            'validation.password_rule' => "Le champ :attribute doit répondre aux critères de mot de passe.",
+            'validation.numeric_rule' => "Le champ :attribute doit être numérique.",
+            'validation.nullable_rule' => "Le champ :attribute peut être nul.",
+            'validation.in_rule' => "Le champ :attribute doit être l'une des valeurs suivantes :values.",
+            'validation.confirmed_rule' => "Le champ :attribute doit être confirmé par le champ :confirmedAttribute.",
+            'validation.active_url' => "Le champ :attribute doit être une URL active.",
         ],
         'en' => [
             // English translations
@@ -39,9 +47,18 @@ class LangManager
             'validation.required_rule' => "The :attribute field is required.",
             'validation.max_length_rule' => "The :attribute field must not exceed :max characters.",
             'validation.min_length_rule' => "The :attribute field must exceed :min characters.",
-            'validation.email_rule' => "The :attribute field must be a email.",
+            'validation.email_rule' => "The :attribute field must be an email.",
+            'validation.accepted' => "The :attribute field must be accepted.",
+            'validation.same_rule' => "The :attribute field must be identical to the :otherAttribute field.",
+            'validation.password_rule' => "The :attribute field must meet password requirements.",
+            'validation.numeric_rule' => "The :attribute field must be numeric.",
+            'validation.nullable_rule' => "The :attribute field can be null.",
+            'validation.in_rule' => "The :attribute field must be one of the following values: :values.",
+            'validation.confirmed_rule' => "The :attribute field must be confirmed by the :confirmedAttribute field.",
+            'validation.active_url' => "The :attribute field must be an active URL.",
         ],
     ];
+    
 
     /**
      * Get the current language.
