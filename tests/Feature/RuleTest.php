@@ -34,7 +34,7 @@ it('validates required rule successfully', function () {
 
     $validator = new Validator(['field' => 'value'], ['field' => 'required']);
     expect($validator->isValid())->toBeTrue();
-    
+
     $validator = new Validator(['field' => ''], ['field' => 'required']);
     expect($validator->isValid())->toBeFalse();
 
@@ -44,13 +44,18 @@ it('validates required rule successfully', function () {
 });
 
 it('validates max length rule successfully', function () {
-    $validator = new MaxLengthRule([5]);
 
-    expect($validator->passes('field', 'value', []))->toBeTrue();
-    expect($validator->passes('field', 'toolongvalue', []))->toBeFalse();
+    $validator = new Validator(['field' => 'value'], ['field' => 'max_length:5']);
+    expect($validator->isValid())->toBeTrue();
 
-    expect($validator->message())->toBe(
-        LangManager::getTranslation('validation.max_length_rule', ['attribute' => 'field', 'max' => 5])
+    $validator = new Validator(['field' => 'value'], ['field' => 'max_length:6']);
+    expect($validator->isValid())->toBeFalse();
+
+    expect($validator->getErrors()['field'][0])->toBe(
+        LangManager::getTranslation('validation.max_length_rule', [
+            'attribute' => 'field',
+            'max' => 5,
+        ])
     );
 });
 
@@ -59,7 +64,7 @@ it('validates email rule successfully', function () {
 
     expect($validator->passes('email', 'test@example.com', []))->toBeTrue();
     expect($validator->passes('email', 'invalid-email', []))->toBeFalse();
-    
+
     expect($validator->message())->toBe(
         LangManager::getTranslation('validation.email_rule', ['attribute' => 'email'])
     );
@@ -67,10 +72,10 @@ it('validates email rule successfully', function () {
 
 it('validates string rule successfully', function () {
     $validator = new StringRule([]);
-    
+
     expect($validator->passes('field', 'value', []))->toBeTrue();
     expect($validator->passes('field', 5, []))->toBeFalse();
-    
+
     expect($validator->message())->toBe(
         LangManager::getTranslation('validation.string_rule', ['attribute' => 'field'])
     );
