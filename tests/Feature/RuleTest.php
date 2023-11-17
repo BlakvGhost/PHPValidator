@@ -4,7 +4,6 @@ use BlakvGhost\PHPValidator\LangManager;
 use BlakvGhost\PHPValidator\Rules\AcceptedIfRule;
 use BlakvGhost\PHPValidator\Rules\AcceptedRule;
 use BlakvGhost\PHPValidator\Rules\ActiveURLRule;
-use BlakvGhost\PHPValidator\Rules\AlphaNumeric;
 use BlakvGhost\PHPValidator\Rules\AlphaNumericRule;
 use BlakvGhost\PHPValidator\Rules\AlphaRule;
 use BlakvGhost\PHPValidator\Rules\BooleanRule;
@@ -28,14 +27,18 @@ use BlakvGhost\PHPValidator\Rules\SameRule;
 use BlakvGhost\PHPValidator\Rules\UpperRule;
 use BlakvGhost\PHPValidator\Rules\UrlRule;
 use BlakvGhost\PHPValidator\Rules\ValidIpRule;
+use BlakvGhost\PHPValidator\Validator;
+
 
 it('validates required rule successfully', function () {
-    $validator = new RequiredRule([]);
 
-    expect($validator->passes('field', 'value', ['field' => 'value']))->toBeTrue();
-    expect($validator->passes('field', '', []))->toBeFalse();
+    $validator = new Validator(['field' => 'value'], ['field' => 'required']);
+    expect($validator->isValid())->toBeTrue();
+    
+    $validator = new Validator(['field' => ''], ['field' => 'required']);
+    expect($validator->isValid())->toBeFalse();
 
-    expect($validator->message())->toBe(
+    expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.required_rule', ['attribute' => 'field'])
     );
 });
