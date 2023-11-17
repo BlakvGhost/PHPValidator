@@ -15,6 +15,7 @@ use BlakvGhost\PHPValidator\Rules\InRule;
 use BlakvGhost\PHPValidator\Rules\JsonRule;
 use BlakvGhost\PHPValidator\Rules\LowerRule;
 use BlakvGhost\PHPValidator\Rules\RequiredWithRule;
+use BlakvGhost\PHPValidator\Rules\SizeRule;
 use BlakvGhost\PHPValidator\Rules\StringRule;
 use BlakvGhost\PHPValidator\Rules\RequiredRule;
 use BlakvGhost\PHPValidator\Rules\MaxLengthRule;
@@ -376,6 +377,62 @@ it('validates ip rule successfully', function () {
     expect($validator->message())->toBe(
         LangManager::getTranslation('validation.valid_ip', [
             'attribute' => 'field',
+        ])
+    );
+});
+
+it('validates size rule (string) successfully', function () {
+    $validator = new SizeRule([4]);
+
+    expect($validator->passes('field', "azerty", []))->toBeFalse();
+    expect($validator->passes('field', 'azer', []))->toBeTrue();
+
+    expect($validator->message())->toBe(
+        LangManager::getTranslation('validation.size', [
+            'attribute' => 'field',
+            'value' => 4,
+        ])
+    );
+});
+
+it('validates size rule (integer) successfully', function () {
+    $validator = new SizeRule([3]);
+
+    expect($validator->passes('field', 6, []))->toBeFalse();
+    expect($validator->passes('field', 3, []))->toBeTrue();
+
+    expect($validator->message())->toBe(
+        LangManager::getTranslation('validation.size', [
+            'attribute' => 'field',
+            'value' => 3,
+        ])
+    );
+});
+
+it('validates size rule (array) successfully', function () {
+    $validator = new SizeRule([2]);
+
+    expect($validator->passes('field', ['key1', 'key2', 'key3'], []))->toBeFalse();
+    expect($validator->passes('field', ['key1', 'key2'], []))->toBeTrue();
+
+    expect($validator->message())->toBe(
+        LangManager::getTranslation('validation.size', [
+            'attribute' => 'field',
+            'value' => 2,
+        ])
+    );
+});
+
+it('validates size rule (file) successfully', function () {
+    $validator = new SizeRule([512]);
+
+    expect($validator->passes('field', __FILE__, []))->toBeFalse();
+    // expect($validator->passes('field', __FILE__, []))->toBeTrue();
+
+    expect($validator->message())->toBe(
+        LangManager::getTranslation('validation.size', [
+            'attribute' => 'field',
+            'value' => 512,
         ])
     );
 });
