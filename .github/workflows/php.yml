@@ -1,4 +1,4 @@
-name: PHP Composer
+name: Test Code & PHP Composer Validaty
 
 on:
   push:
