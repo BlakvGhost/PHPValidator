@@ -1,7 +1,7 @@
 <?php
 
 /**
- * InRule - A validation rule implementation for checking if a value is present in a given list of values.
+ * InRule - A validation rule implementation for checking if a value is not present in a given list of values.
  *
  * @package BlakvGhost\PHPValidator\Rules
  * @author Fortunatus KIDJE (v1p3r75)
@@ -32,24 +32,23 @@ class NotInRule implements RuleInterface
     }
 
     /**
-     * Check if the value is present in the given list of valid values.
+     * Check if the value is not present in the given list of valid values.
      *
      * @param string $field Name of the field being validated.
      * @param mixed $value Value of the field being validated.
      * @param array $data All validation data.
-     * @return bool True if the value is in the list of valid values, false otherwise.
+     * @return bool True if the value is not in the list of valid values, false otherwise.
      */
     public function passes(string $field, $value, array $data): bool
     {
         // Set the field property for use in the message method.
         $this->field = $field;
 
-        // Check if the value is in the list of valid values.
         return !in_array($value, $this->parameters);
     }
 
     /**
-     * Get the validation error message for the "in" rule.
+     * Get the validation error message for this rule.
      *
      * @return string Validation error message.
      */

@@ -4,6 +4,8 @@ use BlakvGhost\PHPValidator\LangManager;
 use BlakvGhost\PHPValidator\Rules\AcceptedIfRule;
 use BlakvGhost\PHPValidator\Rules\AcceptedRule;
 use BlakvGhost\PHPValidator\Rules\ActiveURLRule;
+use BlakvGhost\PHPValidator\Rules\AlphaNumeric;
+use BlakvGhost\PHPValidator\Rules\AlphaNumericRule;
 use BlakvGhost\PHPValidator\Rules\AlphaRule;
 use BlakvGhost\PHPValidator\Rules\ConfirmedRule;
 use BlakvGhost\PHPValidator\Rules\EmailRule;
@@ -288,6 +290,19 @@ it('validates file rule successfully', function () {
 
     expect($validator->message())->toBe(
         LangManager::getTranslation('validation.file_rule', [
+            'attribute' => 'field',
+        ])
+    );
+});
+
+it('validates alpha_numeric rule successfully', function () {
+    $validator = new AlphaNumericRule([]);
+
+    expect($validator->passes('field', 'alpha2324', []))->toBeTrue();
+    expect($validator->passes('field', 's$sdfde$*', []))->toBeFalse();
+
+    expect($validator->message())->toBe(
+        LangManager::getTranslation('validation.alpha_numeric', [
             'attribute' => 'field',
         ])
     );
