@@ -182,7 +182,7 @@ PHPValidator provides a variety of predefined rules that you can use for data va
     ```
 18. **Max Length Rule**
     - Specifies the minimum length of a string field.
-    
+
     ```php
     'username' => 'min_length:8'
   
@@ -197,6 +197,7 @@ In addition to the predefined rules, you can create custom validation rules by i
 // CustomPasswordRule.php
 namespace YourNameSpace\Rules;
 
+use BlakvGhost\PHPValidator\Rules\RuleInterface;
 use BlakvGhost\PHPValidator\LangManager;
 
 class CustomPasswordRule implements RuleInterface
