@@ -9,7 +9,6 @@ use BlakvGhost\PHPValidator\Rules\ConfirmedRule;
 use BlakvGhost\PHPValidator\Rules\EmailRule;
 use BlakvGhost\PHPValidator\Rules\FileRule;
 use BlakvGhost\PHPValidator\Rules\InRule;
-use BlakvGhost\PHPValidator\Rules\LowercaseRule;
 use BlakvGhost\PHPValidator\Rules\LowerRule;
 use BlakvGhost\PHPValidator\Rules\StringRule;
 use BlakvGhost\PHPValidator\Rules\RequiredRule;

@@ -53,6 +53,118 @@ try {
 
 - `Multilingual Support`: Customize validation error messages based on the application's language using the `LangManager`.
 
+
+## List of Predefined Rules
+
+PHPValidator provides a variety of predefined rules that you can use for data validation. Here is a list of some commonly used rules along with examples of their usage:
+
+1. **Required Rule**
+    - Ensures that a field is present in the data.
+    ```php
+    'username' => 'required'
+    ```
+
+2. **String Rule**
+    - Checks if a field is of string type.
+    ```php
+    'username' => 'string'
+    ```
+
+3. **Email Rule**
+    - Validates that a field is a well-formed email address.
+    ```php
+    'email' => 'email'
+    ```
+
+4. **Max Length Rule**
+    - Specifies the maximum length of a string field.
+    ```php
+    'username' => 'max_length:25'
+    ```
+
+5. **Confirmed Rule**
+    - Checks if a field's value is the same as another field (commonly used for password confirmation).
+    ```php
+    'password_confirmation' => 'confirmed:password'
+    ```
+
+6. **File Rule**
+    - Validates that a field is a file upload.
+    ```php
+    'file' => 'file'
+    ```
+
+7. **Accepted Rule**
+    - Validates that a field is `"yes"`, `"on"`, `"1"`, or `true`. Useful for checkboxes.
+    ```php
+    'terms_and_conditions' => 'accepted'
+    ```
+
+8. **Accepted If Rule**
+    - Validates that a field is accepted if another field is equal to a specified value.
+    ```php
+    'terms_and_conditions' => 'accepted_if:is_adult,true'
+    ```
+
+9. **ActiveURL Rule**
+    - Validates that a field is a valid, active URL.
+    ```php
+    'website' => 'active_url'
+    ```
+
+10. **Alpha Rule**
+    - Validates that a field contains only alphabetic characters.
+    ```php
+    'name' => 'alpha'
+    ```
+
+11. **Numeric Rule**
+    - Validates that a field contains only numeric characters.
+    ```php
+    'age' => 'numeric'
+    ```
+
+12. **Lowercase Rule**
+    - Validates that a field contains only lowercase alphabetic characters.
+    ```php
+    'username' => 'lower'
+    ```
+
+13. **Uppercase Rule**
+    - Validates that a field contains only uppercase alphabetic characters.
+    ```php
+    'username' => 'upper'
+    ```
+
+14. **In Rule**
+    - Validates that a field's value is among a list of predefined values.
+    ```php
+    'role' => 'in:admin,editor,viewer'
+    ```
+
+15. **Nullable Rule**
+    - Allows a field to be `null` or empty.
+    ```php
+    'optional_field' => 'nullable'
+    ```
+
+16. **Password Rule**
+    - Validates that a field is a secure password.
+    ```php
+    'password' => 'password'
+    ```
+
+17. **Same Rule**
+    - Validates that a field's value is the same as the value of another field.
+    ```php
+    'password_confirmation' => 'same:password'
+    ```
+18. **Max Length Rule**
+    - Specifies the minimum length of a string field.
+    ```php
+    'username' => 'min_length:8'
+  
+
 ## Custom Rule
 
 In addition to the predefined rules, you can create custom validation rules by implementing the `RuleInterface`. Here's an example of how to create and use a custom rule:
