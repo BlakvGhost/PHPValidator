@@ -191,7 +191,7 @@ PHPValidator provides a variety of predefined rules that you can use for data va
 
 In addition to the predefined rules, you can create custom validation rules by implementing the `RuleInterface`. Here's an example of how to create and use a custom rule:
 
-### CustomRule.php
+### CustomPasswordRule.php
 
 ```php
 // CustomPasswordRule.php
@@ -256,7 +256,7 @@ try {
     echo "Validation error: " . $e->getMessage();
 }
 ```
-In this example, we created a CustomRule that checks if a given value is greater than a specified parameter. You can customize the passes method to implement your specific validation logic.
+In this example, we created a CustomRule that checks if the password is equal to confirm_password. You can customize the passes method to implement your specific validation logic.
 
 ## Contributing
 
