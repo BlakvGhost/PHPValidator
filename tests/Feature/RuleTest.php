@@ -45,16 +45,16 @@ it('validates required rule successfully', function () {
 
 it('validates max length rule successfully', function () {
 
-    $validator = new Validator(['field' => 'value'], ['field' => 'max_length:5']);
+    $validator = new Validator(['username' => 'value'], ['username' => 'max_length:5']);
     expect($validator->isValid())->toBeTrue();
 
-    $validator = new Validator(['field' => 'value'], ['field' => 'max_length:6']);
+    $validator = new Validator(['username' => 'value'], ['username' => 'max_length:6']);
     expect($validator->isValid())->toBeFalse();
 
-    expect($validator->getErrors()['field'][0])->toBe(
+    expect($validator->getErrors()['username'][0])->toBe(
         LangManager::getTranslation('validation.max_length_rule', [
-            'attribute' => 'field',
-            'max' => 5,
+            'attribute' => 'username',
+            'max' => 6,
         ])
     );
 });

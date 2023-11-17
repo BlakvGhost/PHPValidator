@@ -16,7 +16,11 @@ use BlakvGhost\PHPValidator\ValidatorException;
 
 class Validator
 {
-    protected static $errors = [];
+    // protected static $instance;
+
+    // protected static $langManagerInstance;
+
+    private $errors = [];
 
     /**
      * Constructor of the Validator class.
@@ -24,11 +28,30 @@ class Validator
      * @param array $data Data to be validated.
      * @param array $rules Validation rules to apply.
      */
-    public function __construct(private array $data, protected array $rules)
+    public function __construct(private array $data, private array $rules)
     {
         $this->validateConstructorInputs();
         $this->validate();
     }
+
+    // public static function getInstance(): Validator
+    // {
+    //     if (!self::$instance) {
+    //         self::$instance = new Validator(self::$data, self::$rules);
+    //     }
+
+    //     return self::$instance;
+    // }
+
+    // public static function getLangManagerInstance(): LangManager
+    // {
+    //     if (!self::$langManagerInstance) {
+    //         self::$langManagerInstance = new LangManager();
+    //     }
+
+    //     return self::$langManagerInstance;
+    // }
+
 
     /**
      * Parse a rule to extract the name and any parameters.
@@ -63,7 +86,7 @@ class Validator
         $className = implode('', array_map('ucfirst', $ruleParts)) . 'Rule';
 
         $fullClassName = "BlakvGhost\\PHPValidator\\Rules\\$className";
-        
+
         if (!class_exists($fullClassName)) {
 
             $translatedMessage = LangManager::getTranslation('validation.rule_not_found', [
@@ -84,7 +107,7 @@ class Validator
      */
     protected function addError($field, $message)
     {
-        self::$errors[$field][] = $message;
+        $this->errors[$field][] = $message;
     }
 
     /**
@@ -103,15 +126,15 @@ class Validator
             foreach ($rulesArray as $rule) {
 
                 if (is_a($rule, RuleInterface::class, true)) {
-                    return $this->checkPasses($rule, $field);
+                    $this->checkPasses($rule, $field);
+                } else {
+                    list($ruleName, $parameters) = $this->parseRule($rule);
+                    $ruleClass = $this->resolveRuleClass($ruleName);
+
+                    $validator = new $ruleClass($parameters);
+
+                    $this->checkPasses($validator, $field);
                 }
-
-                list($ruleName, $parameters) = $this->parseRule($rule);
-                $ruleClass = $this->resolveRuleClass($ruleName);
-
-                $validator = new $ruleClass($parameters);
-
-                $this->checkPasses($validator, $field);
             }
         }
     }
@@ -124,10 +147,11 @@ class Validator
      */
     protected function checkPasses(mixed $validator, string $field)
     {
-        if (!$validator->passes($field, $this->data[$field] ?? null, $this->data)) {
+        if (isset($this->data[$field]) && !$validator->passes($field, $this->data[$field], $this->data)) {
             $this->addError($field, $validator->message());
         }
     }
+
 
     /**
      * Validate constructor inputs to ensure required data and rules are provided.
@@ -150,9 +174,9 @@ class Validator
      *
      * @return array List of errors.
      */
-    public static function getErrors(): array
+    public function getErrors(): array
     {
-        return self::$errors;
+        return $this->errors;
     }
 
     /**
@@ -160,8 +184,8 @@ class Validator
      *
      * @return bool True if validation is successful, otherwise false.
      */
-    public static function isValid(): bool
+    public function isValid(): bool
     {
-        return count(self::$errors) < 1;
+        return count($this->errors) < 1;
     }
 }
