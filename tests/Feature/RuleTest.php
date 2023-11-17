@@ -4,7 +4,6 @@ use BlakvGhost\PHPValidator\LangManager;
 use BlakvGhost\PHPValidator\Rules\AcceptedIfRule;
 use BlakvGhost\PHPValidator\Rules\AcceptedRule;
 use BlakvGhost\PHPValidator\Rules\ActiveURLRule;
-use BlakvGhost\PHPValidator\Rules\AlphaNumeric;
 use BlakvGhost\PHPValidator\Rules\AlphaNumericRule;
 use BlakvGhost\PHPValidator\Rules\AlphaRule;
 use BlakvGhost\PHPValidator\Rules\BooleanRule;
