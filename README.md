@@ -31,7 +31,7 @@ try {
     // $data = $_POST;
 
     $validator = new Validator($data, [
-        'username' => 'required|string:25',
+        'username' => 'required|string',
         'email' => 'required|email',
         'score' => ['required','max_length:200', new CustomRule()],
         'password' => new CustomRule(),
