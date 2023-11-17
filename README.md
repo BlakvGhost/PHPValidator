@@ -22,18 +22,15 @@ use BlakvGhost\PHPValidator\ValidatorException;
 
 try {
 
-    // $validator = new Validator($_POST, [
-    //     'username' => 'required|string:25',
-    //     'email' => 'required|email',
-    //     'score' => ['required','max_length:200', new CustomRule()],
-    // ]);
-    // or
-
-    $validator = new Validator([
+    $data = [
         'username' => 'BlakvGhost',
         'email' => 'example@example.com',
         'score' => 42,
-    ], [
+    ];
+    // or
+    // $data = $_POST;
+
+    $validator = new Validator($data, [
         'username' => 'required|string:25',
         'email' => 'required|email',
         'score' => ['required','max_length:200', new CustomRule()],
@@ -218,10 +215,15 @@ use YourNameSpace\CustomPasswordRule;
 // ...
 
 try {
-    $validator = new Validator([
+
+    $data = [
         'password' => '42',
         'confirm_password' => '142',
-    ], [
+    ];
+    // or
+    // $data = $_POST;
+
+    $validator = new Validator($data, [
         'password' => ['required', new CustomPasswordRule()],
     ]);
 
