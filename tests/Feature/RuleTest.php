@@ -12,6 +12,7 @@ use BlakvGhost\PHPValidator\Rules\ConfirmedRule;
 use BlakvGhost\PHPValidator\Rules\EmailRule;
 use BlakvGhost\PHPValidator\Rules\FileRule;
 use BlakvGhost\PHPValidator\Rules\InRule;
+use BlakvGhost\PHPValidator\Rules\JsonRule;
 use BlakvGhost\PHPValidator\Rules\LowerRule;
 use BlakvGhost\PHPValidator\Rules\RequiredWithRule;
 use BlakvGhost\PHPValidator\Rules\StringRule;
@@ -332,6 +333,20 @@ it('validates boolean rule successfully', function () {
 
     expect($validator->message())->toBe(
         LangManager::getTranslation('validation.boolean', [
+            'attribute' => 'field',
+        ])
+    );
+});
+
+it('validates json rule successfully', function () {
+    $validator = new JsonRule([]);
+
+    expect($validator->passes('field', "", []))->toBeFalse();
+    expect($validator->passes('field', '{"name":"vishal", "email": "abc@gmail.com"}', []))->toBeTrue();
+    expect($validator->passes('field', '{name:vishal, email: abc@gmail.com}', []))->toBeFalse();
+
+    expect($validator->message())->toBe(
+        LangManager::getTranslation('validation.json', [
             'attribute' => 'field',
         ])
     );
