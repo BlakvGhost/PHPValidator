@@ -169,7 +169,7 @@ it('validates nullable rule successfully', function () {
 
 it('validates in rule successfully', function () {
     $validValues = ['value1', 'value2', 'value3'];
-    $validator = new InRule([$validValues]);
+    $validator = new InRule($validValues);
 
     expect($validator->passes('field', 'value2', []))->toBeTrue();
     expect($validator->passes('field', 'invalidValue', []))->toBeFalse();
@@ -217,22 +217,15 @@ it('validates confirmed rule successfully', function () {
 it('validates active URL rule successfully', function () {
     $validator = new ActiveURLRule([]);
 
+    $data = [];
+
     // When the URL is valid and has an active DNS record, the validation should pass.
-    $data = [
-        'field' => 'https://www.example.com',
-    ];
-    expect($validator->passes('field', 'https://www.example.com', $data))->toBeTrue();
+    expect($validator->passes('field', 'https://example.com', $data))->toBeTrue();
 
     // When the URL is valid but doesn't have an active DNS record, the validation should fail.
-    $data = [
-        'field' => 'https://nonexistent.example.com',
-    ];
     expect($validator->passes('field', 'https://nonexistent.example.com', $data))->toBeFalse();
 
     // When the URL is not valid, the validation should fail.
-    $data = [
-        'field' => 'invalid-url',
-    ];
     expect($validator->passes('field', 'invalid-url', $data))->toBeFalse();
 
     expect($validator->message())->toBe(
