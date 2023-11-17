@@ -256,7 +256,7 @@ try {
     echo "Validation error: " . $e->getMessage();
 }
 ```
-In this example, we created a CustomRule that checks if the password is equal to confirm_password. You can customize the passes method to implement your specific validation logic.
+In this example, we created a CustomPasswordRule that checks if the password is equal to confirm_password. You can customize the passes method to implement your specific validation logic.
 
 ## Contributing
 
