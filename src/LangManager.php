@@ -46,6 +46,7 @@ class LangManager
             'validation.boolean' => "Le champ :attribute doit être un booléen.",
             'validation.json' => "Le champ :attribute doit être un json valide.",
             'validation.url' => "Le champ :attribute doit être un url valide.",
+            'validation.valid_ip' => "Le champ :attribute doit être une addresse ip valide.",
         ],
         'en' => [
             // English translations
@@ -74,6 +75,7 @@ class LangManager
             'validation.boolean' => "The :attribute field must be a boolean.",
             'validation.json' => "The :attribute field must be a valid json.",
             'validation.url' => "The :attribute field must be a valid url.",
+            'validation.valid_ip' => "The :attribute field must be a valid IP address.",
         ],
     ];
 

@@ -26,6 +26,7 @@ use BlakvGhost\PHPValidator\Rules\PasswordRule;
 use BlakvGhost\PHPValidator\Rules\SameRule;
 use BlakvGhost\PHPValidator\Rules\UpperRule;
 use BlakvGhost\PHPValidator\Rules\UrlRule;
+use BlakvGhost\PHPValidator\Rules\ValidIpRule;
 
 it('validates required rule successfully', function () {
     $validator = new RequiredRule([]);
@@ -361,6 +362,19 @@ it('validates url rule successfully', function () {
 
     expect($validator->message())->toBe(
         LangManager::getTranslation('validation.url', [
+            'attribute' => 'field',
+        ])
+    );
+});
+
+it('validates ip rule successfully', function () {
+    $validator = new ValidIpRule([]);
+
+    expect($validator->passes('field', "3853598", []))->toBeFalse();
+    expect($validator->passes('field', '127.0.0.1', []))->toBeTrue();
+
+    expect($validator->message())->toBe(
+        LangManager::getTranslation('validation.valid_ip', [
             'attribute' => 'field',
         ])
     );
