@@ -14,6 +14,7 @@ use BlakvGhost\PHPValidator\Rules\StringRule;
 use BlakvGhost\PHPValidator\Rules\RequiredRule;
 use BlakvGhost\PHPValidator\Rules\MaxLengthRule;
 use BlakvGhost\PHPValidator\Rules\MinLengthRule;
+use BlakvGhost\PHPValidator\Rules\NotInRule;
 use BlakvGhost\PHPValidator\Rules\NullableRule;
 use BlakvGhost\PHPValidator\Rules\NumericRule;
 use BlakvGhost\PHPValidator\Rules\PasswordRule;
@@ -181,6 +182,21 @@ it('validates in rule successfully', function () {
         LangManager::getTranslation('validation.in_rule', [
             'attribute' => 'field',
             'values' => implode(', ', $validValues),
+        ])
+    );
+});
+
+it('validates not in rule successfully', function () {
+    $values = ['value1', 'value2', 'value3'];
+    $validator = new NotInRule($values);
+
+    expect($validator->passes('field', 'other_value', []))->toBeTrue();
+    expect($validator->passes('field', 'value1', []))->toBeFalse();
+
+    expect($validator->message())->toBe(
+        LangManager::getTranslation('validation.not_in_rule', [
+            'attribute' => 'field',
+            'values' => implode(', ', $values),
         ])
     );
 });
