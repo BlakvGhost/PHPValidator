@@ -7,6 +7,7 @@ use BlakvGhost\PHPValidator\Rules\ActiveURLRule;
 use BlakvGhost\PHPValidator\Rules\AlphaNumeric;
 use BlakvGhost\PHPValidator\Rules\AlphaNumericRule;
 use BlakvGhost\PHPValidator\Rules\AlphaRule;
+use BlakvGhost\PHPValidator\Rules\BooleanRule;
 use BlakvGhost\PHPValidator\Rules\ConfirmedRule;
 use BlakvGhost\PHPValidator\Rules\EmailRule;
 use BlakvGhost\PHPValidator\Rules\FileRule;
@@ -319,6 +320,19 @@ it('validates required_with rule successfully', function () {
         LangManager::getTranslation('validation.required_with', [
             'attribute' => 'field',
             'value' => 'other_field',
+        ])
+    );
+});
+
+it('validates boolean rule successfully', function () {
+    $validator = new BooleanRule([]);
+
+    expect($validator->passes('field', false, []))->toBeTrue();
+    expect($validator->passes('field', 'string', []))->toBeFalse();
+
+    expect($validator->message())->toBe(
+        LangManager::getTranslation('validation.boolean', [
+            'attribute' => 'field',
         ])
     );
 });

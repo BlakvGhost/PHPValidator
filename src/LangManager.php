@@ -43,6 +43,7 @@ class LangManager
             'validation.lowercase_rule' => "Le champ :attribute doit être en minuscules.",
             'validation.uppercase_rule' => "Le champ :attribute doit être en majuscules.",
             'validation.file_rule' => "Le champ :attribute doit être un fichier.",
+            'validation.boolean' => "Le champ :attribute doit être un booléen.",
         ],
         'en' => [
             // English translations
@@ -68,6 +69,7 @@ class LangManager
             'validation.lowercase_rule' => "The :attribute field must be lowercase.",
             'validation.uppercase_rule' => "The :attribute field must be uppercase.",
             'validation.file_rule' => "The :attribute field must be a file.",
+            'validation.boolean' => "The :attribute field must be a boolean.",
         ],
     ];
 
