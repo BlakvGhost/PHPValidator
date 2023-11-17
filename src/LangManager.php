@@ -27,6 +27,7 @@ class LangManager
             'validation.string_rule' => "Le champ :attribute doit être une chaîne de caractères.",
             'validation.required_rule' => "Le champ :attribute est requis.",
             'validation.max_length_rule' => "Le champ :attribute ne doit pas dépasser :max caractères.",
+            'validation.min_length_rule' => "Le champ :attribute doit dépasser :min caractères.",
             'validation.email_rule' => "Le champ :attribute doit être un e-mail."
         ],
         'en' => [
@@ -37,6 +38,7 @@ class LangManager
             'validation.string_rule' => "The :attribute field must be a string.",
             'validation.required_rule' => "The :attribute field is required.",
             'validation.max_length_rule' => "The :attribute field must not exceed :max characters.",
+            'validation.min_length_rule' => "The :attribute field must exceed :min characters.",
             'validation.email_rule' => "The :attribute field must be a email.",
         ],
     ];

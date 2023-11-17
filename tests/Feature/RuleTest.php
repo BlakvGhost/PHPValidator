@@ -3,6 +3,7 @@
 use BlakvGhost\PHPValidator\LangManager;
 use BlakvGhost\PHPValidator\Rules\EmailRule;
 use BlakvGhost\PHPValidator\Rules\MaxLengthRule;
+use BlakvGhost\PHPValidator\Rules\MinLengthRule;
 use BlakvGhost\PHPValidator\Rules\RequiredRule;
 use BlakvGhost\PHPValidator\Rules\StringRule;
 
@@ -48,5 +49,16 @@ it('validates string rule successfully', function () {
     
     expect($validator->message())->toBe(
         LangManager::getTranslation('validation.string_rule', ['attribute' => 'field'])
+    );
+});
+
+it('validates min length rule successfully', function () {
+    $validator = new MinLengthRule([10]);
+
+    expect($validator->passes('field', 'toolongvalue', []))->toBeTrue();
+    expect($validator->passes('field', 'less', []))->toBeFalse();
+
+    expect($validator->message())->toBe(
+        LangManager::getTranslation('validation.min_length_rule', ['attribute' => 'field', 'min' => 10])
     );
 });
