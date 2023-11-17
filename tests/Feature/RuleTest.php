@@ -25,6 +25,7 @@ use BlakvGhost\PHPValidator\Rules\NumericRule;
 use BlakvGhost\PHPValidator\Rules\PasswordRule;
 use BlakvGhost\PHPValidator\Rules\SameRule;
 use BlakvGhost\PHPValidator\Rules\UpperRule;
+use BlakvGhost\PHPValidator\Rules\UrlRule;
 
 it('validates required rule successfully', function () {
     $validator = new RequiredRule([]);
@@ -347,6 +348,19 @@ it('validates json rule successfully', function () {
 
     expect($validator->message())->toBe(
         LangManager::getTranslation('validation.json', [
+            'attribute' => 'field',
+        ])
+    );
+});
+
+it('validates url rule successfully', function () {
+    $validator = new UrlRule([]);
+
+    expect($validator->passes('field', "invalid_url", []))->toBeFalse();
+    expect($validator->passes('field', 'http://google.com', []))->toBeTrue();
+
+    expect($validator->message())->toBe(
+        LangManager::getTranslation('validation.url', [
             'attribute' => 'field',
         ])
     );
