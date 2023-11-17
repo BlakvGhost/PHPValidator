@@ -4,21 +4,30 @@ use BlakvGhost\PHPValidator\LangManager;
 use BlakvGhost\PHPValidator\Rules\AcceptedIfRule;
 use BlakvGhost\PHPValidator\Rules\AcceptedRule;
 use BlakvGhost\PHPValidator\Rules\ActiveURLRule;
+use BlakvGhost\PHPValidator\Rules\AlphaNumeric;
+use BlakvGhost\PHPValidator\Rules\AlphaNumericRule;
 use BlakvGhost\PHPValidator\Rules\AlphaRule;
+use BlakvGhost\PHPValidator\Rules\BooleanRule;
 use BlakvGhost\PHPValidator\Rules\ConfirmedRule;
 use BlakvGhost\PHPValidator\Rules\EmailRule;
 use BlakvGhost\PHPValidator\Rules\FileRule;
 use BlakvGhost\PHPValidator\Rules\InRule;
+use BlakvGhost\PHPValidator\Rules\JsonRule;
 use BlakvGhost\PHPValidator\Rules\LowerRule;
+use BlakvGhost\PHPValidator\Rules\RequiredWithRule;
+use BlakvGhost\PHPValidator\Rules\SizeRule;
 use BlakvGhost\PHPValidator\Rules\StringRule;
 use BlakvGhost\PHPValidator\Rules\RequiredRule;
 use BlakvGhost\PHPValidator\Rules\MaxLengthRule;
 use BlakvGhost\PHPValidator\Rules\MinLengthRule;
+use BlakvGhost\PHPValidator\Rules\NotInRule;
 use BlakvGhost\PHPValidator\Rules\NullableRule;
 use BlakvGhost\PHPValidator\Rules\NumericRule;
 use BlakvGhost\PHPValidator\Rules\PasswordRule;
 use BlakvGhost\PHPValidator\Rules\SameRule;
 use BlakvGhost\PHPValidator\Rules\UpperRule;
+use BlakvGhost\PHPValidator\Rules\UrlRule;
+use BlakvGhost\PHPValidator\Rules\ValidIpRule;
 
 it('validates required rule successfully', function () {
     $validator = new RequiredRule([]);
@@ -185,6 +194,21 @@ it('validates in rule successfully', function () {
     );
 });
 
+it('validates not in rule successfully', function () {
+    $values = ['value1', 'value2', 'value3'];
+    $validator = new NotInRule($values);
+
+    expect($validator->passes('field', 'other_value', []))->toBeTrue();
+    expect($validator->passes('field', 'value1', []))->toBeFalse();
+
+    expect($validator->message())->toBe(
+        LangManager::getTranslation('validation.not_in_rule', [
+            'attribute' => 'field',
+            'values' => implode(', ', $values),
+        ])
+    );
+});
+
 it('validates confirmed rule successfully', function () {
     $confirmationFieldName = 'confirmation_field';
     $validator = new ConfirmedRule([$confirmationFieldName]);
@@ -273,6 +297,142 @@ it('validates file rule successfully', function () {
     expect($validator->message())->toBe(
         LangManager::getTranslation('validation.file_rule', [
             'attribute' => 'field',
+        ])
+    );
+});
+
+it('validates alpha_numeric rule successfully', function () {
+    $validator = new AlphaNumericRule([]);
+
+    expect($validator->passes('field', 'alpha2324', []))->toBeTrue();
+    expect($validator->passes('field', 's$sdfde$*', []))->toBeFalse();
+
+    expect($validator->message())->toBe(
+        LangManager::getTranslation('validation.alpha_numeric', [
+            'attribute' => 'field',
+        ])
+    );
+});
+
+it('validates required_with rule successfully', function () {
+    $validator = new RequiredWithRule(['other_field']);
+
+    expect($validator->passes('field', 'value', ['other_field' => 'value2']))->toBeTrue();
+    expect($validator->passes('field', 'value', []))->toBeFalse();
+
+    expect($validator->message())->toBe(
+        LangManager::getTranslation('validation.required_with', [
+            'attribute' => 'field',
+            'value' => 'other_field',
+        ])
+    );
+});
+
+it('validates boolean rule successfully', function () {
+    $validator = new BooleanRule([]);
+
+    expect($validator->passes('field', false, []))->toBeTrue();
+    expect($validator->passes('field', 'string', []))->toBeFalse();
+
+    expect($validator->message())->toBe(
+        LangManager::getTranslation('validation.boolean', [
+            'attribute' => 'field',
+        ])
+    );
+});
+
+it('validates json rule successfully', function () {
+    $validator = new JsonRule([]);
+
+    expect($validator->passes('field', "", []))->toBeFalse();
+    expect($validator->passes('field', '{"name":"vishal", "email": "abc@gmail.com"}', []))->toBeTrue();
+    expect($validator->passes('field', '{name:vishal, email: abc@gmail.com}', []))->toBeFalse();
+
+    expect($validator->message())->toBe(
+        LangManager::getTranslation('validation.json', [
+            'attribute' => 'field',
+        ])
+    );
+});
+
+it('validates url rule successfully', function () {
+    $validator = new UrlRule([]);
+
+    expect($validator->passes('field', "invalid_url", []))->toBeFalse();
+    expect($validator->passes('field', 'http://google.com', []))->toBeTrue();
+
+    expect($validator->message())->toBe(
+        LangManager::getTranslation('validation.url', [
+            'attribute' => 'field',
+        ])
+    );
+});
+
+it('validates ip rule successfully', function () {
+    $validator = new ValidIpRule([]);
+
+    expect($validator->passes('field', "3853598", []))->toBeFalse();
+    expect($validator->passes('field', '127.0.0.1', []))->toBeTrue();
+
+    expect($validator->message())->toBe(
+        LangManager::getTranslation('validation.valid_ip', [
+            'attribute' => 'field',
+        ])
+    );
+});
+
+it('validates size rule (string) successfully', function () {
+    $validator = new SizeRule([4]);
+
+    expect($validator->passes('field', "azerty", []))->toBeFalse();
+    expect($validator->passes('field', 'azer', []))->toBeTrue();
+
+    expect($validator->message())->toBe(
+        LangManager::getTranslation('validation.size', [
+            'attribute' => 'field',
+            'value' => 4,
+        ])
+    );
+});
+
+it('validates size rule (integer) successfully', function () {
+    $validator = new SizeRule([3]);
+
+    expect($validator->passes('field', 6, []))->toBeFalse();
+    expect($validator->passes('field', 3, []))->toBeTrue();
+
+    expect($validator->message())->toBe(
+        LangManager::getTranslation('validation.size', [
+            'attribute' => 'field',
+            'value' => 3,
+        ])
+    );
+});
+
+it('validates size rule (array) successfully', function () {
+    $validator = new SizeRule([2]);
+
+    expect($validator->passes('field', ['key1', 'key2', 'key3'], []))->toBeFalse();
+    expect($validator->passes('field', ['key1', 'key2'], []))->toBeTrue();
+
+    expect($validator->message())->toBe(
+        LangManager::getTranslation('validation.size', [
+            'attribute' => 'field',
+            'value' => 2,
+        ])
+    );
+});
+
+it('validates size rule (file) successfully', function () {
+    $validator = new SizeRule([512]);
+
+    expect($validator->passes('field', __FILE__, []))->toBeFalse();
+    // expect($validator->passes('field', __FILE__, []))->toBeTrue();
+
+    expect($validator->message())->toBe(
+        LangManager::getTranslation('validation.size', [
+            'attribute' => 'field',
+            'value' => 512,
         ])
     );
 });

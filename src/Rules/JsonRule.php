@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Email - A validation rule implementation for checking if a field is a valid email
+ * InRule - A validation rule implementation for checking if a value is a valid json.
  *
  * @package BlakvGhost\PHPValidator\Rules
  * @author Fortunatus KIDJE (v1p3r75)
@@ -12,7 +12,7 @@ namespace BlakvGhost\PHPValidator\Rules;
 
 use BlakvGhost\PHPValidator\LangManager;
 
-class EmailRule implements RuleInterface
+class JsonRule implements RuleInterface
 {
     /**
      * Name of the field being validated.
@@ -22,9 +22,9 @@ class EmailRule implements RuleInterface
     protected $field;
 
     /**
-     * Constructor of the RequiredRule class.
+     * Constructor of the InRule class.
      *
-     * @param array $parameters Parameters for the rule, if any.
+     * @param array $parameters Parameters for the rule, specifying the list of valid values.
      */
     public function __construct(protected array $parameters)
     {
@@ -32,19 +32,23 @@ class EmailRule implements RuleInterface
     }
 
     /**
-     * Check if the given field is a valid email.
+     * Check if the value is a valid json.
      *
      * @param string $field Name of the field being validated.
      * @param mixed $value Value of the field being validated.
      * @param array $data All validation data.
-     * @return bool True if the field is a valid email, false otherwise.
+     * @return bool True if the value is valid json, false otherwise.
      */
     public function passes(string $field, $value, array $data): bool
     {
         // Set the field property for use in the message method.
         $this->field = $field;
 
-        return (bool)filter_var($value, FILTER_VALIDATE_EMAIL);
+        if (!empty($value)) { 
+            return is_string($value) &&  
+              is_array(json_decode($value, true)) ? true : false; 
+        } 
+        return false; 
     }
 
     /**
@@ -54,9 +58,8 @@ class EmailRule implements RuleInterface
      */
     public function message(): string
     {
-        
         // Use LangManager to get a translated validation error message.
-        return LangManager::getTranslation('validation.email_rule', [
+        return LangManager::getTranslation('validation.json', [
             'attribute' => $this->field,
         ]);
     }
