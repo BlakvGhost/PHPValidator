@@ -19,10 +19,16 @@ composer require blakvghost/php-validator
 ```php
 use BlakvGhost\PHPValidator\Validator;
 use BlakvGhost\PHPValidator\ValidatorException;
-use BlakvGhost\PHPValidator\LangManager;
-use BlakvGhost\PHPValidator\Rules\EmailRule;
 
 try {
+
+    // $validator = new Validator($_POST, [
+    //     'username' => 'required|string:25',
+    //     'email' => 'required|email',
+    //     'score' => ['required','max_length:200', new CustomRule()],
+    // ]);
+    // or
+
     $validator = new Validator([
         'username' => 'BlakvGhost',
         'email' => 'example@example.com',
@@ -31,6 +37,7 @@ try {
         'username' => 'required|string:25',
         'email' => 'required|email',
         'score' => ['required','max_length:200', new CustomRule()],
+        'password' => new CustomRule(),
     ]);
 
     if ($validator->isValid()) {
@@ -173,7 +180,7 @@ In addition to the predefined rules, you can create custom validation rules by i
 
 ```php
 // CustomPasswordRule.php
-namespace BlakvGhost\PHPValidator\Rules;
+namespace YourNameSpace\Rules;
 
 use BlakvGhost\PHPValidator\LangManager;
 
@@ -204,7 +211,9 @@ class CustomPasswordRule implements RuleInterface
 ```php
 
 use BlakvGhost\PHPValidator\Validator;
-use BlakvGhost\PHPValidator\Rules\CustomPasswordRule;
+use BlakvGhost\PHPValidator\ValidatorException;
+use YourNameSpace\CustomPasswordRule;
+
 
 // ...
 
