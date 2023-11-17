@@ -12,6 +12,7 @@ use BlakvGhost\PHPValidator\Rules\EmailRule;
 use BlakvGhost\PHPValidator\Rules\FileRule;
 use BlakvGhost\PHPValidator\Rules\InRule;
 use BlakvGhost\PHPValidator\Rules\LowerRule;
+use BlakvGhost\PHPValidator\Rules\RequiredWithRule;
 use BlakvGhost\PHPValidator\Rules\StringRule;
 use BlakvGhost\PHPValidator\Rules\RequiredRule;
 use BlakvGhost\PHPValidator\Rules\MaxLengthRule;
@@ -304,6 +305,20 @@ it('validates alpha_numeric rule successfully', function () {
     expect($validator->message())->toBe(
         LangManager::getTranslation('validation.alpha_numeric', [
             'attribute' => 'field',
+        ])
+    );
+});
+
+it('validates required_with rule successfully', function () {
+    $validator = new RequiredWithRule(['other_field']);
+
+    expect($validator->passes('field', 'value', ['other_field' => 'value2']))->toBeTrue();
+    expect($validator->passes('field', 'value', []))->toBeFalse();
+
+    expect($validator->message())->toBe(
+        LangManager::getTranslation('validation.required_with', [
+            'attribute' => 'field',
+            'value' => 'other_field',
         ])
     );
 });
