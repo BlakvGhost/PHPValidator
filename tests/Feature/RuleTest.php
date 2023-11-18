@@ -70,12 +70,14 @@ it('validates email rule successfully', function () {
 });
 
 it('validates string rule successfully', function () {
-    $validator = new StringRule([]);
 
-    expect($validator->passes('field', 'value', []))->toBeTrue();
-    expect($validator->passes('field', 5, []))->toBeFalse();
+    $validator = new Validator(['field' => 'value'], ['field' => 'string']);
+    expect($validator->isValid())->toBeTrue();
 
-    expect($validator->message())->toBe(
+    $validator = new Validator(['field' => 5], ['field' => 'string']);
+    expect($validator->isValid())->toBeFalse();
+
+    expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.string_rule', ['attribute' => 'field'])
     );
 });
