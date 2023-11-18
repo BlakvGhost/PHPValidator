@@ -419,10 +419,12 @@ it('validates json rule successfully', function () {
 });
 
 it('validates url rule successfully', function () {
-    $validator = new UrlRule([]);
 
-    expect($validator->passes('field', "invalid_url", []))->toBeFalse();
-    expect($validator->passes('field', 'http://google.com', []))->toBeTrue();
+    $validator = new Validator(['field' => 'invalid_url'], ['field' => 'url']);
+    expect($validator->isValid())->toBeFalse();
+    
+    $validator = new Validator(['field' => 'http://google.com'], ['field' => 'url']);
+    expect($validator->isValid())->toBeTrue();
 
     expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.url', [
