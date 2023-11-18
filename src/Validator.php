@@ -16,9 +16,6 @@ use BlakvGhost\PHPValidator\ValidatorException;
 
 class Validator
 {
-    // protected static $instance;
-
-    // protected static $langManagerInstance;
 
     private $errors = [];
 
@@ -33,25 +30,6 @@ class Validator
         $this->validateConstructorInputs();
         $this->validate();
     }
-
-    // public static function getInstance(): Validator
-    // {
-    //     if (!self::$instance) {
-    //         self::$instance = new Validator(self::$data, self::$rules);
-    //     }
-
-    //     return self::$instance;
-    // }
-
-    // public static function getLangManagerInstance(): LangManager
-    // {
-    //     if (!self::$langManagerInstance) {
-    //         self::$langManagerInstance = new LangManager();
-    //     }
-
-    //     return self::$langManagerInstance;
-    // }
-
 
     /**
      * Parse a rule to extract the name and any parameters.
