@@ -1,10 +1,20 @@
-# PHPValidator
+<div align="center">
 
-PHPValidator is a modern PHP library for data validation in your PHP applications. It provides a flexible and extensible way to validate data using predefined rules or by creating custom validation rules.
+<img src="https://php-validator.kabirou-alassane.com/assets/logo/svg/logo-no-background1.svg" alt="logo PHPValidator" height="200">
+
+<p>
 
 ![Packagist Version (custom server)](https://img.shields.io/packagist/v/BlakvGhost/php-validator?label=stable)
 ![Packagist Version (custom server)](https://img.shields.io/packagist/l/BlakvGhost/php-validator?label=Licence)
 ![Packagist Version (custom server)](https://img.shields.io/packagist/dt/BlakvGhost/php-validator?label=download)
+</p>
+
+</div>
+
+
+## About PHPValidator
+
+PHPValidator is a modern PHP library for data validation in your PHP applications. It provides a flexible and extensible way to validate data using predefined rules or by creating custom validation rules.
 
 ## Installation
 
