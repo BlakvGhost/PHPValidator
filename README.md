@@ -12,7 +12,7 @@
 </div>
 
 
-# About PHPValidator
+## About PHPValidator
 
 PHPValidator is a modern PHP library for data validation in your PHP applications. It provides a flexible and extensible way to validate data using predefined rules or by creating custom validation rules.
 
