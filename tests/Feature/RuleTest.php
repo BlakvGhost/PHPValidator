@@ -434,10 +434,12 @@ it('validates url rule successfully', function () {
 });
 
 it('validates ip rule successfully', function () {
-    $validator = new ValidIpRule([]);
 
-    expect($validator->passes('field', "3853598", []))->toBeFalse();
-    expect($validator->passes('field', '127.0.0.1', []))->toBeTrue();
+    $validator = new Validator(['field' => '3853598'], ['field' => 'valid_ip']);
+    expect($validator->isValid())->toBeFalse();
+    
+    $validator = new Validator(['field' => '127.0.0.1'], ['field' => 'valid_ip']);
+    expect($validator->isValid())->toBeTrue();
 
     expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.valid_ip', [
@@ -447,10 +449,12 @@ it('validates ip rule successfully', function () {
 });
 
 it('validates size rule (string) successfully', function () {
-    $validator = new SizeRule([4]);
 
-    expect($validator->passes('field', "azerty", []))->toBeFalse();
-    expect($validator->passes('field', 'azer', []))->toBeTrue();
+    $validator = new Validator(['field' => 'azerty'], ['field' => 'size:4']);
+    expect($validator->isValid())->toBeFalse();
+    
+    $validator = new Validator(['field' => 'azer'], ['field' => 'size:4']);
+    expect($validator->isValid())->toBeTrue();
 
     expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.size', [
@@ -461,10 +465,12 @@ it('validates size rule (string) successfully', function () {
 });
 
 it('validates size rule (integer) successfully', function () {
-    $validator = new SizeRule([3]);
 
-    expect($validator->passes('field', 6, []))->toBeFalse();
-    expect($validator->passes('field', 3, []))->toBeTrue();
+    $validator = new Validator(['field' => 6], ['field' => 'size:3']);
+    expect($validator->isValid())->toBeFalse();
+    
+    $validator = new Validator(['field' => 3], ['field' => 'size:3']);
+    expect($validator->isValid())->toBeTrue();
 
     expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.size', [
@@ -475,10 +481,12 @@ it('validates size rule (integer) successfully', function () {
 });
 
 it('validates size rule (array) successfully', function () {
-    $validator = new SizeRule([2]);
 
-    expect($validator->passes('field', ['key1', 'key2', 'key3'], []))->toBeFalse();
-    expect($validator->passes('field', ['key1', 'key2'], []))->toBeTrue();
+    $validator = new Validator(['field' => ['key1', 'key2']], ['field' => 'size:2']);
+    expect($validator->isValid())->toBeTrue();
+
+    $validator = new Validator(['field' => ['key1', 'key2', 'key3']], ['field' => 'size:2']);
+    expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.size', [
@@ -489,10 +497,9 @@ it('validates size rule (array) successfully', function () {
 });
 
 it('validates size rule (file) successfully', function () {
-    $validator = new SizeRule([512]);
 
-    expect($validator->passes('field', __FILE__, []))->toBeFalse();
-    // expect($validator->passes('field', __FILE__, []))->toBeTrue();
+    $validator = new Validator(['field' => __FILE__], ['field' => 'size:512']);
+    expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.size', [
