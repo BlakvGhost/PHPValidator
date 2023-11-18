@@ -8,7 +8,6 @@ use BlakvGhost\PHPValidator\Rules\AlphaNumericRule;
 use BlakvGhost\PHPValidator\Rules\AlphaRule;
 use BlakvGhost\PHPValidator\Rules\BooleanRule;
 use BlakvGhost\PHPValidator\Rules\ConfirmedRule;
-use BlakvGhost\PHPValidator\Rules\EmailRule;
 use BlakvGhost\PHPValidator\Rules\FileRule;
 use BlakvGhost\PHPValidator\Rules\InRule;
 use BlakvGhost\PHPValidator\Rules\JsonRule;
@@ -16,8 +15,6 @@ use BlakvGhost\PHPValidator\Rules\LowerRule;
 use BlakvGhost\PHPValidator\Rules\RequiredWithRule;
 use BlakvGhost\PHPValidator\Rules\SizeRule;
 use BlakvGhost\PHPValidator\Rules\StringRule;
-use BlakvGhost\PHPValidator\Rules\RequiredRule;
-use BlakvGhost\PHPValidator\Rules\MaxLengthRule;
 use BlakvGhost\PHPValidator\Rules\MinLengthRule;
 use BlakvGhost\PHPValidator\Rules\NotInRule;
 use BlakvGhost\PHPValidator\Rules\NullableRule;
@@ -60,12 +57,14 @@ it('validates max length rule successfully', function () {
 });
 
 it('validates email rule successfully', function () {
-    $validator = new EmailRule([]);
 
-    expect($validator->passes('email', 'test@example.com', []))->toBeTrue();
-    expect($validator->passes('email', 'invalid-email', []))->toBeFalse();
+    $validator = new Validator(['email' => 'test@example.com'], ['email' => 'email']);
+    expect($validator->isValid())->toBeTrue();
 
-    expect($validator->message())->toBe(
+    $validator = new Validator(['email' => 'invalid-email'], ['email' => 'email']);
+    expect($validator->isValid())->toBeFalse();
+
+    expect($validator->getErrors()['email'][0])->toBe(
         LangManager::getTranslation('validation.email_rule', ['attribute' => 'email'])
     );
 });
