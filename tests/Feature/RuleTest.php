@@ -262,27 +262,26 @@ it('validates not in rule successfully', function () {
 
 it('validates confirmed rule successfully', function () {
     $confirmationFieldName = 'confirmation_field';
-    $validator = new ConfirmedRule([$confirmationFieldName]);
 
-    // When the confirmation field is present and its value matches the field's value, the validation should pass.
     $data = [
         'field' => 'value',
         $confirmationFieldName => 'value',
     ];
-    expect($validator->passes('field', 'value', $data))->toBeTrue();
+    $validator = new Validator($data, ['field' => 'confirmed:' . $confirmationFieldName]);
+    expect($validator->isValid())->toBeTrue();
 
-    // When the confirmation field is present but its value doesn't match the field's value, the validation should fail.
     $data = [
         'field' => 'value1',
         $confirmationFieldName => 'value2',
     ];
-    expect($validator->passes('field', 'value1', $data))->toBeFalse();
+    $validator = new Validator($data, ['field' => 'confirmed:' . $confirmationFieldName]);
+    expect($validator->isValid())->toBeFalse();
 
-    // When the confirmation field is not present, the validation should fail.
     $data = [
         'field' => 'value',
     ];
-    expect($validator->passes('field', 'value', $data))->toBeFalse();
+    $validator = new Validator($data, ['field' => 'confirmed:' . $confirmationFieldName]);
+    expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.confirmed_rule', [
