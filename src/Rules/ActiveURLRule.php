@@ -13,7 +13,7 @@ namespace BlakvGhost\PHPValidator\Rules;
 
 use BlakvGhost\PHPValidator\LangManager;
 
-class ActiveURLRule implements RuleInterface
+class ActiveUrlRule implements RuleInterface
 {
     /**
      * The name of the field being validated.
