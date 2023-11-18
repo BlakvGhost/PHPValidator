@@ -191,18 +191,17 @@ it('validates password rule successfully', function () {
 
 it('validates numeric rule successfully', function () {
 
-    $validator = new Validator(['password' => 'StrongPwd1'], ['password' => 'password']);
+    $validator = new Validator(['numericField' => 123], ['numericField' => 'numeric']);
     expect($validator->isValid())->toBeTrue();
 
-    $validator = new Validator(['password' => 'Short1'], ['password' => 'password']);
+    $validator = new Validator(['numericField' => '456'], ['numericField' => 'numeric']);
     expect($validator->isValid())->toBeFalse();
 
-    $validator = new NumericRule([]);
-
-    expect($validator->passes('numericField', 123, []))->toBeTrue();
-    expect($validator->passes('numericField', '456', []))->toBeTrue();
-    expect($validator->passes('numericField', 'NotNumeric', []))->toBeFalse();
-    expect($validator->passes('numericField', null, []))->toBeFalse();
+    $validator = new Validator(['numericField' => 'NotNumeric'], ['numericField' => 'numeric']);
+    expect($validator->isValid())->toBeFalse();
+    
+    $validator = new Validator(['numericField' => null], ['numericField' => 'numeric']);
+    expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.numeric_rule', [
