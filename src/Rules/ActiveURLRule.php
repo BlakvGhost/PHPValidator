@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ActiveURLRule - A validation rule implementation for checking if a URL is active.
+ * ActiveUrlRule - A validation rule implementation for checking if a URL is active.
  *
  * @package BlakvGhost\PHPValidator\Rules
  * @author Kabirou ALASSANE
