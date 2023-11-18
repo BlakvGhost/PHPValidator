@@ -14,7 +14,7 @@ namespace BlakvGhost\PHPValidator;
 use BlakvGhost\PHPValidator\Rules\RuleInterface;
 use BlakvGhost\PHPValidator\ValidatorException;
 
-class Validator
+class Validator extends RulesMaped
 {
 
     private $errors = [];
@@ -60,21 +60,7 @@ class Validator
             return $ruleName::class;
         }
 
-        $ruleParts = explode('_', $ruleName);
-        $className = implode('', array_map('ucfirst', $ruleParts)) . 'Rule';
-
-        $fullClassName = "BlakvGhost\\PHPValidator\\Rules\\$className";
-
-        if (!class_exists($fullClassName)) {
-
-            $translatedMessage = LangManager::getTranslation('validation.rule_not_found', [
-                'ruleName' => $ruleName,
-            ]);
-
-            throw new ValidatorException($translatedMessage);
-        }
-
-        return $fullClassName;
+        return $this->getRule($ruleName);
     }
 
     /**

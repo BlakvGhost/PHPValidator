@@ -77,19 +77,19 @@ class RulesMaped
 
     protected static function getRule(string $alias): string
     {
-        if (!isset(self::$rules[$alias])) {
+        if (isset(self::$rules[$alias]) && class_exists(self::$rules[$alias])) {
 
-            $translatedMessage = LangManager::getTranslation('validation.rule_not_found', [
-                'ruleName' => $alias,
-            ]);
-
-            throw new ValidatorException($translatedMessage);
+            return self::$rules[$alias];
         }
+        
+        $translatedMessage = LangManager::getTranslation('validation.rule_not_found', [
+            'ruleName' => $alias,
+        ]);
 
-        return self::$rules[$alias];
+        throw new ValidatorException($translatedMessage);
     }
 
-    public static function addRule(string $alias, string $className): void
+    protected static function addRule(string $alias, string $className): void
     {
         self::$rules[$alias] = $className;
     }

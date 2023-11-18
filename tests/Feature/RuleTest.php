@@ -19,10 +19,10 @@ it('validates required rule successfully', function () {
 
 it('validates max length rule successfully', function () {
 
-    $validator = new Validator(['username' => 'value'], ['username' => 'max_length:5']);
+    $validator = new Validator(['username' => 'value'], ['username' => 'max:5']);
     expect($validator->isValid())->toBeTrue();
 
-    $validator = new Validator(['username' => 'value_long'], ['username' => 'max_length:5']);
+    $validator = new Validator(['username' => 'value_long'], ['username' => 'max:5']);
     expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['username'][0])->toBe(
@@ -61,10 +61,10 @@ it('validates string rule successfully', function () {
 
 it('validates min length rule successfully', function () {
 
-    $validator = new Validator(['field' => 'toolongvalue'], ['field' => 'min_length:10']);
+    $validator = new Validator(['field' => 'toolongvalue'], ['field' => 'min:10']);
     expect($validator->isValid())->toBeTrue();
 
-    $validator = new Validator(['field' => 'less'], ['field' => 'min_length:10']);
+    $validator = new Validator(['field' => 'less'], ['field' => 'min:10']);
     expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
@@ -285,10 +285,10 @@ it('validates active URL rule successfully', function () {
 
 it('validates lowercase rule successfully', function () {
 
-    $validator = new Validator(['field' => 'lowercase'], ['field' => 'lower']);
+    $validator = new Validator(['field' => 'lowercase'], ['field' => 'lowercase']);
     expect($validator->isValid())->toBeTrue();
 
-    $validator = new Validator(['field' => 'UPPERCASE'], ['field' => 'lower']);
+    $validator = new Validator(['field' => 'UPPERCASE'], ['field' => 'lowercase']);
     expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
@@ -300,10 +300,10 @@ it('validates lowercase rule successfully', function () {
 
 it('validates uppercase rule successfully', function () {
 
-    $validator = new Validator(['field' => 'UPPERCASE'], ['field' => 'upper']);
+    $validator = new Validator(['field' => 'UPPERCASE'], ['field' => 'uppercase']);
     expect($validator->isValid())->toBeTrue();
 
-    $validator = new Validator(['field' => 'lowercase'], ['field' => 'upper']);
+    $validator = new Validator(['field' => 'lowercase'], ['field' => 'uppercase']);
     expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
@@ -328,12 +328,12 @@ it('validates file rule successfully', function () {
     );
 });
 
-it('validates alpha_numeric rule successfully', function () {
+it('validates alpha numeric rule successfully', function () {
 
-    $validator = new Validator(['field' => 'alpha2324'], ['field' => 'alpha_numeric']);
+    $validator = new Validator(['field' => 'alpha2324'], ['field' => 'alpha_num']);
     expect($validator->isValid())->toBeTrue();
 
-    $validator = new Validator(['field' => 's$sdfde$*'], ['field' => 'alpha_numeric']);
+    $validator = new Validator(['field' => 's$sdfde$*'], ['field' => 'alpha_num']);
     expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
@@ -361,10 +361,10 @@ it('validates required_with rule successfully', function () {
 
 it('validates boolean rule successfully', function () {
 
-    $validator = new Validator(['field' => false], ['field' => 'boolean']);
+    $validator = new Validator(['field' => false], ['field' => 'bool']);
     expect($validator->isValid())->toBeTrue();
     
-    $validator = new Validator(['field' => 'string'], ['field' => 'boolean']);
+    $validator = new Validator(['field' => 'string'], ['field' => 'bool']);
     expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
@@ -409,10 +409,10 @@ it('validates url rule successfully', function () {
 
 it('validates ip rule successfully', function () {
 
-    $validator = new Validator(['field' => '127.0.0.1'], ['field' => 'valid_ip']);
+    $validator = new Validator(['field' => '127.0.0.1'], ['field' => 'ip']);
     expect($validator->isValid())->toBeTrue();
 
-    $validator = new Validator(['field' => '3853598'], ['field' => 'valid_ip']);
+    $validator = new Validator(['field' => '3853598'], ['field' => 'ip']);
     expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
