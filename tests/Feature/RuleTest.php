@@ -226,16 +226,18 @@ it('validates nullable rule successfully', function () {
 });
 
 it('validates in rule successfully', function () {
-    $validValues = ['value1', 'value2', 'value3'];
-    $validator = new InRule($validValues);
+    $validValues = 'value1,value2,value3';
 
-    expect($validator->passes('field', 'value2', []))->toBeTrue();
-    expect($validator->passes('field', 'invalidValue', []))->toBeFalse();
+    $validator = new Validator(['field' => 'value2'], ['field' => 'in:' . $validValues]);
+    expect($validator->isValid())->toBeTrue();
+
+    $validator = new Validator(['field' => 'invalidValue'], ['field' => 'in:' . $validValues]);
+    expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.in_rule', [
             'attribute' => 'field',
-            'values' => implode(', ', $validValues),
+            'values' => $validValues,
         ])
     );
 });
