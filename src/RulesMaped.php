@@ -38,7 +38,7 @@ use BlakvGhost\PHPValidator\Rules\SameRule;
 use BlakvGhost\PHPValidator\Rules\SizeRule;
 use BlakvGhost\PHPValidator\Rules\StringRule;
 use BlakvGhost\PHPValidator\Rules\UpperCaseRule;
-use BlakvGhost\PHPValidator\Rules\URLRule;
+use BlakvGhost\PHPValidator\Rules\UrlRule;
 use BlakvGhost\PHPValidator\Rules\ValidIpRule;
 
 class RulesMaped
@@ -71,7 +71,7 @@ class RulesMaped
         'password' => PasswordRule::class,
         'same' => SameRule::class,
         'size' => SizeRule::class,
-        'url' => URLRule::class,
+        'url' => UrlRule::class,
         'ip' => ValidIpRule::class,
     ];
 
@@ -94,7 +94,7 @@ class RulesMaped
      */
     protected static function getRule(string $alias): string
     {
-        if (isset(self::$rules[$alias])) {
+        if (isset(self::$rules[$alias]) && class_exists(self::$rules[$alias])) {
             return self::$rules[$alias];
         }
 
