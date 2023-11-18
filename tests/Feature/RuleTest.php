@@ -113,7 +113,7 @@ it('validates accepted if rule successfully', function () {
     $validator = new Validator(['field' => 'some_field', 'other_field' => true], ['field' => 'accepted_if:other_field']);
     expect($validator->isValid())->toBeTrue();
 
-    $validator = new Validator(['field' => 'some_field', 'other_field' => false], ['other_field' => 'accepted_if:other_field']);
+    $validator = new Validator(['field' => 'some_field', 'other_field' => false], ['field' => 'accepted_if:other_field']);
     expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
@@ -244,7 +244,7 @@ it('validates in rule successfully', function () {
 
 it('validates not in rule successfully', function () {
 
-    $values = 'value1,value2,value3';
+    $values = "value1,value2,value3";
 
     $validator = new Validator(['field' => 'other_value'], ['field' => 'not_in:' . $values]);
     expect($validator->isValid())->toBeTrue();
@@ -326,11 +326,11 @@ it('validates lowercase rule successfully', function () {
 
 it('validates uppercase rule successfully', function () {
 
-    $validator = new Validator(['field' => 'lowercase'], ['field' => 'upper']);
-    expect($validator->isValid())->toBeFalse();
-
     $validator = new Validator(['field' => 'UPPERCASE'], ['field' => 'upper']);
     expect($validator->isValid())->toBeTrue();
+
+    $validator = new Validator(['field' => 'lowercase'], ['field' => 'upper']);
+    expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.uppercase_rule', [
@@ -419,12 +419,12 @@ it('validates json rule successfully', function () {
 });
 
 it('validates url rule successfully', function () {
-
-    $validator = new Validator(['field' => 'invalid_url'], ['field' => 'url']);
-    expect($validator->isValid())->toBeFalse();
     
     $validator = new Validator(['field' => 'http://google.com'], ['field' => 'url']);
     expect($validator->isValid())->toBeTrue();
+
+    $validator = new Validator(['field' => 'invalid_url'], ['field' => 'url']);
+    expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.url', [
@@ -435,11 +435,11 @@ it('validates url rule successfully', function () {
 
 it('validates ip rule successfully', function () {
 
-    $validator = new Validator(['field' => '3853598'], ['field' => 'valid_ip']);
-    expect($validator->isValid())->toBeFalse();
-    
     $validator = new Validator(['field' => '127.0.0.1'], ['field' => 'valid_ip']);
     expect($validator->isValid())->toBeTrue();
+
+    $validator = new Validator(['field' => '3853598'], ['field' => 'valid_ip']);
+    expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.valid_ip', [
@@ -450,11 +450,11 @@ it('validates ip rule successfully', function () {
 
 it('validates size rule (string) successfully', function () {
 
-    $validator = new Validator(['field' => 'azerty'], ['field' => 'size:4']);
-    expect($validator->isValid())->toBeFalse();
-    
     $validator = new Validator(['field' => 'azer'], ['field' => 'size:4']);
     expect($validator->isValid())->toBeTrue();
+
+    $validator = new Validator(['field' => 'azerty'], ['field' => 'size:4']);
+    expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.size', [
@@ -466,11 +466,11 @@ it('validates size rule (string) successfully', function () {
 
 it('validates size rule (integer) successfully', function () {
 
-    $validator = new Validator(['field' => 6], ['field' => 'size:3']);
-    expect($validator->isValid())->toBeFalse();
-    
     $validator = new Validator(['field' => 3], ['field' => 'size:3']);
     expect($validator->isValid())->toBeTrue();
+
+    $validator = new Validator(['field' => 6], ['field' => 'size:3']);
+    expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.size', [
