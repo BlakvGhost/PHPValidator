@@ -2,9 +2,12 @@
 
 <img src="https://php-validator.kabirou-alassane.com/assets/logo/svg/logo-no-background1.svg" alt="logo PHPValidator" height="200">
 
+<p>
+
 ![Packagist Version (custom server)](https://img.shields.io/packagist/v/BlakvGhost/php-validator?label=stable)
 ![Packagist Version (custom server)](https://img.shields.io/packagist/l/BlakvGhost/php-validator?label=Licence)
 ![Packagist Version (custom server)](https://img.shields.io/packagist/dt/BlakvGhost/php-validator?label=download)
+</p>
 
 </div>
 
