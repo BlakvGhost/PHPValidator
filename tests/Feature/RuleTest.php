@@ -1,29 +1,6 @@
 <?php
 
 use BlakvGhost\PHPValidator\LangManager;
-use BlakvGhost\PHPValidator\Rules\AcceptedIfRule;
-use BlakvGhost\PHPValidator\Rules\AcceptedRule;
-use BlakvGhost\PHPValidator\Rules\ActiveURLRule;
-use BlakvGhost\PHPValidator\Rules\AlphaNumericRule;
-use BlakvGhost\PHPValidator\Rules\AlphaRule;
-use BlakvGhost\PHPValidator\Rules\BooleanRule;
-use BlakvGhost\PHPValidator\Rules\ConfirmedRule;
-use BlakvGhost\PHPValidator\Rules\FileRule;
-use BlakvGhost\PHPValidator\Rules\InRule;
-use BlakvGhost\PHPValidator\Rules\JsonRule;
-use BlakvGhost\PHPValidator\Rules\LowerRule;
-use BlakvGhost\PHPValidator\Rules\RequiredWithRule;
-use BlakvGhost\PHPValidator\Rules\SizeRule;
-use BlakvGhost\PHPValidator\Rules\StringRule;
-use BlakvGhost\PHPValidator\Rules\MinLengthRule;
-use BlakvGhost\PHPValidator\Rules\NotInRule;
-use BlakvGhost\PHPValidator\Rules\NullableRule;
-use BlakvGhost\PHPValidator\Rules\NumericRule;
-use BlakvGhost\PHPValidator\Rules\PasswordRule;
-use BlakvGhost\PHPValidator\Rules\SameRule;
-use BlakvGhost\PHPValidator\Rules\UpperRule;
-use BlakvGhost\PHPValidator\Rules\UrlRule;
-use BlakvGhost\PHPValidator\Rules\ValidIpRule;
 use BlakvGhost\PHPValidator\Validator;
 
 
