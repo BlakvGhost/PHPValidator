@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://php-validator.kabirou-alassane.com/assets/svg/logo-color.svg" alt="logo PHPValidator" width="200" height="200">
+<img src="https://php-validator.kabirou-alassane.com/assets/logo/svg/logo-no-background.svg" alt="logo PHPValidator" width="200" height="200">
 
 ![Packagist Version (custom server)](https://img.shields.io/packagist/v/BlakvGhost/php-validator?label=stable)
 ![Packagist Version (custom server)](https://img.shields.io/packagist/l/BlakvGhost/php-validator?label=Licence)
