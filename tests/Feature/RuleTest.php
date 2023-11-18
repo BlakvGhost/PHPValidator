@@ -292,18 +292,15 @@ it('validates confirmed rule successfully', function () {
 });
 
 it('validates active URL rule successfully', function () {
-    $validator = new ActiveURLRule([]);
 
-    $data = [];
+    $validator = new Validator(['field' => 'https://example.com'], ['field' => 'active_url']);
+    expect($validator->isValid())->toBeTrue();
 
-    // When the URL is valid and has an active DNS record, the validation should pass.
-    expect($validator->passes('field', 'https://example.com', $data))->toBeTrue();
+    $validator = new Validator(['field' => 'https://nonexistent.example.com'], ['field' => 'active_url']);
+    expect($validator->isValid())->toBeFalse();
 
-    // When the URL is valid but doesn't have an active DNS record, the validation should fail.
-    expect($validator->passes('field', 'https://nonexistent.example.com', $data))->toBeFalse();
-
-    // When the URL is not valid, the validation should fail.
-    expect($validator->passes('field', 'invalid-url', $data))->toBeFalse();
+    $validator = new Validator(['field' => 'invalid-url'], ['field' => 'active_url']);
+    expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.active_url', [
