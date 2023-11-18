@@ -370,11 +370,12 @@ it('validates alpha_numeric rule successfully', function () {
 });
 
 it('validates required_with rule successfully', function () {
-    
-    $validator = new RequiredWithRule(['other_field']);
 
-    expect($validator->passes('field', 'value', ['other_field' => 'value2']))->toBeTrue();
-    expect($validator->passes('field', 'value', []))->toBeFalse();
+    $validator = new Validator(['field' => 'value', 'other_field' => 'value2'], ['field' => 'required_with:other_field']);
+    expect($validator->isValid())->toBeTrue();
+
+    $validator = new Validator(['field' => 'value'], ['field' => 'required_with:other_field']);
+    expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.required_with', [
@@ -385,10 +386,12 @@ it('validates required_with rule successfully', function () {
 });
 
 it('validates boolean rule successfully', function () {
-    $validator = new BooleanRule([]);
 
-    expect($validator->passes('field', false, []))->toBeTrue();
-    expect($validator->passes('field', 'string', []))->toBeFalse();
+    $validator = new Validator(['field' => false], ['field' => 'boolean']);
+    expect($validator->isValid())->toBeTrue();
+    
+    $validator = new Validator(['field' => 'string'], ['field' => 'boolean']);
+    expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.boolean', [
@@ -398,11 +401,15 @@ it('validates boolean rule successfully', function () {
 });
 
 it('validates json rule successfully', function () {
-    $validator = new JsonRule([]);
 
-    expect($validator->passes('field', "", []))->toBeFalse();
-    expect($validator->passes('field', '{"name":"vishal", "email": "abc@gmail.com"}', []))->toBeTrue();
-    expect($validator->passes('field', '{name:vishal, email: abc@gmail.com}', []))->toBeFalse();
+    $validator = new Validator(['field' => ""], ['field' => 'json']);
+    expect($validator->isValid())->toBeFalse();
+    
+    $validator = new Validator(['field' => '{"name":"vishal", "email": "abc@gmail.com"}'], ['field' => 'json']);
+    expect($validator->isValid())->toBeTrue();
+    
+    $validator = new Validator(['field' => '{name:vishal, email: abc@gmail.com}'], ['field' => 'json']);
+    expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.json', [
