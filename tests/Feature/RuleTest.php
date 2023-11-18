@@ -109,7 +109,7 @@ it('validates alpha rule successfully', function () {
 });
 
 it('validates accepted if rule successfully', function () {
-    
+
     $validator = new Validator(['field' => 'some_field'], ['other_field' => 'accepted_if:true']);
     expect($validator->isValid())->toBeTrue();
 
@@ -125,16 +125,16 @@ it('validates accepted rule successfully', function () {
 
     $validator = new Validator(['field' => '1'], ['field' => 'accepted']);
     expect($validator->isValid())->toBeTrue();
-    
+
     $validator = new Validator(['field' => 'true'], ['field' => 'accepted']);
     expect($validator->isValid())->toBeTrue();
-    
+
     $validator = new Validator(['field' => 'on'], ['field' => 'accepted']);
     expect($validator->isValid())->toBeTrue();
-    
+
     $validator = new Validator(['field' => 'yes'], ['field' => 'accepted']);
-    expect($validator->isValid())->toBeTrue();    
-    
+    expect($validator->isValid())->toBeTrue();
+
     $validator = new Validator(['field' => 'invalid_value'], ['field' => 'accepted']);
     expect($validator->isValid())->toBeFalse();
 
@@ -144,11 +144,15 @@ it('validates accepted rule successfully', function () {
 });
 
 it('validates same rule successfully', function () {
-    $validator = new SameRule(['other_field']);
 
-    expect($validator->passes('field', 'value', ['other_field' => 'value']))->toBeTrue();
-    expect($validator->passes('field', 'value', ['other_field' => 'different_value']))->toBeFalse();
-    expect($validator->passes('field', 'value', []))->toBeFalse();
+    $validator = new Validator(['field' => 'value', 'other_field' => 'value'], ['field' => 'same:other_field']);
+    expect($validator->isValid())->toBeTrue();
+
+    $validator = new Validator(['field' => 'value', 'other_field' => 'different_value'], ['field' => 'same:other_field']);
+    expect($validator->isValid())->toBeFalse();
+    
+    $validator = new Validator(['field' => 'value'], ['field' => 'same:other_field']);
+    expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.same_rule', [
