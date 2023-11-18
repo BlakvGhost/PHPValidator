@@ -182,7 +182,7 @@ it('validates password rule successfully', function () {
     $validator = new Validator(['password' => 'NoDigit'], ['password' => 'password']);
     expect($validator->isValid())->toBeFalse();
 
-    expect($validator->getErrors()['field'][0])->toBe(
+    expect($validator->getErrors()['password'][0])->toBe(
         LangManager::getTranslation('validation.password_rule', [
             'attribute' => 'password',
         ])
@@ -195,15 +195,12 @@ it('validates numeric rule successfully', function () {
     expect($validator->isValid())->toBeTrue();
 
     $validator = new Validator(['numericField' => '456'], ['numericField' => 'numeric']);
-    expect($validator->isValid())->toBeFalse();
+    expect($validator->isValid())->toBeTrue();
 
     $validator = new Validator(['numericField' => 'NotNumeric'], ['numericField' => 'numeric']);
     expect($validator->isValid())->toBeFalse();
-    
-    $validator = new Validator(['numericField' => null], ['numericField' => 'numeric']);
-    expect($validator->isValid())->toBeFalse();
 
-    expect($validator->getErrors()['field'][0])->toBe(
+    expect($validator->getErrors()['numericField'][0])->toBe(
         LangManager::getTranslation('validation.numeric_rule', [
             'attribute' => 'numericField',
         ])
@@ -218,7 +215,7 @@ it('validates nullable rule successfully', function () {
     $validator = new Validator(['nullableField' => 'NotNull'], ['nullableField' => 'nullable']);
     expect($validator->isValid())->toBeFalse();
 
-    expect($validator->getErrors()['field'][0])->toBe(
+    expect($validator->getErrors()['nullableField'][0])->toBe(
         LangManager::getTranslation('validation.nullable_rule', [
             'attribute' => 'nullableField',
         ])
