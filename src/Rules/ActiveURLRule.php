@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ActiveURLRule - A validation rule implementation for checking if a URL is active.
+ * ActiveUrlRule - A validation rule implementation for checking if a URL is active.
  *
  * @package BlakvGhost\PHPValidator\Rules
  * @author Kabirou ALASSANE
@@ -13,7 +13,7 @@ namespace BlakvGhost\PHPValidator\Rules;
 
 use BlakvGhost\PHPValidator\LangManager;
 
-class ActiveURLRule implements RuleInterface
+class ActiveUrlRule implements RuleInterface
 {
     /**
      * The name of the field being validated.
@@ -23,7 +23,7 @@ class ActiveURLRule implements RuleInterface
     protected $field;
 
     /**
-     * Constructor of the ActiveURLRule class.
+     * Constructor of the ActiveUrlRule class.
      *
      * @param array $parameters Parameters for the rule (none needed for this rule).
      */

@@ -46,7 +46,7 @@ class NumericRule implements RuleInterface
         $this->field = $field;
 
         // Check if the value is numeric.
-        return is_numeric($value);
+        return ($value !== null) & is_numeric($value);
     }
 
     /**
