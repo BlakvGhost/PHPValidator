@@ -94,7 +94,7 @@ class RulesMaped
      */
     protected static function getRule(string $alias): string
     {
-        if (isset(self::$rules[$alias]) && class_exists(self::$rules[$alias])) {
+        if (isset(self::$rules[$alias])) {
             return self::$rules[$alias];
         }
 
