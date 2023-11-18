@@ -211,10 +211,12 @@ it('validates numeric rule successfully', function () {
 });
 
 it('validates nullable rule successfully', function () {
-    $validator = new NullableRule([]);
 
-    expect($validator->passes('nullableField', null, []))->toBeTrue();
-    expect($validator->passes('nullableField', 'NotNull', []))->toBeFalse();
+    $validator = new Validator(['nullableField' => null], ['nullableField' => 'nullable']);
+    expect($validator->isValid())->toBeTrue();
+
+    $validator = new Validator(['nullableField' => 'NotNull'], ['nullableField' => 'nullable']);
+    expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.nullable_rule', [
