@@ -96,10 +96,12 @@ it('validates min length rule successfully', function () {
 });
 
 it('validates alpha rule successfully', function () {
-    $validator = new AlphaRule([]);
 
-    expect($validator->passes('field', 'Alphabetic', []))->toBeTrue();
-    expect($validator->passes('field', 'Alpha123', []))->toBeFalse();
+    $validator = new Validator(['field' => 'Alphabetic'], ['field' => 'alpha']);
+    expect($validator->isValid())->toBeTrue();
+
+    $validator = new Validator(['field' => 'Alpha123'], ['field' => 'alpha']);
+    expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.alpha_rule', ['attribute' => 'field'])
