@@ -109,10 +109,12 @@ it('validates alpha rule successfully', function () {
 });
 
 it('validates accepted if rule successfully', function () {
-    $validator = new AcceptedIfRule(['other_field']);
+    
+    $validator = new Validator(['field' => 'some_field'], ['other_field' => 'accepted_if:true']);
+    expect($validator->isValid())->toBeTrue();
 
-    expect($validator->passes('field', 'some_value', ['other_field' => true]))->toBeTrue();
-    expect($validator->passes('field', 'some_value', ['other_field' => false]))->toBeFalse();
+    $validator = new Validator(['field' => 'some_field'], ['other_field' => 'accepted_if:false']);
+    expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.accepted_if', ['attribute' => 'field', 'other' => 'other_field'])
@@ -120,13 +122,21 @@ it('validates accepted if rule successfully', function () {
 });
 
 it('validates accepted rule successfully', function () {
-    $validator = new AcceptedRule([]);
 
-    expect($validator->passes('field', '1', []))->toBeTrue();
-    expect($validator->passes('field', 'true', []))->toBeTrue();
-    expect($validator->passes('field', 'on', []))->toBeTrue();
-    expect($validator->passes('field', 'yes', []))->toBeTrue();
-    expect($validator->passes('field', 'invalid_value', []))->toBeFalse();
+    $validator = new Validator(['field' => '1'], ['field' => 'accepted']);
+    expect($validator->isValid())->toBeTrue();
+    
+    $validator = new Validator(['field' => 'true'], ['field' => 'accepted']);
+    expect($validator->isValid())->toBeTrue();
+    
+    $validator = new Validator(['field' => 'on'], ['field' => 'accepted']);
+    expect($validator->isValid())->toBeTrue();
+    
+    $validator = new Validator(['field' => 'yes'], ['field' => 'accepted']);
+    expect($validator->isValid())->toBeTrue();    
+    
+    $validator = new Validator(['field' => 'invalid_value'], ['field' => 'accepted']);
+    expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.accepted', ['attribute' => 'field'])
