@@ -1,7 +1,10 @@
 <?php
 
 /**
- * RulesMaped - class that mapped all the rules used with their alias
+ * RulesMaped - Class that maps all the validation rules with their aliases
+ *
+ * This class provides a convenient mapping of rule aliases to their corresponding PHPValidator rules.
+ * It allows for easy reference and retrieval of validation rule classes.
  *
  * @package BlakvGhost\PHPValidator
  * @author Kabirou ALASSANE
@@ -40,7 +43,9 @@ use BlakvGhost\PHPValidator\Rules\ValidIpRule;
 
 class RulesMaped
 {
-
+    /**
+     * @var array Mapping of rule aliases to their corresponding rule classes.
+     */
     private static $rules = [
         'accepted' => AcceptedRule::class,
         'accepted_if' => AcceptedIfRule::class,
@@ -70,18 +75,29 @@ class RulesMaped
         'ip' => ValidIpRule::class,
     ];
 
+    /**
+     * Get the mapping of rule aliases to their corresponding rule classes.
+     *
+     * @return array
+     */
     protected static function getRules(): array
     {
         return self::$rules;
     }
 
+    /**
+     * Get the rule class for a given alias.
+     *
+     * @param string $alias Rule alias to retrieve the corresponding rule class.
+     * @return string Rule class.
+     * @throws ValidatorException If the rule alias is not found.
+     */
     protected static function getRule(string $alias): string
     {
         if (isset(self::$rules[$alias]) && class_exists(self::$rules[$alias])) {
-
             return self::$rules[$alias];
         }
-        
+
         $translatedMessage = LangManager::getTranslation('validation.rule_not_found', [
             'ruleName' => $alias,
         ]);
@@ -89,6 +105,13 @@ class RulesMaped
         throw new ValidatorException($translatedMessage);
     }
 
+    /**
+     * Add a new rule to the mapping.
+     *
+     * @param string $alias Rule alias.
+     * @param string $className Rule class name.
+     * @return void
+     */
     public static function addRule(string $alias, string $className): void
     {
         self::$rules[$alias] = $className;
