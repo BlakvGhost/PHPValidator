@@ -83,12 +83,14 @@ it('validates string rule successfully', function () {
 });
 
 it('validates min length rule successfully', function () {
-    $validator = new MinLengthRule([10]);
 
-    expect($validator->passes('field', 'toolongvalue', []))->toBeTrue();
-    expect($validator->passes('field', 'less', []))->toBeFalse();
+    $validator = new Validator(['field' => 'toolongvalue'], ['field' => 'min_length:10']);
+    expect($validator->isValid())->toBeTrue();
 
-    expect($validator->message())->toBe(
+    $validator = new Validator(['field' => 'less'], ['field' => 'min_length:10']);
+    expect($validator->isValid())->toBeFalse();
+
+    expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.min_length_rule', ['attribute' => 'field', 'min' => 10])
     );
 });
@@ -99,7 +101,7 @@ it('validates alpha rule successfully', function () {
     expect($validator->passes('field', 'Alphabetic', []))->toBeTrue();
     expect($validator->passes('field', 'Alpha123', []))->toBeFalse();
 
-    expect($validator->message())->toBe(
+    expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.alpha_rule', ['attribute' => 'field'])
     );
 });
@@ -110,7 +112,7 @@ it('validates accepted if rule successfully', function () {
     expect($validator->passes('field', 'some_value', ['other_field' => true]))->toBeTrue();
     expect($validator->passes('field', 'some_value', ['other_field' => false]))->toBeFalse();
 
-    expect($validator->message())->toBe(
+    expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.accepted_if', ['attribute' => 'field', 'other' => 'other_field'])
     );
 });
@@ -124,7 +126,7 @@ it('validates accepted rule successfully', function () {
     expect($validator->passes('field', 'yes', []))->toBeTrue();
     expect($validator->passes('field', 'invalid_value', []))->toBeFalse();
 
-    expect($validator->message())->toBe(
+    expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.accepted', ['attribute' => 'field'])
     );
 });
@@ -136,7 +138,7 @@ it('validates same rule successfully', function () {
     expect($validator->passes('field', 'value', ['other_field' => 'different_value']))->toBeFalse();
     expect($validator->passes('field', 'value', []))->toBeFalse();
 
-    expect($validator->message())->toBe(
+    expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.same_rule', [
             'attribute' => 'field',
             'otherAttribute' => 'other_field',
@@ -153,7 +155,7 @@ it('validates password rule successfully', function () {
     expect($validator->passes('password', 'UPPERCASE1', []))->toBeFalse();
     expect($validator->passes('password', 'NoDigit', []))->toBeFalse();
 
-    expect($validator->message())->toBe(
+    expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.password_rule', [
             'attribute' => 'password',
         ])
@@ -168,7 +170,7 @@ it('validates numeric rule successfully', function () {
     expect($validator->passes('numericField', 'NotNumeric', []))->toBeFalse();
     expect($validator->passes('numericField', null, []))->toBeFalse();
 
-    expect($validator->message())->toBe(
+    expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.numeric_rule', [
             'attribute' => 'numericField',
         ])
@@ -181,7 +183,7 @@ it('validates nullable rule successfully', function () {
     expect($validator->passes('nullableField', null, []))->toBeTrue();
     expect($validator->passes('nullableField', 'NotNull', []))->toBeFalse();
 
-    expect($validator->message())->toBe(
+    expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.nullable_rule', [
             'attribute' => 'nullableField',
         ])
@@ -195,7 +197,7 @@ it('validates in rule successfully', function () {
     expect($validator->passes('field', 'value2', []))->toBeTrue();
     expect($validator->passes('field', 'invalidValue', []))->toBeFalse();
 
-    expect($validator->message())->toBe(
+    expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.in_rule', [
             'attribute' => 'field',
             'values' => implode(', ', $validValues),
@@ -210,7 +212,7 @@ it('validates not in rule successfully', function () {
     expect($validator->passes('field', 'other_value', []))->toBeTrue();
     expect($validator->passes('field', 'value1', []))->toBeFalse();
 
-    expect($validator->message())->toBe(
+    expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.not_in_rule', [
             'attribute' => 'field',
             'values' => implode(', ', $values),
@@ -242,7 +244,7 @@ it('validates confirmed rule successfully', function () {
     ];
     expect($validator->passes('field', 'value', $data))->toBeFalse();
 
-    expect($validator->message())->toBe(
+    expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.confirmed_rule', [
             'attribute' => 'field',
             'confirmedAttribute' => $confirmationFieldName,
@@ -264,7 +266,7 @@ it('validates active URL rule successfully', function () {
     // When the URL is not valid, the validation should fail.
     expect($validator->passes('field', 'invalid-url', $data))->toBeFalse();
 
-    expect($validator->message())->toBe(
+    expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.active_url', [
             'attribute' => 'field',
         ])
@@ -277,7 +279,7 @@ it('validates lowercase rule successfully', function () {
     expect($validator->passes('field', 'lowercase', []))->toBeTrue();
     expect($validator->passes('field', 'UPPERCASE', []))->toBeFalse();
 
-    expect($validator->message())->toBe(
+    expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.lowercase_rule', [
             'attribute' => 'field',
         ])
@@ -290,7 +292,7 @@ it('validates uppercase rule successfully', function () {
     expect($validator->passes('field', 'lowercase', []))->toBeFalse();
     expect($validator->passes('field', 'UPPERCASE', []))->toBeTrue();
 
-    expect($validator->message())->toBe(
+    expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.uppercase_rule', [
             'attribute' => 'field',
         ])
@@ -303,7 +305,7 @@ it('validates file rule successfully', function () {
     expect($validator->passes('field', __FILE__, []))->toBeTrue();
     expect($validator->passes('field', 'nonexistentfile.txt', []))->toBeFalse();
 
-    expect($validator->message())->toBe(
+    expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.file_rule', [
             'attribute' => 'field',
         ])
@@ -316,7 +318,7 @@ it('validates alpha_numeric rule successfully', function () {
     expect($validator->passes('field', 'alpha2324', []))->toBeTrue();
     expect($validator->passes('field', 's$sdfde$*', []))->toBeFalse();
 
-    expect($validator->message())->toBe(
+    expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.alpha_numeric', [
             'attribute' => 'field',
         ])
@@ -329,7 +331,7 @@ it('validates required_with rule successfully', function () {
     expect($validator->passes('field', 'value', ['other_field' => 'value2']))->toBeTrue();
     expect($validator->passes('field', 'value', []))->toBeFalse();
 
-    expect($validator->message())->toBe(
+    expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.required_with', [
             'attribute' => 'field',
             'value' => 'other_field',
@@ -343,7 +345,7 @@ it('validates boolean rule successfully', function () {
     expect($validator->passes('field', false, []))->toBeTrue();
     expect($validator->passes('field', 'string', []))->toBeFalse();
 
-    expect($validator->message())->toBe(
+    expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.boolean', [
             'attribute' => 'field',
         ])
@@ -357,7 +359,7 @@ it('validates json rule successfully', function () {
     expect($validator->passes('field', '{"name":"vishal", "email": "abc@gmail.com"}', []))->toBeTrue();
     expect($validator->passes('field', '{name:vishal, email: abc@gmail.com}', []))->toBeFalse();
 
-    expect($validator->message())->toBe(
+    expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.json', [
             'attribute' => 'field',
         ])
@@ -370,7 +372,7 @@ it('validates url rule successfully', function () {
     expect($validator->passes('field', "invalid_url", []))->toBeFalse();
     expect($validator->passes('field', 'http://google.com', []))->toBeTrue();
 
-    expect($validator->message())->toBe(
+    expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.url', [
             'attribute' => 'field',
         ])
@@ -383,7 +385,7 @@ it('validates ip rule successfully', function () {
     expect($validator->passes('field', "3853598", []))->toBeFalse();
     expect($validator->passes('field', '127.0.0.1', []))->toBeTrue();
 
-    expect($validator->message())->toBe(
+    expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.valid_ip', [
             'attribute' => 'field',
         ])
@@ -396,7 +398,7 @@ it('validates size rule (string) successfully', function () {
     expect($validator->passes('field', "azerty", []))->toBeFalse();
     expect($validator->passes('field', 'azer', []))->toBeTrue();
 
-    expect($validator->message())->toBe(
+    expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.size', [
             'attribute' => 'field',
             'value' => 4,
@@ -410,7 +412,7 @@ it('validates size rule (integer) successfully', function () {
     expect($validator->passes('field', 6, []))->toBeFalse();
     expect($validator->passes('field', 3, []))->toBeTrue();
 
-    expect($validator->message())->toBe(
+    expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.size', [
             'attribute' => 'field',
             'value' => 3,
@@ -424,7 +426,7 @@ it('validates size rule (array) successfully', function () {
     expect($validator->passes('field', ['key1', 'key2', 'key3'], []))->toBeFalse();
     expect($validator->passes('field', ['key1', 'key2'], []))->toBeTrue();
 
-    expect($validator->message())->toBe(
+    expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.size', [
             'attribute' => 'field',
             'value' => 2,
@@ -438,7 +440,7 @@ it('validates size rule (file) successfully', function () {
     expect($validator->passes('field', __FILE__, []))->toBeFalse();
     // expect($validator->passes('field', __FILE__, []))->toBeTrue();
 
-    expect($validator->message())->toBe(
+    expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.size', [
             'attribute' => 'field',
             'value' => 512,
