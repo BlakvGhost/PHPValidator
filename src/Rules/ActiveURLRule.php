@@ -23,7 +23,7 @@ class ActiveUrlRule implements RuleInterface
     protected $field;
 
     /**
-     * Constructor of the ActiveURLRule class.
+     * Constructor of the ActiveUrlRule class.
      *
      * @param array $parameters Parameters for the rule (none needed for this rule).
      */
