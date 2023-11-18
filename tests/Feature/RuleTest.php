@@ -243,16 +243,19 @@ it('validates in rule successfully', function () {
 });
 
 it('validates not in rule successfully', function () {
-    $values = ['value1', 'value2', 'value3'];
-    $validator = new NotInRule($values);
 
-    expect($validator->passes('field', 'other_value', []))->toBeTrue();
-    expect($validator->passes('field', 'value1', []))->toBeFalse();
+    $values = 'value1,value2,value3';
+
+    $validator = new Validator(['field' => 'other_value'], ['field' => 'not_in:' . $values]);
+    expect($validator->isValid())->toBeTrue();
+
+    $validator = new Validator(['field' => 'value1'], ['field' => 'not_in:' . $values]);
+    expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.not_in_rule', [
             'attribute' => 'field',
-            'values' => implode(', ', $values),
+            'values' => $values,
         ])
     );
 });
