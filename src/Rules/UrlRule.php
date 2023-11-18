@@ -1,7 +1,7 @@
 <?php
 
 /**
- * InRule - A validation rule implementation for checking if a value is a valid url.
+ * UrlRule - A validation rule implementation for checking if a value is a valid url.
  *
  * @package BlakvGhost\PHPValidator\Rules
  * @author Fortunatus KIDJE (v1p3r75)
@@ -22,7 +22,7 @@ class UrlRule implements RuleInterface
     protected $field;
 
     /**
-     * Constructor of the InRule class.
+     * Constructor of the UrlRule class.
      *
      * @param array $parameters Parameters for the rule, specifying the list of valid values.
      */

@@ -13,7 +13,7 @@ namespace BlakvGhost\PHPValidator\Rules;
 
 use BlakvGhost\PHPValidator\LangManager;
 
-class UpperRule implements RuleInterface
+class UpperCaseRule implements RuleInterface
 {
     /**
      * The name of the field being validated.
@@ -23,7 +23,7 @@ class UpperRule implements RuleInterface
     protected $field;
 
     /**
-     * Constructor of the UppercaseRule class.
+     * Constructor of the UpperCaseRule class.
      *
      * @param array $parameters Parameters for the rule (not used in this rule).
      */

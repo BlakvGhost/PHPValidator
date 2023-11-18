@@ -33,7 +33,7 @@ try {
     $validator = new Validator($data, [
         'username' => 'required|string',
         'email' => 'required|email',
-        'score' => ['required','max_length:200', new CustomRule()],
+        'score' => ['required','max:200', new CustomRule()],
         'password' => new CustomRule(),
     ]);
 
@@ -87,7 +87,7 @@ PHPValidator provides a variety of predefined rules that you can use for data va
     - Specifies the maximum length of a string field.
 
     ```php
-    'username' => 'max_length:25'
+    'username' => 'max:25'
     ```
 
 5. **Confirmed Rule**
@@ -143,14 +143,14 @@ PHPValidator provides a variety of predefined rules that you can use for data va
     - Validates that a field contains only lowercase alphabetic characters.
 
     ```php
-    'username' => 'lower'
+    'username' => 'lowercase'
     ```
 
 13. **Uppercase Rule**
     - Validates that a field contains only uppercase alphabetic characters.
 
     ```php
-    'username' => 'upper'
+    'username' => 'uppercase'
     ```
 
 14. **In Rule**
@@ -184,7 +184,7 @@ PHPValidator provides a variety of predefined rules that you can use for data va
     - Specifies the minimum length of a string field.
 
     ```php
-    'username' => 'min_length:8'
+    'username' => 'min:8'
     ```	
 19. **Not In Rule**
     - Validates that a field's value is not in a specified set.
@@ -204,7 +204,7 @@ PHPValidator provides a variety of predefined rules that you can use for data va
     - Validates that a field's value is a valid IP address.
 
     ```php
-    'client_ip' => 'valid_ip',
+    'client_ip' => 'ip',
     ```
 
 22. **Json Rule**
@@ -221,17 +221,19 @@ PHPValidator provides a variety of predefined rules that you can use for data va
     'website' => 'url',
     ```	
 24. **Alpha Numeric Rule**
+
     - Validates that a field's value contains only alphanumeric characters.
 
     ```php
-    'pseudo' => 'alpha_numeric',
+    'pseudo' => 'alpha_num',
     ```	
 
 25. **Boolean Rule**
+
     - Validates that a field's value is a boolean.
 
     ```php
-    'is_admin' => 'boolean',
+    'is_admin' => 'bool',
     ```	
 
 26. **Size Rule**
@@ -282,38 +284,74 @@ class CustomPasswordRule implements RuleInterface
 ```
 ### Usage in Validator
 
-```php
+- Use your custom class directly
 
-use BlakvGhost\PHPValidator\Validator;
-use BlakvGhost\PHPValidator\ValidatorException;
-use YourNameSpace\CustomPasswordRule;
+    ```php
+
+    use BlakvGhost\PHPValidator\Validator;
+    use BlakvGhost\PHPValidator\ValidatorException;
+    use YourNameSpace\CustomPasswordRule;
 
 
-// ...
+    // ...
 
-try {
+    try {
 
-    $data = [
-        'password' => '42',
-        'confirm_password' => '142',
-    ];
-    // or
-    // $data = $_POST;
+        $data = [
+            'password' => '42',
+            'confirm_password' => '142',
+        ];
+        // or
+        // $data = $_POST;
 
-    $validator = new Validator($data, [
-        'password' => ['required', new CustomPasswordRule()],
-    ]);
+        $validator = new Validator($data, [
+            'password' => ['required', new CustomPasswordRule()],
+        ]);
 
-    if ($validator->isValid()) {
-        echo "Validation passed!";
-    } else {
-        $errors = $validator->getErrors();
-        print_r($errors);
+        if ($validator->isValid()) {
+            echo "Validation passed!";
+        } else {
+            $errors = $validator->getErrors();
+            print_r($errors);
+        }
+    } catch (ValidatorException $e) {
+        echo "Validation error: " . $e->getMessage();
     }
-} catch (ValidatorException $e) {
-    echo "Validation error: " . $e->getMessage();
-}
-```
+    ```
+- Add your custom class to the rules list and use it as if it were native
+
+    ```php
+
+    use BlakvGhost\PHPValidator\Validator;
+    use BlakvGhost\PHPValidator\ValidatorException;
+    use BlakvGhost\PHPValidator\RulesMaped;
+    use YourNameSpace\CustomPasswordRule;
+
+    // Add your rule here using an alias and the full namespace of your custom class
+    RulesMaped::addRule('c_password', CustomPasswordRule::class);
+
+    try {
+
+        $data = [
+            'password' => '42',
+            'confirm_password' => '142',
+        ];
+
+        $validator = new Validator($data, [
+            'password' => 'required|c_password',
+        ]);
+
+        if ($validator->isValid()) {
+            echo "Validation passed!";
+        } else {
+            $errors = $validator->getErrors();
+            print_r($errors);
+        }
+    } catch (ValidatorException $e) {
+        echo "Validation error: " . $e->getMessage();
+    }
+    ```
+
 In this example, we created a CustomPasswordRule that checks if the password is equal to confirm_password. You can customize the passes method to implement your specific validation logic.
 
 ## Contributing
