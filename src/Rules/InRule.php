@@ -59,7 +59,7 @@ class InRule implements RuleInterface
         // Use LangManager to get a translated validation error message.
         return LangManager::getTranslation('validation.in_rule', [
             'attribute' => $this->field,
-            'values' => implode(', ', $this->parameters),
+            'values' => implode(',', $this->parameters),
         ]);
     }
 }

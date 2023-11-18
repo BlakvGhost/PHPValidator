@@ -57,7 +57,7 @@ class NotInRule implements RuleInterface
         // Use LangManager to get a translated validation error message.
         return LangManager::getTranslation('validation.not_in_rule', [
             'attribute' => $this->field,
-            'values' => implode(', ', $this->parameters),
+            'values' => implode(',', $this->parameters),
         ]);
     }
 }
