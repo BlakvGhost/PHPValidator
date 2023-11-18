@@ -325,10 +325,12 @@ it('validates lowercase rule successfully', function () {
 });
 
 it('validates uppercase rule successfully', function () {
-    $validator = new UpperRule([]);
 
-    expect($validator->passes('field', 'lowercase', []))->toBeFalse();
-    expect($validator->passes('field', 'UPPERCASE', []))->toBeTrue();
+    $validator = new Validator(['field' => 'lowercase'], ['field' => 'upper']);
+    expect($validator->isValid())->toBeFalse();
+
+    $validator = new Validator(['field' => 'UPPERCASE'], ['field' => 'upper']);
+    expect($validator->isValid())->toBeTrue();
 
     expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.uppercase_rule', [
@@ -338,10 +340,12 @@ it('validates uppercase rule successfully', function () {
 });
 
 it('validates file rule successfully', function () {
-    $validator = new FileRule([]);
 
-    expect($validator->passes('field', __FILE__, []))->toBeTrue();
-    expect($validator->passes('field', 'nonexistentfile.txt', []))->toBeFalse();
+    $validator = new Validator(['field' => __FILE__], ['field' => 'file']);
+    expect($validator->isValid())->toBeTrue();
+
+    $validator = new Validator(['field' => 'nonexistentfile.txt'], ['field' => 'file']);
+    expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.file_rule', [
@@ -351,10 +355,12 @@ it('validates file rule successfully', function () {
 });
 
 it('validates alpha_numeric rule successfully', function () {
-    $validator = new AlphaNumericRule([]);
 
-    expect($validator->passes('field', 'alpha2324', []))->toBeTrue();
-    expect($validator->passes('field', 's$sdfde$*', []))->toBeFalse();
+    $validator = new Validator(['field' => 'alpha2324'], ['field' => 'alpha_numeric']);
+    expect($validator->isValid())->toBeTrue();
+
+    $validator = new Validator(['field' => 's$sdfde$*'], ['field' => 'alpha_numeric']);
+    expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.alpha_numeric', [
@@ -364,6 +370,7 @@ it('validates alpha_numeric rule successfully', function () {
 });
 
 it('validates required_with rule successfully', function () {
+    
     $validator = new RequiredWithRule(['other_field']);
 
     expect($validator->passes('field', 'value', ['other_field' => 'value2']))->toBeTrue();
