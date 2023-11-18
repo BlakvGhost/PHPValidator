@@ -89,7 +89,7 @@ class RulesMaped
         throw new ValidatorException($translatedMessage);
     }
 
-    protected static function addRule(string $alias, string $className): void
+    public static function addRule(string $alias, string $className): void
     {
         self::$rules[$alias] = $className;
     }
