@@ -48,13 +48,13 @@ it('validates max length rule successfully', function () {
     $validator = new Validator(['username' => 'value'], ['username' => 'max_length:5']);
     expect($validator->isValid())->toBeTrue();
 
-    $validator = new Validator(['username' => 'value'], ['username' => 'max_length:6']);
+    $validator = new Validator(['username' => 'value_long'], ['username' => 'max_length:5']);
     expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['username'][0])->toBe(
         LangManager::getTranslation('validation.max_length_rule', [
             'attribute' => 'username',
-            'max' => 6,
+            'max' => 5,
         ])
     );
 });
