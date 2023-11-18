@@ -110,10 +110,10 @@ it('validates alpha rule successfully', function () {
 
 it('validates accepted if rule successfully', function () {
 
-    $validator = new Validator(['field' => 'some_field'], ['other_field' => 'accepted_if:true']);
+    $validator = new Validator(['field' => 'some_field', 'other_field' => true], ['field' => 'accepted_if:other_field']);
     expect($validator->isValid())->toBeTrue();
 
-    $validator = new Validator(['field' => 'some_field'], ['other_field' => 'accepted_if:false']);
+    $validator = new Validator(['field' => 'some_field', 'other_field' => false], ['other_field' => 'accepted_if:other_field']);
     expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
