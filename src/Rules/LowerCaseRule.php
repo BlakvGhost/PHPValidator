@@ -1,7 +1,7 @@
 <?php
 
 /**
- * LowercaseRule - A validation rule implementation for checking if a field's value is lowercase.
+ * LowerCaseRule - A validation rule implementation for checking if a field's value is lowercase.
  *
  * @package BlakvGhost\PHPValidator\Rules
  * @author Kabirou ALASSANE
@@ -13,7 +13,7 @@ namespace BlakvGhost\PHPValidator\Rules;
 
 use BlakvGhost\PHPValidator\LangManager;
 
-class LowerRule implements RuleInterface
+class LowerCaseRule implements RuleInterface
 {
     /**
      * The name of the field being validated.
@@ -23,7 +23,7 @@ class LowerRule implements RuleInterface
     protected $field;
 
     /**
-     * Constructor of the LowercaseRule class.
+     * Constructor of the LowerCaseRule class.
      *
      * @param array $parameters Parameters for the rule (not used in this rule).
      */
