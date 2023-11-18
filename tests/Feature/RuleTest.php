@@ -310,10 +310,12 @@ it('validates active URL rule successfully', function () {
 });
 
 it('validates lowercase rule successfully', function () {
-    $validator = new LowerRule([]);
 
-    expect($validator->passes('field', 'lowercase', []))->toBeTrue();
-    expect($validator->passes('field', 'UPPERCASE', []))->toBeFalse();
+    $validator = new Validator(['field' => 'lowercase'], ['field' => 'lower']);
+    expect($validator->isValid())->toBeTrue();
+
+    $validator = new Validator(['field' => 'UPPERCASE'], ['field' => 'lower']);
+    expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.lowercase_rule', [
