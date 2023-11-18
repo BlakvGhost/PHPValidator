@@ -163,13 +163,24 @@ it('validates same rule successfully', function () {
 });
 
 it('validates password rule successfully', function () {
-    $validator = new PasswordRule([8]);
 
-    expect($validator->passes('password', 'StrongPwd1', []))->toBeTrue();
-    expect($validator->passes('password', 'Short1', []))->toBeFalse();
-    expect($validator->passes('password', 'lowercase1', []))->toBeFalse();
-    expect($validator->passes('password', 'UPPERCASE1', []))->toBeFalse();
-    expect($validator->passes('password', 'NoDigit', []))->toBeFalse();
+    $validator = new Validator(['password' => 'StrongPwd1'], ['password' => 'password:8']);
+    expect($validator->isValid())->toBeTrue();
+    
+    $validator = new Validator(['password' => 'StrongPwd1'], ['password' => 'password']);
+    expect($validator->isValid())->toBeTrue();
+
+    $validator = new Validator(['password' => 'Short1'], ['password' => 'password']);
+    expect($validator->isValid())->toBeFalse();
+
+    $validator = new Validator(['password' => 'lowercase1'], ['password' => 'password']);
+    expect($validator->isValid())->toBeFalse();
+    
+    $validator = new Validator(['password' => 'UPPERCASE1'], ['password' => 'password']);
+    expect($validator->isValid())->toBeFalse();
+    
+    $validator = new Validator(['password' => 'NoDigit'], ['password' => 'password']);
+    expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.password_rule', [
@@ -179,6 +190,13 @@ it('validates password rule successfully', function () {
 });
 
 it('validates numeric rule successfully', function () {
+
+    $validator = new Validator(['password' => 'StrongPwd1'], ['password' => 'password']);
+    expect($validator->isValid())->toBeTrue();
+
+    $validator = new Validator(['password' => 'Short1'], ['password' => 'password']);
+    expect($validator->isValid())->toBeFalse();
+
     $validator = new NumericRule([]);
 
     expect($validator->passes('numericField', 123, []))->toBeTrue();
