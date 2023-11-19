@@ -24,10 +24,14 @@ it('validates rule with custom error message', function () {
     $errorMessage = "Je teste une règle custom";
 
     $validator = new Validator(
-                    ['field' => ''],
-                    ['field' => 'required'],
-                    ['field' => $errorMessage]
-                );
+        ['field' => ''],
+        ['field' => 'required'],
+        [
+            'field' => [
+                'required' => $errorMessage
+            ]
+        ]
+    );
     expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe($errorMessage);

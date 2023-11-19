@@ -55,7 +55,7 @@ class EmailRule implements Rule
      */
     public function message(): string
     {
-        
+
         // Use LangManager to get a translated validation error message.
         return LangManager::getTranslation('validation.email_rule', [
             'attribute' => $this->field,

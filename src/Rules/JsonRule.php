@@ -45,11 +45,11 @@ class JsonRule implements Rule
         // Set the field property for use in the message method.
         $this->field = $field;
 
-        if (!empty($value)) { 
-            return is_string($value) &&  
-              is_array(json_decode($value, true)) ? true : false; 
-        } 
-        return false; 
+        if (!empty($value)) {
+            return is_string($value) &&
+                is_array(json_decode($value, true)) ? true : false;
+        }
+        return false;
     }
 
     /**

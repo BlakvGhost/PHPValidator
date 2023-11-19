@@ -61,8 +61,8 @@ class AcceptedIfRule implements Rule
     /**
      * Get the validation error message for the accepted if rule.
      *
-    * @return string Validation error message.
-    */
+     * @return string Validation error message.
+     */
     public function message(): string
     {
         // Use LangManager to get a translated validation error message.

@@ -127,7 +127,7 @@ it('validates same rule successfully', function () {
 
     $validator = new Validator(['field' => 'value', 'other_field' => 'different_value'], ['field' => 'same:other_field']);
     expect($validator->isValid())->toBeFalse();
-    
+
     $validator = new Validator(['field' => 'value'], ['field' => 'same:other_field']);
     expect($validator->isValid())->toBeFalse();
 
@@ -143,7 +143,7 @@ it('validates password rule successfully', function () {
 
     $validator = new Validator(['password' => 'StrongPwd1'], ['password' => 'password:8']);
     expect($validator->isValid())->toBeTrue();
-    
+
     $validator = new Validator(['password' => 'StrongPwd1'], ['password' => 'password']);
     expect($validator->isValid())->toBeTrue();
 
@@ -152,10 +152,10 @@ it('validates password rule successfully', function () {
 
     $validator = new Validator(['password' => 'lowercase1'], ['password' => 'password']);
     expect($validator->isValid())->toBeFalse();
-    
+
     $validator = new Validator(['password' => 'UPPERCASE1'], ['password' => 'password']);
     expect($validator->isValid())->toBeFalse();
-    
+
     $validator = new Validator(['password' => 'NoDigit'], ['password' => 'password']);
     expect($validator->isValid())->toBeFalse();
 
@@ -363,7 +363,7 @@ it('validates boolean rule successfully', function () {
 
     $validator = new Validator(['field' => false], ['field' => 'bool']);
     expect($validator->isValid())->toBeTrue();
-    
+
     $validator = new Validator(['field' => 'string'], ['field' => 'bool']);
     expect($validator->isValid())->toBeFalse();
 
@@ -378,10 +378,10 @@ it('validates json rule successfully', function () {
 
     $validator = new Validator(['field' => ""], ['field' => 'json']);
     expect($validator->isValid())->toBeFalse();
-    
+
     $validator = new Validator(['field' => '{"name":"vishal", "email": "abc@gmail.com"}'], ['field' => 'json']);
     expect($validator->isValid())->toBeTrue();
-    
+
     $validator = new Validator(['field' => '{name:vishal, email: abc@gmail.com}'], ['field' => 'json']);
     expect($validator->isValid())->toBeFalse();
 
@@ -393,7 +393,7 @@ it('validates json rule successfully', function () {
 });
 
 it('validates url rule successfully', function () {
-    
+
     $validator = new Validator(['field' => 'http://google.com'], ['field' => 'url']);
     expect($validator->isValid())->toBeTrue();
 

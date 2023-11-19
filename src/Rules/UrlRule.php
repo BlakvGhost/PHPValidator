@@ -45,7 +45,7 @@ class UrlRule implements Rule
         // Set the field property for use in the message method.
         $this->field = $field;
 
-        return filter_var($value, FILTER_VALIDATE_URL); 
+        return filter_var($value, FILTER_VALIDATE_URL);
     }
 
     /**

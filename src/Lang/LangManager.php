@@ -13,7 +13,7 @@ namespace BlakvGhost\PHPValidator\Lang;
 
 class LangManager
 {
-    
+
     use Lang;
 
     /**

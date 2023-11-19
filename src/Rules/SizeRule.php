@@ -56,7 +56,7 @@ class SizeRule implements Rule
 
             return $value == $total;
         }
-        
+
         if (is_array($value)) {
 
             return count($value) == $total;
@@ -67,10 +67,10 @@ class SizeRule implements Rule
             if (isset($_FILES[$value]) && $_FILES[$value]["error"] == 0) {
                 // Get the file size in bytes
                 $size = $_FILES[$value]["size"];
-        
+
                 // Convert bytes to kilobytes
                 $size_kb = $size / 1024; // kilobytes
-        
+
                 return $size_kb == $total;
             }
 

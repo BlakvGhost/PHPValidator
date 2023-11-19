@@ -48,6 +48,26 @@ try {
 }
 
 ```
+You can also customize the validation error messages according to the field
+
+```php
+$data = [
+    'username' => 'BlakvGhost',
+];
+
+$validator = new Validator(
+    $data,
+    [
+        'username' => 'required|string',
+    ],
+    [
+        'username' => [
+            'required' => 'Votre nom d\'utilisateur doit être présent',
+            'string' => 'Votre nom d\'utilisateur doit forcément être une chaîne de caractère',
+            ],
+        ]
+    );
+```
 
 ## Features
 
