@@ -10,9 +10,10 @@
 
 namespace BlakvGhost\PHPValidator\Rules;
 
-use BlakvGhost\PHPValidator\LangManager;
+use BlakvGhost\PHPValidator\Contracts\Rule;
+use BlakvGhost\PHPValidator\Lang\LangManager;
 
-class UrlRule implements RuleInterface
+class UrlRule implements Rule
 {
     /**
      * Name of the field being validated.
@@ -44,7 +45,7 @@ class UrlRule implements RuleInterface
         // Set the field property for use in the message method.
         $this->field = $field;
 
-        return filter_var($value, FILTER_VALIDATE_URL); 
+        return filter_var($value, FILTER_VALIDATE_URL);
     }
 
     /**

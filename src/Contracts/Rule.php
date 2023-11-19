@@ -1,17 +1,17 @@
 <?php
 
 /**
- * RuleInterface - Interface for defining validation rules in the PHPValidator package.
+ * Rule - Interface for defining validation rules in the PHPValidator package.
  *
- * @package BlakvGhost\PHPValidator\Rules
+ * @package BlakvGhost\PHPValidator\Contracts
  * @author Kabirou ALASSANE
  * @website https://kabirou-alassane.com
  * @github https://github.com/BlakvGhost
  */
 
-namespace BlakvGhost\PHPValidator\Rules;
+namespace BlakvGhost\PHPValidator\Contracts;
 
-interface RuleInterface
+interface Rule
 {
     /**
      * Constructor of the RuleInterface.

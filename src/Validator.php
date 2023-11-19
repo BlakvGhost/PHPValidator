@@ -11,6 +11,8 @@
 
 namespace BlakvGhost\PHPValidator;
 
+use BlakvGhost\PHPValidator\Lang\LangManager;
+use BlakvGhost\PHPValidator\Mapping\RulesMaped;
 use BlakvGhost\PHPValidator\Rules\RuleInterface;
 use BlakvGhost\PHPValidator\ValidatorException;
 
@@ -24,9 +26,13 @@ class Validator extends RulesMaped
      *
      * @param array $data Data to be validated.
      * @param array $rules Validation rules to apply.
+     * @param array $messages Validation rules messages to apply when failed.
      */
-    public function __construct(private array $data, private array $rules)
-    {
+    public function __construct(
+        private array $data,
+        private array $rules,
+        private array $messages = []
+    ) {
         $this->validateConstructorInputs();
         $this->validate();
     }
@@ -97,7 +103,7 @@ class Validator extends RulesMaped
 
                     $validator = new $ruleClass($parameters);
 
-                    $this->checkPasses($validator, $field);
+                    $this->checkPasses($validator, $field, $ruleName);
                 }
             }
         }
@@ -108,11 +114,17 @@ class Validator extends RulesMaped
      *
      * @param mixed $validator Instance of the rule to check.
      * @param string $field Field associated with the rule.
+     * @param ?string $ruleName Associated rule alias.
      */
-    protected function checkPasses(mixed $validator, string $field)
+    protected function checkPasses(mixed $validator, string $field, ?string $ruleName = null)
     {
         if (isset($this->data[$field]) && !$validator->passes($field, $this->data[$field], $this->data)) {
-            $this->addError($field, $validator->message());
+
+            $assert = isset($ruleName) && isset($this->messages[$field][$ruleName]);
+
+            $message =  $assert ? $this->messages[$field][$ruleName] : $validator->message();
+
+            $this->addError($field, $message);
         }
     }
 

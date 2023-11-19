@@ -58,12 +58,32 @@ try {
 }
 
 ```
+You can also customize the validation error messages
+
+```php
+$data = [
+    'username' => 'BlakvGhost',
+];
+
+$validator = new Validator(
+    $data,
+    [
+        'username' => 'required|string',
+    ],
+    [
+        'username' => [
+            'required' => 'Votre nom d\'utilisateur doit être présent',
+            'string' => 'Votre nom d\'utilisateur doit forcément être une chaîne de caractère',
+            ],
+        ]
+    );
+```
 
 ## Features
 
 - `Predefined Rules`: PHPValidator comes with a set of predefined validation rules such as required, string, email, maxLength etc.
 
-- `Custom Rules`: Easily create custom validation rules by implementing the `RuleInterface`.
+- `Custom Rules`: Easily create custom validation rules by implementing the `Rule` Interface.
 
 - `Multilingual Support`: Customize validation error messages based on the application's language using the `LangManager`.
 
@@ -259,7 +279,7 @@ PHPValidator provides a variety of predefined rules that you can use for data va
     ```	
 ## Custom Rule
 
-In addition to the predefined rules, you can create custom validation rules by implementing the `RuleInterface`. Here's an example of how to create and use a custom rule:
+In addition to the predefined rules, you can create custom validation rules by implementing the `Rule` Interface. Here's an example of how to create and use a custom rule:
 
 ### CustomPasswordRule.php
 
@@ -267,10 +287,9 @@ In addition to the predefined rules, you can create custom validation rules by i
 // CustomPasswordRule.php
 namespace YourNameSpace\Rules;
 
-use BlakvGhost\PHPValidator\Rules\RuleInterface;
-use BlakvGhost\PHPValidator\LangManager;
+use BlakvGhost\PHPValidator\Contracts\Rule;
 
-class CustomPasswordRule implements RuleInterface
+class CustomPasswordRule implements Rule
 {
     protected $field;
 
@@ -300,6 +319,7 @@ class CustomPasswordRule implements RuleInterface
 
     use BlakvGhost\PHPValidator\Validator;
     use BlakvGhost\PHPValidator\ValidatorException;
+
     use YourNameSpace\CustomPasswordRule;
 
 
@@ -334,7 +354,8 @@ class CustomPasswordRule implements RuleInterface
 
     use BlakvGhost\PHPValidator\Validator;
     use BlakvGhost\PHPValidator\ValidatorException;
-    use BlakvGhost\PHPValidator\RulesMaped;
+    use BlakvGhost\PHPValidator\Mapping\RulesMaped;
+
     use YourNameSpace\CustomPasswordRule;
 
     // Add your rule here using an alias and the full namespace of your custom class

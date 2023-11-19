@@ -10,9 +10,10 @@
 
 namespace BlakvGhost\PHPValidator\Rules;
 
-use BlakvGhost\PHPValidator\LangManager;
+use BlakvGhost\PHPValidator\Contracts\Rule;
+use BlakvGhost\PHPValidator\Lang\LangManager;
 
-class ValidIpRule implements RuleInterface
+class ValidIpRule implements Rule
 {
     /**
      * Name of the field being validated.
@@ -44,7 +45,7 @@ class ValidIpRule implements RuleInterface
         // Set the field property for use in the message method.
         $this->field = $field;
 
-        return filter_var($value, FILTER_VALIDATE_IP); 
+        return filter_var($value, FILTER_VALIDATE_IP);
     }
 
     /**

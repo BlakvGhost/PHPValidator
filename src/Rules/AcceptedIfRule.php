@@ -11,9 +11,10 @@
 
 namespace BlakvGhost\PHPValidator\Rules;
 
-use BlakvGhost\PHPValidator\LangManager;
+use BlakvGhost\PHPValidator\Contracts\Rule;
+use BlakvGhost\PHPValidator\Lang\LangManager;
 
-class AcceptedIfRule implements RuleInterface
+class AcceptedIfRule implements Rule
 {
     /**
      * The name of the field being validated.
@@ -60,8 +61,8 @@ class AcceptedIfRule implements RuleInterface
     /**
      * Get the validation error message for the accepted if rule.
      *
-    * @return string Validation error message.
-    */
+     * @return string Validation error message.
+     */
     public function message(): string
     {
         // Use LangManager to get a translated validation error message.

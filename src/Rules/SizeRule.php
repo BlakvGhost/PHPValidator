@@ -10,9 +10,10 @@
 
 namespace BlakvGhost\PHPValidator\Rules;
 
-use BlakvGhost\PHPValidator\LangManager;
+use BlakvGhost\PHPValidator\Contracts\Rule;
+use BlakvGhost\PHPValidator\Lang\LangManager;
 
-class SizeRule implements RuleInterface
+class SizeRule implements Rule
 {
     /**
      * Name of the field being validated.
@@ -55,7 +56,7 @@ class SizeRule implements RuleInterface
 
             return $value == $total;
         }
-        
+
         if (is_array($value)) {
 
             return count($value) == $total;
@@ -66,10 +67,10 @@ class SizeRule implements RuleInterface
             if (isset($_FILES[$value]) && $_FILES[$value]["error"] == 0) {
                 // Get the file size in bytes
                 $size = $_FILES[$value]["size"];
-        
+
                 // Convert bytes to kilobytes
                 $size_kb = $size / 1024; // kilobytes
-        
+
                 return $size_kb == $total;
             }
 

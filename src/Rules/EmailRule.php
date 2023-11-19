@@ -10,9 +10,10 @@
 
 namespace BlakvGhost\PHPValidator\Rules;
 
-use BlakvGhost\PHPValidator\LangManager;
+use BlakvGhost\PHPValidator\Contracts\Rule;
+use BlakvGhost\PHPValidator\Lang\LangManager;
 
-class EmailRule implements RuleInterface
+class EmailRule implements Rule
 {
     /**
      * Name of the field being validated.
@@ -54,7 +55,7 @@ class EmailRule implements RuleInterface
      */
     public function message(): string
     {
-        
+
         // Use LangManager to get a translated validation error message.
         return LangManager::getTranslation('validation.email_rule', [
             'attribute' => $this->field,

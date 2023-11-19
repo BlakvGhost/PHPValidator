@@ -10,9 +10,10 @@
 
 namespace BlakvGhost\PHPValidator\Rules;
 
-use BlakvGhost\PHPValidator\LangManager;
+use BlakvGhost\PHPValidator\Contracts\Rule;
+use BlakvGhost\PHPValidator\Lang\LangManager;
 
-class JsonRule implements RuleInterface
+class JsonRule implements Rule
 {
     /**
      * Name of the field being validated.
@@ -44,11 +45,11 @@ class JsonRule implements RuleInterface
         // Set the field property for use in the message method.
         $this->field = $field;
 
-        if (!empty($value)) { 
-            return is_string($value) &&  
-              is_array(json_decode($value, true)) ? true : false; 
-        } 
-        return false; 
+        if (!empty($value)) {
+            return is_string($value) &&
+                is_array(json_decode($value, true)) ? true : false;
+        }
+        return false;
     }
 
     /**
