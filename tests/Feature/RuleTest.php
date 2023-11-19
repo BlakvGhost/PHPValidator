@@ -1,6 +1,6 @@
 <?php
 
-use BlakvGhost\PHPValidator\LangManager;
+use BlakvGhost\PHPValidator\Lang\LangManager;
 use BlakvGhost\PHPValidator\Validator;
 
 

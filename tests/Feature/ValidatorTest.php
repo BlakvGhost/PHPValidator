@@ -1,8 +1,8 @@
 <?php
 
+use BlakvGhost\PHPValidator\Lang\LangManager;
 use BlakvGhost\PHPValidator\Validator;
 use BlakvGhost\PHPValidator\ValidatorException;
-use BlakvGhost\PHPValidator\LangManager;
 
 it('throws exception if data is empty', function () {
     expect(fn () => new Validator([], ['name' => 'string']))

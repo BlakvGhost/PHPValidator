@@ -258,7 +258,7 @@ In addition to the predefined rules, you can create custom validation rules by i
 namespace YourNameSpace\Rules;
 
 use BlakvGhost\PHPValidator\Rules\RuleInterface;
-use BlakvGhost\PHPValidator\LangManager;
+use BlakvGhost\PHPValidator\Lang\LangManager;
 
 class CustomPasswordRule implements RuleInterface
 {

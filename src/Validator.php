@@ -11,6 +11,7 @@
 
 namespace BlakvGhost\PHPValidator;
 
+use BlakvGhost\PHPValidator\Lang\LangManager;
 use BlakvGhost\PHPValidator\Mapping\RulesMaped;
 use BlakvGhost\PHPValidator\Rules\RuleInterface;
 use BlakvGhost\PHPValidator\ValidatorException;

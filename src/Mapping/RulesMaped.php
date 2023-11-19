@@ -11,13 +11,13 @@
 
 namespace BlakvGhost\PHPValidator\Mapping;
 
-use BlakvGhost\PHPValidator\LangManager;
+use BlakvGhost\PHPValidator\Lang\LangManager;
 use BlakvGhost\PHPValidator\ValidatorException;
 
 class RulesMaped
 {
     use RulesAlias;
-    
+
     /**
      * Get the mapping of rule aliases to their corresponding rule classes.
      *

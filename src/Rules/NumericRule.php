@@ -12,7 +12,7 @@
 namespace BlakvGhost\PHPValidator\Rules;
 
 use BlakvGhost\PHPValidator\Contracts\Rule;
-use BlakvGhost\PHPValidator\LangManager;
+use BlakvGhost\PHPValidator\Lang\LangManager;
 
 class NumericRule implements Rule
 {
