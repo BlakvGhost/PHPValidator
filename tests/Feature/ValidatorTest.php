@@ -18,3 +18,17 @@ it('throws exception if rule not found', function () {
     expect(fn () => new Validator(['name' => 'John'], ['name' => 'nonexistent']))
         ->toThrow(ValidatorException::class, LangManager::getTranslation('validation.rule_not_found', ['ruleName' => 'nonexistent']));
 });
+
+it('validates rule with custom error message', function () {
+
+    $errorMessage = "Je teste une règle custom";
+
+    $validator = new Validator(
+                    ['field' => ''],
+                    ['field' => 'required'],
+                    ['field' => $errorMessage]
+                );
+    expect($validator->isValid())->toBeFalse();
+
+    expect($validator->getErrors()['field'][0])->toBe($errorMessage);
+});

@@ -24,8 +24,12 @@ class Validator extends RulesMaped
      *
      * @param array $data Data to be validated.
      * @param array $rules Validation rules to apply.
+     * @param array $messages Validation rules messages to apply when failed.
      */
-    public function __construct(private array $data, private array $rules)
+    public function __construct(private array $data,
+                                private array $rules,
+                                private array $messages = []
+                                )
     {
         $this->validateConstructorInputs();
         $this->validate();
@@ -112,7 +116,10 @@ class Validator extends RulesMaped
     protected function checkPasses(mixed $validator, string $field)
     {
         if (isset($this->data[$field]) && !$validator->passes($field, $this->data[$field], $this->data)) {
-            $this->addError($field, $validator->message());
+
+            $message = isset($this->messages[$field]) ? $this->messages[$field] : $validator->message();
+
+            $this->addError($field, $message);
         }
     }
 
