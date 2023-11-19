@@ -11,9 +11,10 @@
 
 namespace BlakvGhost\PHPValidator\Rules;
 
+use BlakvGhost\PHPValidator\Contracts\Rule;
 use BlakvGhost\PHPValidator\LangManager;
 
-class AcceptedRule implements RuleInterface
+class AcceptedRule implements Rule
 {
     /**
      * The name of the field being validated.
