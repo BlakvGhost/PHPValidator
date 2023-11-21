@@ -13,7 +13,7 @@ namespace BlakvGhost\PHPValidator;
 
 use BlakvGhost\PHPValidator\Lang\LangManager;
 use BlakvGhost\PHPValidator\Mapping\RulesMaped;
-use BlakvGhost\PHPValidator\Rules\RuleInterface;
+use BlakvGhost\PHPValidator\Contracts\Rule as RuleInterface;
 use BlakvGhost\PHPValidator\ValidatorException;
 
 class Validator extends RulesMaped
