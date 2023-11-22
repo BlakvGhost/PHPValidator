@@ -50,7 +50,30 @@ class MaxLengthRule implements Rule
         $maxLength = $this->parameters[0] ?? 0;
 
         // Check if the value is a string and its length is within the specified maximum.
-        return is_string($value) && mb_strlen($value) <= $maxLength;
+        if (is_string($value)) {
+            $value = mb_strlen($value);
+        }
+
+        if (is_array($value)) {
+            $value = count($value);
+        }
+
+        if (is_file($value)) {
+
+            if (isset($_FILES[$value]) && $_FILES[$value]["error"] == 0) {
+                // Get the file size in bytes
+                $size = $_FILES[$value]["size"];
+
+                // Convert bytes to kilobytes
+                $size_kb = $size / 1024; // kilobytes
+
+                $value = $size_kb;
+            }
+
+            return false;
+        } 
+
+        return $value <= $maxLength;
     }
 
     /**
