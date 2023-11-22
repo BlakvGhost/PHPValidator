@@ -220,7 +220,7 @@ PHPValidator provides a variety of predefined rules that you can use for data va
     - Validates that a field's value is not in a specified set.
 
     ```php
-    'value' => 'not_in:["foo", "bar"]'
+    'value' => 'not_in:foo,bar'
     ```	
 20. **Required With Rule**
     - Requires the field to be present if another specified field is present.
