@@ -38,7 +38,7 @@ it('validates email rule successfully', function () {
     $validator = new Validator(['email' => 'test@example.com'], ['email' => 'email']);
     expect($validator->isValid())->toBeTrue();
 
-    $validator = new Validator(['email' => 'invalid-email'], ['email' => 'email']);
+    $validator = new Validator(['email' => 'invalid-email'], ['email' => 'email'], lang:'fr');
     expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['email'][0])->toBe(

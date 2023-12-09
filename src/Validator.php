@@ -19,7 +19,9 @@ use BlakvGhost\PHPValidator\ValidatorException;
 class Validator extends RulesMaped
 {
 
-    private $errors = [];
+    private array $errors = [];
+
+    private const LANGUAGE = 'en';
 
     /**
      * Constructor of the Validator class.
@@ -31,8 +33,10 @@ class Validator extends RulesMaped
     public function __construct(
         private array $data,
         private array $rules,
-        private array $messages = []
+        private array $messages = [],
+        private string $lang = self::LANGUAGE,
     ) {
+        LangManager::$lang = $this->lang;
         $this->validateConstructorInputs();
         $this->validate();
     }
@@ -137,11 +141,15 @@ class Validator extends RulesMaped
     protected function validateConstructorInputs()
     {
         if (empty($this->data)) {
-            throw new ValidatorException(LangManager::getTranslation('validation.empty_data'));
+            throw new ValidatorException(
+                LangManager::getTranslation('validation.empty_data')
+            );
         }
 
         if (empty($this->rules)) {
-            throw new ValidatorException(LangManager::getTranslation('validation.empty_rules'));
+            throw new ValidatorException(
+                LangManager::getTranslation('validation.empty_rules')
+            );
         }
     }
 

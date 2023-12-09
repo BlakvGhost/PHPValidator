@@ -16,6 +16,8 @@ class LangManager
 
     use Lang;
 
+    static public $lang = 'en';
+
     /**
      * Get the current language.
      *
@@ -24,7 +26,7 @@ class LangManager
     private static function getLocal(): string
     {
         // Get the current language from environment variables, defaulting to 'en' (English) if not set.
-        return $_ENV['local'] ?? 'en';
+        return self::$lang ?? $_ENV['local'];
     }
 
     /**

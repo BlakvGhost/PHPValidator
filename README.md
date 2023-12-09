@@ -11,7 +11,6 @@
 
 </div>
 
-
 ## About PHPValidator
 
 PHPValidator is a modern PHP library for data validation in your PHP applications. It provides a flexible and extensible way to validate data using predefined rules or by creating custom validation rules.
@@ -58,7 +57,8 @@ try {
 }
 
 ```
-You can also customize the validation error messages
+
+You can also customize the validation error messages or `specify the default language`
 
 ```php
 $data = [
@@ -77,6 +77,9 @@ $validator = new Validator(
             ],
         ]
     );
+    
+    // For the default language
+    $validator = new Validator($data, $rules, lang: 'fr');
 ```
 
 ## Features
@@ -86,7 +89,6 @@ $validator = new Validator(
 - `Custom Rules`: Easily create custom validation rules by implementing the `Rule` Interface.
 
 - `Multilingual Support`: Customize validation error messages based on the application's language using the `LangManager`.
-
 
 ## List of Predefined Rules
 
@@ -210,25 +212,27 @@ PHPValidator provides a variety of predefined rules that you can use for data va
     ```php
     'password_confirmation' => 'same:password'
     ```
+
 18. **Max Length Rule**
     - Specifies the minimum length of a string field.
 
     ```php
     'username' => 'min:8'
-    ```	
+    ``` 
+
 19. **Not In Rule**
     - Validates that a field's value is not in a specified set.
 
     ```php
     'value' => 'not_in:foo,bar'
-    ```	
+    ``` 
+
 20. **Required With Rule**
     - Requires the field to be present if another specified field is present.
 
-
     ```php
     'firstname' => 'required_with:lastname',
-    ```	
+    ``` 
 
 21. **Valid IP Rule**
     - Validates that a field's value is a valid IP address.
@@ -242,21 +246,22 @@ PHPValidator provides a variety of predefined rules that you can use for data va
 
     ```php
     'config' => 'json',
-    ```	
+    ``` 
 
 23. **URL Rule**
     - Validates that a field's value is a valid URL.
 
     ```php
     'website' => 'url',
-    ```	
+    ``` 
+
 24. **Alpha Numeric Rule**
 
     - Validates that a field's value contains only alphanumeric characters.
 
     ```php
     'pseudo' => 'alpha_num',
-    ```	
+    ``` 
 
 25. **Boolean Rule**
 
@@ -264,7 +269,7 @@ PHPValidator provides a variety of predefined rules that you can use for data va
 
     ```php
     'is_admin' => 'bool',
-    ```	
+    ``` 
 
 26. **Size Rule**
     - Validates that the size of a string, integer, array, or file is equal to a specified value.
@@ -276,7 +281,8 @@ PHPValidator provides a variety of predefined rules that you can use for data va
             'array' =>'size:7', // count(array) == 7
             'file' =>'size:512', // file size (kb) == 512
         ]
-    ```	
+    ``` 
+
 ## Custom Rule
 
 In addition to the predefined rules, you can create custom validation rules by implementing the `Rule` Interface. Here's an example of how to create and use a custom rule:
@@ -311,6 +317,7 @@ class CustomPasswordRule implements Rule
     }
 }
 ```
+
 ### Usage in Validator
 
 - Use your custom class directly
@@ -348,6 +355,7 @@ class CustomPasswordRule implements Rule
         echo "Validation error: " . $e->getMessage();
     }
     ```
+
 - Add your custom class to the rules list and use it as if it were native
 
     ```php
@@ -393,7 +401,6 @@ If you would like to contribute to PHPValidator, please follow our [Contribution
 
 - [Kabirou ALASSANE](https://github.com/BlakvGhost)
 
-
 ## Support
 
 For support, you can reach out to me by email at <dev@kabirou-alassane.com>. Feel free to contact me if you have any questions or need assistance with PHPValidator.
@@ -401,4 +408,3 @@ For support, you can reach out to me by email at <dev@kabirou-alassane.com>. Fee
 ## License
 
 PHPValidator is open-source software licensed under the MIT license.
-
