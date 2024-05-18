@@ -6,10 +6,10 @@ use BlakvGhost\PHPValidator\Rules\RequiredRule;
 use BlakvGhost\PHPValidator\Validator;
 use BlakvGhost\PHPValidator\ValidatorException;
 
-it('throws exception if data is empty', function () {
-    expect(fn () => new Validator([], ['name' => 'string']))
-        ->toThrow(ValidatorException::class, LangManager::getTranslation('validation.empty_data'));
-});
+// it('throws exception if data is empty', function () {
+//     expect(fn () => new Validator([], ['name' => 'string']))
+//         ->toThrow(ValidatorException::class, LangManager::getTranslation('validation.empty_data'));
+// });
 
 it('throws exception if rules are empty', function () {
     expect(fn () => new Validator(['name' => 'John'], []))

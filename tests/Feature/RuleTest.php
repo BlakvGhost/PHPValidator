@@ -11,6 +11,9 @@ it('validates required rule successfully', function () {
 
     $validator = new Validator(['field' => ''], ['field' => 'required']);
     expect($validator->isValid())->toBeFalse();
+    
+    $validator = new Validator([], ['field' => 'required']);
+    expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['field'][0])->toBe(
         LangManager::getTranslation('validation.required_rule', ['attribute' => 'field'])
@@ -20,6 +23,9 @@ it('validates required rule successfully', function () {
 it('validates max length rule successfully', function () {
 
     $validator = new Validator(['username' => 'value'], ['username' => 'max:5']);
+    expect($validator->isValid())->toBeTrue();
+    
+    $validator = new Validator([], ['username' => 'max:5']);
     expect($validator->isValid())->toBeTrue();
 
     $validator = new Validator(['username' => 'value_long'], ['username' => 'max:5']);

@@ -45,9 +45,9 @@ class RequiredRule implements Rule
     {
         // Set the field property for use in the message method.
         $this->field = $field;
-
+        $data[$field] = isset($data[$field]) ? $data[$field] : '';
         // Check if the field is set in the data and not empty.
-        return isset($data[$field]) && !empty($data[$field]);
+        return !empty($data[$field]);
     }
 
     /**
