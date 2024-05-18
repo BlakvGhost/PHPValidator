@@ -365,6 +365,22 @@ it('validates required_with rule successfully', function () {
     );
 });
 
+it('validates not_required_with rule successfully', function () {
+
+    $validator = new Validator(['field' => 'value', 'other_field' => 'value2'], ['field' => 'not_required_with:other_field']);
+    expect($validator->isValid())->toBeFalse();
+
+    $validator = new Validator(['field' => 'value'], ['field' => 'not_required_with:other_field']);
+    expect($validator->isValid())->toBeTrue();
+
+    expect($validator->getErrors()['field'][0])->toBe(
+        LangManager::getTranslation('validation.required_with', [
+            'attribute' => 'field',
+            'value' => 'other_field',
+        ])
+    );
+});
+
 it('validates boolean rule successfully', function () {
 
     $validator = new Validator(['field' => false], ['field' => 'bool']);

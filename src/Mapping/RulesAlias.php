@@ -33,6 +33,7 @@ use BlakvGhost\PHPValidator\Rules\NumericRule;
 use BlakvGhost\PHPValidator\Rules\PasswordRule;
 use BlakvGhost\PHPValidator\Rules\RequiredRule;
 use BlakvGhost\PHPValidator\Rules\RequiredWithRule;
+use BlakvGhost\PHPValidator\Rules\NotRequiredWithRule;
 use BlakvGhost\PHPValidator\Rules\SameRule;
 use BlakvGhost\PHPValidator\Rules\SizeRule;
 use BlakvGhost\PHPValidator\Rules\StringRule;
@@ -60,6 +61,7 @@ trait RulesAlias
         'string' => StringRule::class,
         'required' => RequiredRule::class,
         'required_with' => RequiredWithRule::class,
+        'not_required_with' => NotRequiredWithRule::class,
         'lowercase' => LowerCaseRule::class,
         'uppercase' => UpperCaseRule::class,
         'json' => JsonRule::class,

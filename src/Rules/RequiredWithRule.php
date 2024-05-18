@@ -1,7 +1,7 @@
 <?php
 
 /**
- * InRule - A validation rule implementation for checking if a value is required with another value.
+ * RequiredWith - A validation rule implementation fthat require the field to be present if another specified field is present
  *
  * @package BlakvGhost\PHPValidator\Rules
  * @author Fortunatus KIDJE (v1p3r75)
@@ -57,7 +57,6 @@ class RequiredWithRule implements Rule
      */
     public function message(): string
     {
-        // Use LangManager to get a translated validation error message.
         return LangManager::getTranslation('validation.required_with', [
             'attribute' => $this->field,
             'value' => $this->parameters[0]

@@ -282,6 +282,13 @@ PHPValidator provides a variety of predefined rules that you can use for data va
         ]
     ```
 
+27. **Not Required With Rule**
+    - Requires the field not be present if another specified field is present.
+
+    ```php
+    'email' => 'not_required_with:phone_number',
+    ```
+
 ## Custom Rule
 
 In addition to the predefined rules, you can create custom validation rules by implementing the `Rule` Interface. Here's an example of how to create and use a custom rule:
