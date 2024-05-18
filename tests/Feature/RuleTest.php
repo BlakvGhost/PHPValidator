@@ -374,7 +374,7 @@ it('validates not_required_with rule successfully', function () {
     expect($validator->isValid())->toBeTrue();
 
     expect($validator->getErrors()['field'][0])->toBe(
-        LangManager::getTranslation('validation.required_with', [
+        LangManager::getTranslation('validation.not_required_with', [
             'attribute' => 'field',
             'value' => 'other_field',
         ])
