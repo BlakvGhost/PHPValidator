@@ -8,7 +8,6 @@
 ![Packagist Version (custom server)](https://img.shields.io/packagist/l/BlakvGhost/php-validator?label=Licence)
 ![Packagist Version (custom server)](https://img.shields.io/packagist/dt/BlakvGhost/php-validator?label=download)
 </p>
-kabirou-alassane
 </div>
 
 ## About PHPValidator
