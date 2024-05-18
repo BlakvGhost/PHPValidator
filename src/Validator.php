@@ -122,7 +122,9 @@ class Validator extends RulesMaped
      */
     protected function checkPasses(mixed $validator, string $field, ?string $ruleName = null)
     {
-        if (isset($this->data[$field]) && !$validator->passes($field, $this->data[$field], $this->data)) {
+        if(!isset($this->data[$field]) && $ruleName !== 'required') return ;
+
+        if (!$validator->passes($field, $this->data[$field], $this->data)) {
 
             $assert = isset($ruleName) && isset($this->messages[$field][$ruleName]);
 
@@ -140,7 +142,7 @@ class Validator extends RulesMaped
      */
     protected function validateConstructorInputs()
     {
-        if (empty($this->data)) {
+        if (!isset($this->data)) {
             throw new ValidatorException(
                 LangManager::getTranslation('validation.empty_data')
             );
