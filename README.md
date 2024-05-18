@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://php-validator.kabirou-alassane.com/assets/logo/svg/logo-no-background1.svg" alt="logo PHPValidator" height="200">
+<img src="https://php-validator.username-blakvghost.com/assets/logo/svg/logo-no-background1.svg" alt="logo PHPValidator" height="200">
 
 <p>
 
@@ -8,7 +8,7 @@
 ![Packagist Version (custom server)](https://img.shields.io/packagist/l/BlakvGhost/php-validator?label=Licence)
 ![Packagist Version (custom server)](https://img.shields.io/packagist/dt/BlakvGhost/php-validator?label=download)
 </p>
-
+kabirou-alassane
 </div>
 
 ## About PHPValidator
@@ -218,21 +218,21 @@ PHPValidator provides a variety of predefined rules that you can use for data va
 
     ```php
     'username' => 'min:8'
-    ``` 
+    ```
 
 19. **Not In Rule**
     - Validates that a field's value is not in a specified set.
 
     ```php
     'value' => 'not_in:foo,bar'
-    ``` 
+    ```
 
 20. **Required With Rule**
     - Requires the field to be present if another specified field is present.
 
     ```php
     'firstname' => 'required_with:lastname',
-    ``` 
+    ```
 
 21. **Valid IP Rule**
     - Validates that a field's value is a valid IP address.
@@ -246,14 +246,14 @@ PHPValidator provides a variety of predefined rules that you can use for data va
 
     ```php
     'config' => 'json',
-    ``` 
+    ```
 
 23. **URL Rule**
     - Validates that a field's value is a valid URL.
 
     ```php
     'website' => 'url',
-    ``` 
+    ```
 
 24. **Alpha Numeric Rule**
 
@@ -261,7 +261,7 @@ PHPValidator provides a variety of predefined rules that you can use for data va
 
     ```php
     'pseudo' => 'alpha_num',
-    ``` 
+    ```
 
 25. **Boolean Rule**
 
@@ -269,7 +269,7 @@ PHPValidator provides a variety of predefined rules that you can use for data va
 
     ```php
     'is_admin' => 'bool',
-    ``` 
+    ```
 
 26. **Size Rule**
     - Validates that the size of a string, integer, array, or file is equal to a specified value.
@@ -281,7 +281,7 @@ PHPValidator provides a variety of predefined rules that you can use for data va
             'array' =>'size:7', // count(array) == 7
             'file' =>'size:512', // file size (kb) == 512
         ]
-    ``` 
+    ```
 
 ## Custom Rule
 
@@ -403,7 +403,7 @@ If you would like to contribute to PHPValidator, please follow our [Contribution
 
 ## Support
 
-For support, you can reach out to me by email at <dev@kabirou-alassane.com>. Feel free to contact me if you have any questions or need assistance with PHPValidator.
+For support, you can reach out to me by email at <dev@username-blakvghost.com>. Feel free to contact me if you have any questions or need assistance with PHPValidator.
 
 ## License
 
