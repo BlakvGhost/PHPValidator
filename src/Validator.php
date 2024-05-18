@@ -124,6 +124,8 @@ class Validator extends RulesMaped
     {
         if(!isset($this->data[$field]) && $ruleName !== 'required') return ;
 
+        $this->data[$field] = isset($this->data[$field]) ? $this->data[$field] : '';
+
         if (!$validator->passes($field, $this->data[$field], $this->data)) {
 
             $assert = isset($ruleName) && isset($this->messages[$field][$ruleName]);
