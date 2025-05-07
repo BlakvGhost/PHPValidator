@@ -122,18 +122,38 @@ class Validator extends RulesMaped
      */
     protected function checkPasses(mixed $validator, string $field, ?string $ruleName = null)
     {
-        if(!isset($this->data[$field]) && $ruleName !== 'required') return ;
+        $value = $this->getNestedValue($this->data, $field);
 
-        $this->data[$field] ??= '';
+        if ($value === null && $ruleName !== 'required') return;
 
-        if (!$validator->passes($field, $this->data[$field], $this->data)) {
+        if (!$validator->passes($field, $value, $this->data)) {
 
             $assert = isset($ruleName) && isset($this->messages[$field][$ruleName]);
-
-            $message =  $assert ? $this->messages[$field][$ruleName] : $validator->message();
-
+            $message = $assert ? $this->messages[$field][$ruleName] : $validator->message();
             $this->addError($field, $message);
         }
+    }
+
+    /**
+     * Get a nested value from dot-notated keys like 'a.b.0.c'
+     */
+    protected function getNestedValue(array $data, string $key)
+    {
+        $segments = explode('.', $key);
+        foreach ($segments as $segment) {
+            if (is_array($data)) {
+                if (array_key_exists($segment, $data)) {
+                    $data = $data[$segment];
+                } elseif (ctype_digit($segment) && isset($data[(int) $segment])) {
+                    $data = $data[(int) $segment];
+                } else {
+                    return null;
+                }
+            } else {
+                return null;
+            }
+        }
+        return $data;
     }
 
 

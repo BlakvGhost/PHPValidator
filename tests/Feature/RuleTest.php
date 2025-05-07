@@ -4,6 +4,42 @@ use BlakvGhost\PHPValidator\Lang\LangManager;
 use BlakvGhost\PHPValidator\Validator;
 
 
+it('validates nested required fields using dot notation', function () {
+    // Cas valide : user.name est présent et non vide
+    $validator = new Validator(
+        ['user' => ['name' => 'Kabirou', 'email' => 'kabiroualassane90@gmail.com']],
+        ['user.name' => 'required', 'user.email' => 'required|email']
+    );
+    expect($validator->isValid())->toBeTrue();
+
+    // Cas invalide : user.name est vide
+    $validator = new Validator(
+        ['user' => ['name' => '']],
+        ['user.name' => 'required']
+    );
+    expect($validator->isValid())->toBeFalse();
+    expect($validator->getErrors())->toHaveKey('user.name');
+    expect($validator->getErrors()['user.name'][0])->toBe(
+        LangManager::getTranslation('validation.required_rule', ['attribute' => 'user.name'])
+    );
+
+    // Cas invalide : user est défini mais name manquant
+    $validator = new Validator(
+        ['user' => []],
+        ['user.name' => 'required']
+    );
+    expect($validator->isValid())->toBeFalse();
+    expect($validator->getErrors())->toHaveKey('user.name');
+
+    // Cas invalide : user manquant entièrement
+    $validator = new Validator(
+        [],
+        ['user.name' => 'required']
+    );
+    expect($validator->isValid())->toBeFalse();
+    expect($validator->getErrors())->toHaveKey('user.name');
+});
+
 it('validates required rule successfully', function () {
 
     $validator = new Validator(['field' => 'value'], ['field' => 'required']);
@@ -11,7 +47,7 @@ it('validates required rule successfully', function () {
 
     $validator = new Validator(['field' => ''], ['field' => 'required']);
     expect($validator->isValid())->toBeFalse();
-    
+
     $validator = new Validator([], ['field' => 'required']);
     expect($validator->isValid())->toBeFalse();
 
@@ -24,7 +60,7 @@ it('validates max length rule successfully', function () {
 
     $validator = new Validator(['username' => 'value'], ['username' => 'max:5']);
     expect($validator->isValid())->toBeTrue();
-    
+
     $validator = new Validator([], ['username' => 'max:5']);
     expect($validator->isValid())->toBeTrue();
 
@@ -44,7 +80,7 @@ it('validates email rule successfully', function () {
     $validator = new Validator(['email' => 'test@example.com'], ['email' => 'email']);
     expect($validator->isValid())->toBeTrue();
 
-    $validator = new Validator(['email' => 'invalid-email'], ['email' => 'email'], lang:'fr');
+    $validator = new Validator(['email' => 'invalid-email'], ['email' => 'email'], lang: 'fr');
     expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['email'][0])->toBe(

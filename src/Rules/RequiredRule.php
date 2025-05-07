@@ -43,12 +43,24 @@ class RequiredRule implements Rule
      */
     public function passes(string $field, $value, array $data): bool
     {
-        // Set the field property for use in the message method.
         $this->field = $field;
-        $data[$field] = isset($data[$field]) ? $data[$field] : '';
-        // Check if the field is set in the data and not empty.
-        return !empty($data[$field]);
+
+        // Supporte la notation avec points, ex : 'user.name'
+        $segments = explode('.', $field);
+        $current = $data;
+
+        foreach ($segments as $segment) {
+            if (is_array($current) && array_key_exists($segment, $current)) {
+                $current = $current[$segment];
+            } else {
+                return false; // Segment manquant => champ requis absent
+            }
+        }
+
+        // Vérifie que la valeur finale n'est pas vide
+        return !empty($current);
     }
+
 
     /**
      * Get the validation error message for the required rule.
