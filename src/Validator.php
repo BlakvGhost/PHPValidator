@@ -102,7 +102,7 @@ class Validator extends RulesMaped
                 if (is_a($rule, RuleInterface::class, true)) {
                     $this->checkPasses($rule, $field);
                 } else {
-                    list($ruleName, $parameters) = $this->parseRule($rule);
+                    [$ruleName, $parameters] = $this->parseRule($rule);
                     $ruleClass = $this->resolveRuleClass($ruleName);
 
                     $validator = new $ruleClass($parameters);
@@ -124,7 +124,7 @@ class Validator extends RulesMaped
     {
         if(!isset($this->data[$field]) && $ruleName !== 'required') return ;
 
-        $this->data[$field] = isset($this->data[$field]) ? $this->data[$field] : '';
+        $this->data[$field] ??= '';
 
         if (!$validator->passes($field, $this->data[$field], $this->data)) {
 
