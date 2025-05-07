@@ -91,27 +91,48 @@ class Validator extends RulesMaped
     {
         foreach ($this->rules as $field => $fieldRules) {
 
-            if (is_a($fieldRules, RuleInterface::class, true)) {
-                return $this->checkPasses($fieldRules, $field);
-            }
+            // Si le champ contient un '*', on décompose en plusieurs sous-champs
+            if (strpos($field, '*') !== false) {
+                // Trouver la base et l'index de la wildcard
+                [$baseField, $wildcard] = explode('.', $field, 2);
+                $arrayData = $this->getNestedValue($this->data, $baseField);
 
-            $rulesArray = is_array($fieldRules) ? $fieldRules : explode('|', $fieldRules);
-
-            foreach ($rulesArray as $rule) {
-
-                if (is_a($rule, RuleInterface::class, true)) {
-                    $this->checkPasses($rule, $field);
-                } else {
-                    [$ruleName, $parameters] = $this->parseRule($rule);
-                    $ruleClass = $this->resolveRuleClass($ruleName);
-
-                    $validator = new $ruleClass($parameters);
-
-                    $this->checkPasses($validator, $field, $ruleName);
+                // Appliquer la règle pour chaque élément du tableau
+                if (is_array($arrayData)) {
+                    foreach ($arrayData as $index => $item) {
+                        $newField = "$baseField.$index.$wildcard";
+                        // Appliquer les règles sur chaque élément du tableau
+                        $this->applyRulesToField($newField, $fieldRules);
+                    }
                 }
+            } else {
+                // Appliquer normalement la règle si pas de wildcard
+                $this->applyRulesToField($field, $fieldRules);
             }
         }
     }
+
+    protected function applyRulesToField(string $field, $fieldRules)
+    {
+        if (is_a($fieldRules, RuleInterface::class, true)) {
+            return $this->checkPasses($fieldRules, $field);
+        }
+
+        $rulesArray = is_array($fieldRules) ? $fieldRules : explode('|', $fieldRules);
+
+        foreach ($rulesArray as $rule) {
+            if (is_a($rule, RuleInterface::class, true)) {
+                $this->checkPasses($rule, $field);
+            } else {
+                [$ruleName, $parameters] = $this->parseRule($rule);
+                $ruleClass = $this->resolveRuleClass($ruleName);
+
+                $validator = new $ruleClass($parameters);
+                $this->checkPasses($validator, $field, $ruleName);
+            }
+        }
+    }
+
 
     /**
      * Check if a rule passes validation and add an error if it fails.
@@ -125,7 +146,7 @@ class Validator extends RulesMaped
         $value = $this->getNestedValue($this->data, $field);
 
         if ($value === null && $ruleName !== 'required') return;
-
+        var_dump($validator->passes($field, $value, $this->data), $value, $field);
         if (!$validator->passes($field, $value, $this->data)) {
 
             $assert = isset($ruleName) && isset($this->messages[$field][$ruleName]);
@@ -135,26 +156,58 @@ class Validator extends RulesMaped
     }
 
     /**
-     * Get a nested value from dot-notated keys like 'a.b.0.c'
+     * Retrieve a nested value from the data array using dot notation.
+     *
+     * @param array $data Data to search in.
+     * @param string $key Key to search for, using dot notation for nested keys.
+     * @return mixed Resolved value or null if not found.
      */
     protected function getNestedValue(array $data, string $key)
     {
         $segments = explode('.', $key);
-        foreach ($segments as $segment) {
-            if (is_array($data)) {
-                if (array_key_exists($segment, $data)) {
-                    $data = $data[$segment];
-                } elseif (ctype_digit($segment) && isset($data[(int) $segment])) {
-                    $data = $data[(int) $segment];
-                } else {
-                    return null;
-                }
-            } else {
+        return $this->resolveWildcardSegment($data, $segments);
+    }
+
+    /**
+     * Resolve a wildcard segment in the data array.
+     *
+     * @param mixed $data Data to resolve.
+     * @param array $segments Array of segments to resolve.
+     * @return mixed Resolved value or null if not found.
+     */
+    protected function resolveWildcardSegment($data, array $segments)
+    {
+        $segment = array_shift($segments);
+
+        var_dump($segment, $data);
+        if ($segment === '*') {
+            if (!is_array($data)) {
                 return null;
             }
+
+            $results = [];
+            foreach ($data as $item) {
+                $resolved = $this->resolveWildcardSegment($item, $segments);
+                if (is_array($resolved)) {
+                    $results = array_merge($results, $resolved);
+                } elseif (!is_null($resolved)) {
+                    $results[] = $resolved;
+                }
+            }
+            return $results;
         }
-        return $data;
+
+        if (is_array($data)) {
+            if (array_key_exists($segment, $data)) {
+                return $this->resolveWildcardSegment($data[$segment], $segments);
+            } elseif (ctype_digit($segment) && isset($data[(int) $segment])) {
+                return $this->resolveWildcardSegment($data[(int) $segment], $segments);
+            }
+        }
+
+        return null;
     }
+
 
 
     /**

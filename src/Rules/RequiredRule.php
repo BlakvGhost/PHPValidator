@@ -45,11 +45,24 @@ class RequiredRule implements Rule
     {
         $this->field = $field;
 
-        // Supporte la notation avec points, ex : 'user.name'
+        // Supporte la notation avec points, ex : 'user.name' ou 'user.*.name'
         $segments = explode('.', $field);
         $current = $data;
 
-        foreach ($segments as $segment) {
+        foreach ($segments as $index => $segment) {
+            // Si le segment contient un wildcard '*', on vérifie tous les éléments du niveau actuel.
+            if ($segment === '*') {
+                // Vérification des sous-champs pour tous les éléments à ce niveau
+                if (is_array($current)) {
+                    foreach ($current as $subItem) {
+                        if (is_array($subItem) && array_key_exists($segments[$index + 1], $subItem)) {
+                            return !empty($subItem[$segments[$index + 1]]);
+                        }
+                    }
+                }
+                return false; // Si aucun élément n'est trouvé, c'est invalide
+            }
+
             if (is_array($current) && array_key_exists($segment, $current)) {
                 $current = $current[$segment];
             } else {
@@ -61,7 +74,6 @@ class RequiredRule implements Rule
         return !empty($current);
     }
 
-
     /**
      * Get the validation error message for the required rule.
      *
@@ -69,7 +81,6 @@ class RequiredRule implements Rule
      */
     public function message(): string
     {
-        // Use LangManager to get a translated validation error message.
         return LangManager::getTranslation('validation.required_rule', [
             'attribute' => $this->field,
         ]);

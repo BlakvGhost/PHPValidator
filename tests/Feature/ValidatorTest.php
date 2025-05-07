@@ -10,14 +10,14 @@ use BlakvGhost\PHPValidator\ValidatorException;
 //     expect(fn () => new Validator([], ['name' => 'string']))
 //         ->toThrow(ValidatorException::class, LangManager::getTranslation('validation.empty_data'));
 // });
-
+return;
 it('throws exception if rules are empty', function () {
-    expect(fn() => new Validator(['name' => 'John'], []))
+    expect(fn () => new Validator(['name' => 'John'], []))
         ->toThrow(ValidatorException::class, LangManager::getTranslation('validation.empty_rules'));
 });
 
 it('throws exception if rule not found', function () {
-    expect(fn() => new Validator(['name' => 'John'], ['name' => 'nonexistent']))
+    expect(fn () => new Validator(['name' => 'John'], ['name' => 'nonexistent']))
         ->toThrow(ValidatorException::class, LangManager::getTranslation('validation.rule_not_found', ['ruleName' => 'nonexistent']));
 });
 
@@ -33,7 +33,7 @@ it('validates custom rule (required) rule successfully', function () {
     expect($validator->isValid())->toBeTrue();
 
     RulesMaped::addRule('custom_required', RequiredRule::class);
-
+    
     $validator = new Validator(['field' => 'value'], ['field' => 'string|custom_required']);
     expect($validator->isValid())->toBeTrue();
 

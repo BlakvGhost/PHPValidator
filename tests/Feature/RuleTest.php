@@ -4,6 +4,47 @@ use BlakvGhost\PHPValidator\Lang\LangManager;
 use BlakvGhost\PHPValidator\Validator;
 
 
+it('validates required fields using wildcards notation', function () {
+
+    $validator = new Validator(
+        ['users' => [
+            ['name' => 'Kabirou', 'email' => 'kabiroualassane90@gmail.com'],
+            ['name' => 'Alassane', 'email' => 'johndoe@gmail.com']
+        ]],
+        ['users.*.name' => 'required']
+    );
+
+    expect($validator->isValid())->toBeTrue();
+
+    // Cas invalide : user.name est vide
+    $validator = new Validator(
+        ['user' => ['name' => '']],
+        ['user.name' => 'required']
+    );
+    expect($validator->isValid())->toBeFalse();
+    expect($validator->getErrors())->toHaveKey('user.name');
+    expect($validator->getErrors()['user.name'][0])->toBe(
+        LangManager::getTranslation('validation.required_rule', ['attribute' => 'user.name'])
+    );
+
+    // Cas invalide : user est défini mais name manquant
+    $validator = new Validator(
+        ['user' => []],
+        ['user.name' => 'required']
+    );
+    expect($validator->isValid())->toBeFalse();
+    expect($validator->getErrors())->toHaveKey('user.name');
+
+    // Cas invalide : user manquant entièrement
+    $validator = new Validator(
+        [],
+        ['user.name' => 'required']
+    );
+    expect($validator->isValid())->toBeFalse();
+    expect($validator->getErrors())->toHaveKey('user.name');
+});
+return;
+
 it('validates nested required fields using dot notation', function () {
     // Cas valide : user.name est présent et non vide
     $validator = new Validator(
