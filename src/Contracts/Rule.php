@@ -5,7 +5,7 @@
  *
  * @package BlakvGhost\PHPValidator\Contracts
  * @author Kabirou ALASSANE
- * @website https://kabirou-alassane.com
+ * @website https://username-blakvghost.com
  * @github https://github.com/BlakvGhost
  */
 
