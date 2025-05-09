@@ -1,40 +1,41 @@
 {
-    "name": "blakvghost/php-validator",
-    "description": "PHPValidator is a modern PHP library for data validation in your PHP applications. It provides a flexible and extensible way to validate data using predefined rules or by creating custom validation rules.",
-    "type": "library",
-    "license": "MIT",
-    "keywords": [
-        "php",
-        "validation",
-        "data validation",
-        "php library",
-        "validation rules",
-        "custom validation"
-    ],'
-    "autoload": {
-        "psr-4": {
-            "BlakvGhost\\PHPValidator\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "Kabirou ALASSANE",
-            "email": "kabirou.alassane@ferraydigitalsolutions.bj"
-        }
-    ],
-    "require": {
-        "php": ">=8.1"
-    },
-    "require-dev": {
-        "pestphp/pest": "^2.24"
-    },
-    "config": {
-        "allow-plugins": {
-            "pestphp/pest-plugin": true
-        }
-    },
-    "scripts": {
-        "test": "pest"
+  "name": "blakvghost/php-validator",
+  "description": "PHPValidator is a modern PHP library for data validation in your PHP applications. It provides a flexible and extensible way to validate data using predefined rules or by creating custom validation rules.",
+  "type": "library",
+  "license": "MIT",
+  "keywords": [
+    "php",
+    "validation",
+    "data validation",
+    "php library",
+    "validation rules",
+    "custom validation"
+  ],
+  "autoload": {
+    "psr-4": {
+      "BlakvGhost\\PHPValidator\\": "src/"
     }
-    
+  },
+  "authors": [
+    {
+      "name": "Kabirou ALASSANE",
+      "email": "kabirou.alassane@ferraydigitalsolutions.bj",
+      "homepage": "https://github.com/BlakvGhost",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=8.1"
+  },
+  "require-dev": {
+    "pestphp/pest": "^2.24"
+  },
+  "config": {
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
+    }
+  },
+  "scripts": {
+    "test": "pest"
+  }
 }
