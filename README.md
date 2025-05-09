@@ -466,7 +466,7 @@ If you would like to contribute to PHPValidator, please follow our [Contribution
 
 ## Support
 
-For support, you can reach out to me by email at <dev@username-blakvghost.com>. Feel free to contact me if you have any questions or need assistance with PHPValidator.
+For support, you can reach out to me by email at <kabirou.alassane@ferraydigitalsolutions.bj>. Feel free to contact me if you have any questions or need assistance with PHPValidator.
 
 ## License
 
