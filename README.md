@@ -2,7 +2,7 @@
 
 <img src="https://php-validator.username-blakvghost.com/assets/logo/svg/logo-no-background1.svg" alt="logo PHPValidator for Black Background" height="200">
 <br>
-<img src="https://php-validator.username-blakvghost.com/assets/logo/svg/logo-black.svg" alt="logo PHPValidator for White Background" height="200">
+<img src="https://php-validator.username-blakvghost.com/assets/logo/svg/logo-color.svg" alt="logo PHPValidator for White Background" height="200">
 
 <p>
 
