@@ -90,27 +90,59 @@ class Validator extends RulesMaped
     protected function validate()
     {
         foreach ($this->rules as $field => $fieldRules) {
-
-            // Si le champ contient un '*', on décompose en plusieurs sous-champs
-            if (strpos($field, '*') !== false) {
-                // Trouver la base et l'index de la wildcard
-                [$baseField, $wildcard] = explode('.', $field, 2);
-                $arrayData = $this->getNestedValue($this->data, $baseField);
-
-                // Appliquer la règle pour chaque élément du tableau
-                if (is_array($arrayData)) {
-                    foreach ($arrayData as $index => $item) {
-                        $newField = "$baseField.$index.$wildcard";
-                        // Appliquer les règles sur chaque élément du tableau
-                        $this->applyRulesToField($newField, $fieldRules);
-                    }
-                }
+            if (str_contains($field, '*')) {
+                $this->applyRulesToWildcardField($field, $fieldRules);
             } else {
-                // Appliquer normalement la règle si pas de wildcard
                 $this->applyRulesToField($field, $fieldRules);
             }
         }
     }
+
+    protected function resolveWildcardPaths($data, array $segments, string $currentPath = ''): array
+    {
+        $segment = array_shift($segments);
+        $paths = [];
+
+        if ($segment === '*') {
+            if (!is_array($data)) return [];
+
+            foreach ($data as $key => $value) {
+                $newPath = "$currentPath$key";
+                if (empty($segments)) {
+                    $paths[] = $newPath;
+                } else {
+                    $subPaths = $this->resolveWildcardPaths($value, $segments, $newPath . '.');
+                    $paths = array_merge($paths, $subPaths);
+                }
+            }
+        } else {
+            if (isset($data[$segment])) {
+                $newPath = "$currentPath$segment";
+                if (empty($segments)) {
+                    $paths[] = $newPath;
+                } else {
+                    $subPaths = $this->resolveWildcardPaths($data[$segment], $segments, $newPath . '.');
+                    $paths = array_merge($paths, $subPaths);
+                }
+            }
+        }
+
+        return $paths;
+    }
+
+    protected function applyRulesToWildcardField(string $wildcardField, $fieldRules)
+    {
+        $paths = $this->resolveWildcardPaths($this->data, explode('.', $wildcardField));
+        if (empty($paths)) {
+            $this->applyRulesToField($wildcardField, $fieldRules);
+            return;
+        }
+
+        foreach ($paths as $path) {
+            $this->applyRulesToField($path, $fieldRules);
+        }
+    }
+
 
     protected function applyRulesToField(string $field, $fieldRules)
     {
@@ -146,9 +178,8 @@ class Validator extends RulesMaped
         $value = $this->getNestedValue($this->data, $field);
 
         if ($value === null && $ruleName !== 'required') return;
-        var_dump($validator->passes($field, $value, $this->data), $value, $field);
-        if (!$validator->passes($field, $value, $this->data)) {
 
+        if (!$validator->passes($field, $value, $this->data)) {
             $assert = isset($ruleName) && isset($this->messages[$field][$ruleName]);
             $message = $assert ? $this->messages[$field][$ruleName] : $validator->message();
             $this->addError($field, $message);
@@ -179,7 +210,6 @@ class Validator extends RulesMaped
     {
         $segment = array_shift($segments);
 
-        var_dump($segment, $data);
         if ($segment === '*') {
             if (!is_array($data)) {
                 return null;
@@ -190,7 +220,7 @@ class Validator extends RulesMaped
                 $resolved = $this->resolveWildcardSegment($item, $segments);
                 if (is_array($resolved)) {
                     $results = array_merge($results, $resolved);
-                } elseif (!is_null($resolved)) {
+                } elseif (!$resolved === null) {
                     $results[] = $resolved;
                 }
             }
@@ -200,12 +230,12 @@ class Validator extends RulesMaped
         if (is_array($data)) {
             if (array_key_exists($segment, $data)) {
                 return $this->resolveWildcardSegment($data[$segment], $segments);
-            } elseif (ctype_digit($segment) && isset($data[(int) $segment])) {
+            } elseif ($segment && ctype_digit($segment) && isset($data[(int) $segment])) {
                 return $this->resolveWildcardSegment($data[(int) $segment], $segments);
             }
         }
 
-        return null;
+        return $data;
     }
 
 

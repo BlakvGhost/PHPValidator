@@ -18,32 +18,48 @@ it('validates required fields using wildcards notation', function () {
 
     // Cas invalide : user.name est vide
     $validator = new Validator(
-        ['user' => ['name' => '']],
-        ['user.name' => 'required']
+        ['users' => [
+            ['name' => '', 'email' => 'kabiroualassane90@gmail.com'],
+            ['name' => 'Alassane', 'email' => 'johndoe@gmail.com']
+        ]],
+        ['users.*.name' => 'required']
     );
     expect($validator->isValid())->toBeFalse();
-    expect($validator->getErrors())->toHaveKey('user.name');
-    expect($validator->getErrors()['user.name'][0])->toBe(
-        LangManager::getTranslation('validation.required_rule', ['attribute' => 'user.name'])
+    expect($validator->getErrors())->toHaveKey('users.0.name');
+    expect($validator->getErrors()['users.0.name'][0])->toBe(
+        LangManager::getTranslation('validation.required_rule', ['attribute' => 'users.0.name'])
+    );
+
+
+    $validator = new Validator(
+        ['users' => [
+            ['name' => 'Kabirou', 'email' => 'kabiroualassane90@gmail.com'],
+            ['name' => 'Alassane', 'email' => 'johndoegmail.com']
+        ]],
+        ['users.*.name' => 'required', 'users.*.email' => 'required|email']
+    );
+    expect($validator->isValid())->toBeFalse();
+    expect($validator->getErrors())->toHaveKey('users.1.email');
+    expect($validator->getErrors()['users.1.email'][0])->toBe(
+        LangManager::getTranslation('validation.email_rule', ['attribute' => 'users.1.email'])
     );
 
     // Cas invalide : user est défini mais name manquant
     $validator = new Validator(
-        ['user' => []],
-        ['user.name' => 'required']
+        ['users' => []],
+        ['users.*.name' => 'required']
     );
     expect($validator->isValid())->toBeFalse();
-    expect($validator->getErrors())->toHaveKey('user.name');
+    expect($validator->getErrors())->toHaveKey('users.*.name');
 
     // Cas invalide : user manquant entièrement
     $validator = new Validator(
         [],
-        ['user.name' => 'required']
+        ['users.*.name' => 'required']
     );
     expect($validator->isValid())->toBeFalse();
-    expect($validator->getErrors())->toHaveKey('user.name');
+    expect($validator->getErrors())->toHaveKey('users.*.name');
 });
-return;
 
 it('validates nested required fields using dot notation', function () {
     // Cas valide : user.name est présent et non vide
