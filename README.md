@@ -54,7 +54,7 @@ try {
         'tags.*.name' => 'required|string',
         'score' => ['required','max:200', new CustomRule()],
         'password' => new CustomRule(),
-        'user.friend.first_name' => 'required|string',
+        'friend.profile.first_name' => 'required|string',
     ]);
 
     if ($validator->isValid()) {
