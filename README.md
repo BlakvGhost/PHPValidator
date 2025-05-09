@@ -34,6 +34,16 @@ try {
         'username' => 'BlakvGhost',
         'email' => 'example@example.com',
         'score' => 42,
+        'tags' => [
+            ['name' => 'php'],
+            ['name' => 'validation'],
+        ],
+        'friend' => [
+            'email' => 'test@example.com',
+            'profile' => [
+                'first_name' => 'Kabirou',
+            ],
+        ],
     ];
     // or
     // $data = $_POST;
@@ -41,8 +51,10 @@ try {
     $validator = new Validator($data, [
         'username' => 'required|string',
         'email' => 'required|email',
+        'tags.*.name' => 'required|string',
         'score' => ['required','max:200', new CustomRule()],
         'password' => new CustomRule(),
+        'user.friend.first_name' => 'required|string',
     ]);
 
     if ($validator->isValid()) {
@@ -80,6 +92,48 @@ $validator = new Validator(
     // For the default language
     $validator = new Validator($data, $rules, lang: 'fr');
 ```
+
+## Nested and Wildcard Notation
+
+PHPValidator supports `dot notation` for validating deeply nested fields, as well as wildcard notation (`*`) to apply rules across arrays of data.
+
+### Nested Keys
+
+You can validate nested fields using `dot notation`:
+
+```php
+$data = [
+    'user' => [
+        'profile' => [
+            'first_name' => 'Kabirou',
+        ]
+    ]
+];
+
+$rules = [
+    'user.profile.first_name' => 'required|string',
+];
+```
+
+### Wildcard Notation
+
+Use `*` as a wildcard to apply the same rule to all elements of an array:
+
+```php
+$data = [
+    'products' => [
+        ['name' => 'Banana'],
+        ['name' => 'Apple'],
+    ]
+];
+
+$rules = [
+    'products.*.name' => 'required|string',
+];
+
+```
+
+This allows you to validate all elements of a collection with the same structure.
 
 ## Features
 
