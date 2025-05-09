@@ -85,7 +85,7 @@ class Validator extends RulesMaped
     }
 
     /**
-     * Validate fields based on specified rules.
+     * Validate fields based on specified rules, entry point.
      */
     protected function validate()
     {
@@ -98,6 +98,14 @@ class Validator extends RulesMaped
         }
     }
 
+    /**
+     * Resolve wildcard paths within the data array.
+     *
+     * @param mixed $data Current data subset being examined.
+     * @param array $segments Segments of the wildcard path.
+     * @param string $currentPath Path prefix used for recursion.
+     * @return array List of resolved paths matching the wildcard.
+     */
     protected function resolveWildcardPaths($data, array $segments, string $currentPath = ''): array
     {
         $segment = array_shift($segments);
@@ -130,7 +138,13 @@ class Validator extends RulesMaped
         return $paths;
     }
 
-    protected function applyRulesToWildcardField(string $wildcardField, $fieldRules)
+    /**
+     * Apply rules to fields that use a wildcard (*) in their path.
+     *
+     * @param string $wildcardField Field name containing a wildcard.
+     * @param mixed $fieldRules Rules to apply to the matched paths(array, string, or RuleInterface).
+     */
+    protected function applyRulesToWildcardField(string $wildcardField, array|string|RuleInterface $fieldRules)
     {
         $paths = $this->resolveWildcardPaths($this->data, explode('.', $wildcardField));
         if (empty($paths)) {
@@ -144,7 +158,13 @@ class Validator extends RulesMaped
     }
 
 
-    protected function applyRulesToField(string $field, $fieldRules)
+    /**
+     * Apply validation rules to a specific field.
+     *
+     * @param string $field The field name to validate.
+     * @param mixed $fieldRules The rules to apply (array, string, or RuleInterface).
+     */
+    protected function applyRulesToField(string $field, array|string|RuleInterface $fieldRules)
     {
         if (is_a($fieldRules, RuleInterface::class, true)) {
             return $this->checkPasses($fieldRules, $field);
@@ -200,11 +220,11 @@ class Validator extends RulesMaped
     }
 
     /**
-     * Resolve a wildcard segment in the data array.
+     * Resolve a wildcard segment recursively in the data array to fetch the value.
      *
-     * @param mixed $data Data to resolve.
-     * @param array $segments Array of segments to resolve.
-     * @return mixed Resolved value or null if not found.
+     * @param mixed $data The current level of data to process.
+     * @param array $segments Remaining segments of the path.
+     * @return mixed The resolved value or null.
      */
     protected function resolveWildcardSegment($data, array $segments)
     {
