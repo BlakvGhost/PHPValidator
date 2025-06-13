@@ -1,9 +1,9 @@
 <div align="center">
 
-<img src="https://php-validator.username-blakvghost.com/assets/logo/svg/logo-no-background1.svg" alt="logo PHPValidator for Black Background" height="200">
+<img src="https://php-validator.ferraydigitalsolutions.bj/assets/logo/svg/logo-no-background1.svg" alt="logo PHPValidator for Black Background" height="200">
 <br>
 <br>
-<img src="https://php-validator.username-blakvghost.com/assets/logo/png/logo-color1.png" alt="logo PHPValidator for White Background" height="200">
+<img src="https://php-validator.ferraydigitalsolutions.bj/assets/logo/png/logo-color1.png" alt="logo PHPValidator for White Background" height="200">
 
 <p>
 
