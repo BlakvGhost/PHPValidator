@@ -71,7 +71,7 @@ it('validates required fields using wildcards notation', function () {
     $validator = new Validator($data, [
         'users.*.name' => 'nullable',
     ]);
-    var_dump($validator->getErrors(), $validator->isValid());
+
     expect($validator->isValid())->toBeTrue();
     expect($validator->getErrors())->toBe([]);
 });
@@ -304,10 +304,25 @@ it('validates nullable rule successfully', function () {
     expect($validator->isValid())->toBeTrue();
 
     $validator = new Validator(['nullableField' => 'NotNull'], ['nullableField' => 'nullable']);
+    expect($validator->isValid())->toBeTrue();
+});
+
+it('validates not nullable rule successfully', function () {
+
+    $validator = new Validator(
+        ['nullableField' => 'NotNull'],
+        ['nullableField' => 'not_nullable']
+    );
+    expect($validator->isValid())->toBeTrue();
+
+    $validator = new Validator(
+        ['nullableField' => null],
+        ['nullableField' => 'not_nullable']
+    );
     expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['nullableField'][0])->toBe(
-        LangManager::getTranslation('validation.nullable_rule', [
+        LangManager::getTranslation('validation.not_nullable_rule', [
             'attribute' => 'nullableField',
         ])
     );

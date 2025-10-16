@@ -205,7 +205,11 @@ class Validator extends RulesMaped
     {
         $value = $this->getNestedValue($this->data, $field);
 
-        if ($value === null && $ruleName !== 'required') return;
+        $skipNullRules = ['required', 'not_nullable'];
+
+        if ($value === null && !in_array($ruleName, $skipNullRules)) {
+            return;
+        }
 
         if (!$validator->passes($field, $value, $this->data)) {
             $assert = isset($ruleName) && isset($this->messages[$field][$ruleName]);
@@ -213,6 +217,7 @@ class Validator extends RulesMaped
             $this->addError($field, $message);
         }
     }
+
 
     /**
      * Retrieve a nested value from the data array using dot notation.

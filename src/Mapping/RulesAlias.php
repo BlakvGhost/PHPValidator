@@ -28,6 +28,7 @@ use BlakvGhost\PHPValidator\Rules\LowerCaseRule;
 use BlakvGhost\PHPValidator\Rules\MaxLengthRule;
 use BlakvGhost\PHPValidator\Rules\MinLengthRule;
 use BlakvGhost\PHPValidator\Rules\NotInRule;
+use BlakvGhost\PHPValidator\Rules\NotNullableRule;
 use BlakvGhost\PHPValidator\Rules\NullableRule;
 use BlakvGhost\PHPValidator\Rules\NumericRule;
 use BlakvGhost\PHPValidator\Rules\PasswordRule;
@@ -74,5 +75,6 @@ trait RulesAlias
         'size' => SizeRule::class,
         'url' => UrlRule::class,
         'ip' => ValidIpRule::class,
+        'not_nullable' => NotNullableRule::class,
     ];
 }
