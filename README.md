@@ -255,63 +255,70 @@ PHPValidator provides a variety of predefined rules that you can use for data va
     'optional_field' => 'nullable'
     ```
 
-16. **Password Rule**
+16. **Not Nullable Rule**
+    - Must not be `null` or `empty`.
+
+    ```php
+    'optional_field' => 'not_nullable'
+    ```
+
+17. **Password Rule**
     - Validates that a field is a `secure password`.
 
     ```php
     'password' => 'password'
     ```
 
-17. **Same Rule**
+18. **Same Rule**
     - Validates that a field's value is the same as the value of another field.
 
     ```php
     'password_confirmation' => 'same:password'
     ```
 
-18. **Max Length Rule**
+19. **Max Length Rule**
     - Specifies the minimum length of a string field.
 
     ```php
     'username' => 'min:8'
     ```
 
-19. **Not In Rule**
+20. **Not In Rule**
     - Validates that a field's value is not in a specified set.
 
     ```php
     'value' => 'not_in:foo,bar'
     ```
 
-20. **Required With Rule**
+21. **Required With Rule**
     - Requires the field to be present if another specified field is present.
 
     ```php
     'firstname' => 'required_with:lastname',
     ```
 
-21. **Valid IP Rule**
+22. **Valid IP Rule**
     - Validates that a field's value is a valid IP address.
 
     ```php
     'client_ip' => 'ip',
     ```
 
-22. **Json Rule**
+23. **Json Rule**
     - Validates that a field's value is a valid JSON string.
 
     ```php
     'config' => 'json',
     ```
 
-23. **URL Rule**
+24. **URL Rule**
     - Validates that a field's value is a valid URL.
 
     ```php
     'website' => 'url',
     ```
 
-24. **Alpha Numeric Rule**
+25. **Alpha Numeric Rule**
 
     - Validates that a field's value contains only alphanumeric characters.
 
@@ -319,7 +326,7 @@ PHPValidator provides a variety of predefined rules that you can use for data va
     'pseudo' => 'alpha_num',
     ```
 
-25. **Boolean Rule**
+26. **Boolean Rule**
 
     - Validates that a field's value is a boolean.
 
@@ -327,7 +334,7 @@ PHPValidator provides a variety of predefined rules that you can use for data va
     'is_admin' => 'bool',
     ```
 
-26. **Size Rule**
+27. **Size Rule**
     - Validates that the size of a string, integer, array, or file is equal to a specified value.
 
     ```php
@@ -339,12 +346,41 @@ PHPValidator provides a variety of predefined rules that you can use for data va
         ]
     ```
 
-27. **Not Required With Rule**
+28. **Not Required With Rule**
     - Requires the field not be present if another specified field is present.
 
     ```php
     'email' => 'not_required_with:phone_number',
     ```
+
+## Validated Data Extraction
+
+The method `validated()` returns only fields that:
+
+- have validation rules, and
+
+- passed validation successfully.
+  
+```php
+$data = [
+    'name' => 'John',
+    'age' => 30,
+    'extra_field' => 'ignored'
+];
+
+$validator = new Validator($data, [
+    'name' => 'required',
+    'age' => 'required',
+]);
+
+$validated = $validator->validated();
+
+// Output:
+[
+    'name' => 'John',
+    'age' => 30
+]
+```
 
 ## Custom Rule
 
@@ -455,6 +491,30 @@ class CustomPasswordRule implements Rule
     ```
 
 In this example, we created a CustomPasswordRule that checks if the password is equal to confirm_password. You can customize the passes method to implement your specific validation logic.
+
+## Testing
+
+PHPValidator is fully tested using [PestPHP](https://pestphp.com/)
+
+Run all tests:
+
+```bash
+composer test
+```
+
+Or manually:
+
+```bash
+./vendor/bin/pest
+```
+
+You can find the tests in the `/tests/Feature` directory, including examples for:
+
+- `nullable` and `not_nullable` rules
+
+- `validated()` behavior
+
+- nested and wildcard validations
 
 ## Contributing
 
