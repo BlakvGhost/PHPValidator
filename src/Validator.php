@@ -5,7 +5,7 @@
  *
  * @package BlakvGhost\PHPValidator
  * @author Kabirou ALASSANE
- * @website https://username-blakvghost.com
+ * @website https://kabiroualassane.link
  * @github https://github.com/BlakvGhost
  */
 
@@ -20,6 +20,7 @@ class Validator extends RulesMaped
 {
 
     private array $errors = [];
+    private array $validatedData = [];
 
     private const LANGUAGE = 'en';
 
@@ -96,6 +97,13 @@ class Validator extends RulesMaped
                 $this->applyRulesToField($field, $fieldRules);
             }
         }
+
+        // build $validatedData
+        foreach ($this->data as $key => $value) {
+            if (!isset($this->errors[$key])) {
+                $this->validatedData[$key] = $value;
+            }
+        }
     }
 
     /**
@@ -112,7 +120,7 @@ class Validator extends RulesMaped
         $paths = [];
 
         if ($segment === '*') {
-            if (!is_array($data)) return [];
+            if (!is_array($data) && !is_object($data)) return [];
 
             foreach ($data as $key => $value) {
                 $newPath = "$currentPath$key";
@@ -124,12 +132,14 @@ class Validator extends RulesMaped
                 }
             }
         } else {
-            if (isset($data[$segment])) {
+            if ((is_array($data) && isset($data[$segment])) || (is_object($data) && property_exists($data, $segment))) {
                 $newPath = "$currentPath$segment";
+                $nextData = is_array($data) ? $data[$segment] : $data->{$segment};
+
                 if (empty($segments)) {
                     $paths[] = $newPath;
                 } else {
-                    $subPaths = $this->resolveWildcardPaths($data[$segment], $segments, $newPath . '.');
+                    $subPaths = $this->resolveWildcardPaths($nextData, $segments, $newPath . '.');
                     $paths = array_merge($paths, $subPaths);
                 }
             }
@@ -157,7 +167,6 @@ class Validator extends RulesMaped
         }
     }
 
-
     /**
      * Apply validation rules to a specific field.
      *
@@ -184,7 +193,6 @@ class Validator extends RulesMaped
             }
         }
     }
-
 
     /**
      * Check if a rule passes validation and add an error if it fails.
@@ -231,34 +239,37 @@ class Validator extends RulesMaped
         $segment = array_shift($segments);
 
         if ($segment === '*') {
-            if (!is_array($data)) {
-                return null;
-            }
+            if (!is_array($data) && !is_object($data)) return null;
 
             $results = [];
             foreach ($data as $item) {
                 $resolved = $this->resolveWildcardSegment($item, $segments);
                 if (is_array($resolved)) {
                     $results = array_merge($results, $resolved);
-                } elseif (!$resolved === null) {
+                } elseif ($resolved !== null) {
                     $results[] = $resolved;
                 }
             }
             return $results;
         }
 
+        if (is_object($data)) {
+            if (property_exists($data, $segment)) {
+                return $this->resolveWildcardSegment($data->{$segment}, $segments);
+            }
+            return null;
+        }
+
         if (is_array($data)) {
             if (array_key_exists($segment, $data)) {
                 return $this->resolveWildcardSegment($data[$segment], $segments);
-            } elseif ($segment && ctype_digit($segment) && isset($data[(int) $segment])) {
-                return $this->resolveWildcardSegment($data[(int) $segment], $segments);
+            } elseif ($segment && ctype_digit($segment) && isset($data[(int)$segment])) {
+                return $this->resolveWildcardSegment($data[(int)$segment], $segments);
             }
         }
 
         return $data;
     }
-
-
 
     /**
      * Validate constructor inputs to ensure required data and rules are provided.
@@ -298,5 +309,21 @@ class Validator extends RulesMaped
     public function isValid(): bool
     {
         return count($this->errors) < 1;
+    }
+
+    /**
+     * Returns only validated data (fields without errors)
+     */
+    public function validated(): array
+    {
+        $validated = [];
+
+        foreach ($this->data as $key => $value) {
+            if (!array_key_exists($key, $this->errors)) {
+                $validated[$key] = $value;
+            }
+        }
+
+        return $validated;
     }
 }

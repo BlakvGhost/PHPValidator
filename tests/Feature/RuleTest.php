@@ -59,6 +59,21 @@ it('validates required fields using wildcards notation', function () {
     );
     expect($validator->isValid())->toBeFalse();
     expect($validator->getErrors())->toHaveKey('users.*.name');
+
+
+    $data = [
+        'users' => [
+            (object)['name' => null],
+            (object)['name' => 'Alice'],
+        ]
+    ];
+
+    $validator = new Validator($data, [
+        'users.*.name' => 'nullable',
+    ]);
+    var_dump($validator->getErrors(), $validator->isValid());
+    expect($validator->isValid())->toBeTrue();
+    expect($validator->getErrors())->toBe([]);
 });
 
 it('validates nested required fields using dot notation', function () {
