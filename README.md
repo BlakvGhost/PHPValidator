@@ -1,14 +1,17 @@
-<p align="center">
-  
-![PHPValidator Logo (Dark)](https://php-validator.ferraydigitalsolutions.bj/assets/logo/svg/logo-no-background1.svg)
+<div align="center">
 
-![PHPValidator Logo (Light)](https://php-validator.ferraydigitalsolutions.bj/assets/logo/png/logo-color1.png)
+<img src="https://php-validator.ferraydigitalsolutions.bj/assets/logo/svg/logo-no-background1.svg" alt="logo PHPValidator for Black Background" height="200">
+<br>
+<br>
+<img src="https://php-validator.ferraydigitalsolutions.bj/assets/logo/png/logo-color1.png" alt="logo PHPValidator for White Background" height="200">
 
-[![Packagist Version](https://img.shields.io/packagist/v/BlakvGhost/php-validator?label=stable)](https://packagist.org/packages/blakvghost/php-validator)
-[![License](https://img.shields.io/packagist/l/BlakvGhost/php-validator?label=Licence)](https://packagist.org/packages/blakvghost/php-validator)
-[![Downloads](https://img.shields.io/packagist/dt/BlakvGhost/php-validator?label=download)](https://packagist.org/packages/blakvghost/php-validator)
+<p>
 
+![Packagist Version (custom server)](https://img.shields.io/packagist/v/BlakvGhost/php-validator?label=stable)
+![Packagist Version (custom server)](https://img.shields.io/packagist/l/BlakvGhost/php-validator?label=Licence)
+![Packagist Version (custom server)](https://img.shields.io/packagist/dt/BlakvGhost/php-validator?label=download)
 </p>
+</div>
 
 ## About PHPValidator
 
