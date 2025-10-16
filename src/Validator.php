@@ -323,9 +323,9 @@ class Validator extends RulesMaped
     {
         $validated = [];
 
-        foreach ($this->data as $key => $value) {
-            if (!array_key_exists($key, $this->errors)) {
-                $validated[$key] = $value;
+        foreach ($this->rules as $key => $_) {
+            if (!array_key_exists($key, $this->errors) && array_key_exists($key, $this->data)) {
+                $validated[$key] = $this->data[$key];
             }
         }
 

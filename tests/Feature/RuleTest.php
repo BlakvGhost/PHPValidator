@@ -328,6 +328,39 @@ it('validates not nullable rule successfully', function () {
     );
 });
 
+it('returns only validated data using validated()', function () {
+    $data = [
+        'name' => 'John',
+        'age' => null
+    ];
+
+    $validator = new Validator($data, [
+        'name' => 'required',
+        'age' => 'required',
+    ]);
+
+    expect($validator->isValid())->toBeFalse();
+    expect($validator->validated())->toBe([
+        'name' => 'John'
+    ]);
+
+    $data = [
+        'name' => 'John',
+        'age' => 30,
+        'extra_field' => 'should be ignored'
+    ];
+    $validator = new Validator($data, [
+        'name' => 'required',
+        'age' => 'required',
+    ]);
+    expect($validator->isValid())->toBeTrue();
+    expect($validator->validated())->toBe([
+        'name' => 'John',
+        'age' => 30,
+    ]);
+});
+
+
 it('validates in rule successfully', function () {
     $validValues = 'value1,value2,value3';
 
