@@ -59,6 +59,21 @@ it('validates required fields using wildcards notation', function () {
     );
     expect($validator->isValid())->toBeFalse();
     expect($validator->getErrors())->toHaveKey('users.*.name');
+
+
+    $data = [
+        'users' => [
+            (object)['name' => null],
+            (object)['name' => 'Alice'],
+        ]
+    ];
+
+    $validator = new Validator($data, [
+        'users.*.name' => 'nullable',
+    ]);
+
+    expect($validator->isValid())->toBeTrue();
+    expect($validator->getErrors())->toBe([]);
 });
 
 it('validates nested required fields using dot notation', function () {
@@ -289,14 +304,62 @@ it('validates nullable rule successfully', function () {
     expect($validator->isValid())->toBeTrue();
 
     $validator = new Validator(['nullableField' => 'NotNull'], ['nullableField' => 'nullable']);
+    expect($validator->isValid())->toBeTrue();
+});
+
+it('validates not nullable rule successfully', function () {
+
+    $validator = new Validator(
+        ['nullableField' => 'NotNull'],
+        ['nullableField' => 'not_nullable']
+    );
+    expect($validator->isValid())->toBeTrue();
+
+    $validator = new Validator(
+        ['nullableField' => null],
+        ['nullableField' => 'not_nullable']
+    );
     expect($validator->isValid())->toBeFalse();
 
     expect($validator->getErrors()['nullableField'][0])->toBe(
-        LangManager::getTranslation('validation.nullable_rule', [
+        LangManager::getTranslation('validation.not_nullable_rule', [
             'attribute' => 'nullableField',
         ])
     );
 });
+
+it('returns only validated data using validated()', function () {
+    $data = [
+        'name' => 'John',
+        'age' => null
+    ];
+
+    $validator = new Validator($data, [
+        'name' => 'required',
+        'age' => 'required',
+    ]);
+
+    expect($validator->isValid())->toBeFalse();
+    expect($validator->validated())->toBe([
+        'name' => 'John'
+    ]);
+
+    $data = [
+        'name' => 'John',
+        'age' => 30,
+        'extra_field' => 'should be ignored'
+    ];
+    $validator = new Validator($data, [
+        'name' => 'required',
+        'age' => 'required',
+    ]);
+    expect($validator->isValid())->toBeTrue();
+    expect($validator->validated())->toBe([
+        'name' => 'John',
+        'age' => 30,
+    ]);
+});
+
 
 it('validates in rule successfully', function () {
     $validValues = 'value1,value2,value3';

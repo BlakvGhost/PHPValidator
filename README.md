@@ -1,9 +1,9 @@
 <div align="center">
 
-<img src="https://php-validator.ferraydigitalsolutions.bj/assets/logo/svg/logo-no-background1.svg" alt="logo PHPValidator for Black Background" height="200">
+<img src="docs/logo-no-background.svg" alt="logo PHPValidator for Black Background" height="200">
 <br>
 <br>
-<img src="https://php-validator.ferraydigitalsolutions.bj/assets/logo/png/logo-color1.png" alt="logo PHPValidator for White Background" height="200">
+<img src="docs/logo-with-background.png" alt="logo PHPValidator for White Background" height="200">
 
 <p>
 
@@ -15,24 +15,27 @@
 
 ## About PHPValidator
 
-PHPValidator is a modern PHP library for data validation in your PHP applications. It provides a flexible and extensible way to validate data using predefined rules or by creating custom validation rules.
+A modern PHP library for data validation in your applications. PHPValidator provides a flexible and extensible approach to validating data using predefined rules or by creating custom validation rules.
+
+---
 
 ## Installation
 
-Use [Composer](https://getcomposer.org/) to install PHPValidator:
+Install PHPValidator via Composer:
 
 ```bash
 composer require blakvghost/php-validator
 ```
 
-## Usage
+---
+
+## Quick Start
 
 ```php
 use BlakvGhost\PHPValidator\Validator;
 use BlakvGhost\PHPValidator\ValidatorException;
 
 try {
-
     $data = [
         'username' => 'BlakvGhost',
         'email' => 'example@example.com',
@@ -48,14 +51,12 @@ try {
             ],
         ],
     ];
-    // or
-    // $data = $_POST;
 
     $validator = new Validator($data, [
         'username' => 'required|string',
         'email' => 'required|email',
         'tags.*.name' => 'required|string',
-        'score' => ['required','max:200', new CustomRule()],
+        'score' => ['required', 'max:200', new CustomRule()],
         'password' => new CustomRule(),
         'friend.profile.first_name' => 'required|string',
     ]);
@@ -69,40 +70,41 @@ try {
 } catch (ValidatorException $e) {
     echo "Validation error: " . $e->getMessage();
 }
-
 ```
 
-You can also customize the validation error messages or `specify the default language`
+---
+
+## Customize Messages
+
+You can customize error messages or specify the default language:
 
 ```php
-$data = [
-    'username' => 'BlakvGhost',
-];
+$data = ['username' => 'BlakvGhost'];
 
 $validator = new Validator(
     $data,
-    [
-        'username' => 'required|string',
-    ],
+    ['username' => 'required|string'],
     [
         'username' => [
-            'required' => 'Votre nom d\'utilisateur doit être présent',
-            'string' => 'Votre nom d\'utilisateur doit forcément être une chaîne de caractère',
-            ],
-        ]
-    );
-    
-    // For the default language
-    $validator = new Validator($data, $rules, lang: 'fr');
+            'required' => 'Your username must be present',
+            'string' => 'Your username must be a string',
+        ],
+    ]
+);
+
+// Or set the default language
+$validator = new Validator($data, $rules, lang: 'en');
 ```
+
+---
 
 ## Nested and Wildcard Notation
 
-PHPValidator supports `dot notation` for validating deeply nested fields, as well as wildcard notation (`*`) to apply rules across arrays of data.
+PHPValidator supports dot notation for validating deeply nested fields, as well as wildcard notation (`*`) to apply rules across arrays of data.
 
 ### Nested Keys
 
-You can validate nested fields using `dot notation`:
+Validate nested fields using dot notation:
 
 ```php
 $data = [
@@ -133,227 +135,140 @@ $data = [
 $rules = [
     'products.*.name' => 'required|string',
 ];
-
 ```
 
-This allows you to validate all elements of a collection with the same structure.
+---
 
-## Features
+## Key Features
 
-- `Predefined Rules`: PHPValidator comes with a set of predefined validation rules such as required, string, email, maxLength etc.
+- **Predefined Rules** : A comprehensive set of ready-to-use validation rules (required, string, email, maxLength, etc.)
+- **Custom Rules** : Easily create your own validation rules by implementing the `Rule` interface
+- **Multilingual Support** : Customize error messages according to your application's language
+- **Nested Validation** : Validate complex data structures with dot notation
+- **Wildcard Notation** : Apply rules to all elements in an array
 
-- `Custom Rules`: Easily create custom validation rules by implementing the `Rule` Interface.
+---
 
-- `Multilingual Support`: Customize validation error messages based on the application's language using the `LangManager`.
+## Predefined Rules
 
-## List of Predefined Rules
+### Basic Validation
 
-PHPValidator provides a variety of predefined rules that you can use for data validation. Here is a list of some commonly used rules along with examples of their usage:
+| Rule | Example | Description |
+|------|---------|-------------|
+| `required` | `'username' => 'required'` | Ensures the field is present in the data |
+| `string` | `'username' => 'string'` | Checks if the field is of string type |
+| `nullable` | `'optional_field' => 'nullable'` | Allows the field to be null or empty |
+| `not_nullable` | `'optional_field' => 'not_nullable'` | The field must not be null or empty |
 
-1. **Required Rule**
-    - Ensures that a field is present in the data.
+### Text Validation
 
-    ```php
-    'username' => 'required'
-    ```
+| Rule | Example | Description |
+|------|---------|-------------|
+| `email` | `'email' => 'email'` | Validates a well-formed email address |
+| `alpha` | `'name' => 'alpha'` | Contains only alphabetic characters |
+| `numeric` | `'age' => 'numeric'` | Contains only numeric characters |
+| `alpha_num` | `'pseudo' => 'alpha_num'` | Contains only alphanumeric characters |
+| `lowercase` | `'username' => 'lowercase'` | Contains only lowercase alphabetic characters |
+| `uppercase` | `'username' => 'uppercase'` | Contains only uppercase alphabetic characters |
 
-2. **String Rule**
-    - Checks if a field is of string type.
+### Length Validation
 
-    ```php
-    'username' => 'string'
-    ```
+| Rule | Example | Description |
+|------|---------|-------------|
+| `min` | `'username' => 'min:8'` | Minimum length of a string |
+| `max` | `'username' => 'max:25'` | Maximum length of a string |
+| `size` | `'string' => 'size:7'` | Exact size of a string, integer, array, or file |
 
-3. **Email Rule**
-    - Validates that a field is a well-formed email address.
-
-    ```php
-    'email' => 'email'
-    ```
-
-4. **Max Length Rule**
-    - Specifies the maximum length of a string field.
-
-    ```php
-    'username' => 'max:25'
-    ```
-
-5. **Confirmed Rule**
-    - Checks if a field's value is the same as another field (commonly used for password confirmation).
-
-    ```php
-    'password_confirmation' => 'confirmed:password'
-    ```
-
-6. **File Rule**
-    - Validates that a field is a file upload.
-
-    ```php
-    'file' => 'file'
-    ```
-
-7. **Accepted Rule**
-    - Validates that a field is `"yes"`, `"on"`, `"1"`, or `true`. Useful for checkboxes.
-
-    ```php
-    'terms_and_conditions' => 'accepted'
-    ```
-
-8. **Accepted If Rule**
-    - Validates that a field is accepted if another field is equal to a specified value.
-
-    ```php
-    'terms_and_conditions' => 'accepted_if:is_adult,true'
-    ```
-
-9. **ActiveURL Rule**
-    - Validates that a field is a valid, active URL.
-
-    ```php
-    'website' => 'active_url'
-    ```
-
-10. **Alpha Rule**
-    - Validates that a field contains only alphabetic characters.
-
-    ```php
-    'name' => 'alpha'
-    ```
-
-11. **Numeric Rule**
-    - Validates that a field contains only numeric characters.
-
-    ```php
-    'age' => 'numeric'
-    ```
-
-12. **Lowercase Rule**
-    - Validates that a field contains only lowercase alphabetic characters.
-
-    ```php
-    'username' => 'lowercase'
-    ```
-
-13. **Uppercase Rule**
-    - Validates that a field contains only uppercase alphabetic characters.
-
-    ```php
-    'username' => 'uppercase'
-    ```
-
-14. **In Rule**
-    - Validates that a field's value is among a list of predefined values.
-
-    ```php
-    'role' => 'in:admin,editor,viewer'
-    ```
-
-15. **Nullable Rule**
-    - Allows a field to be `null` or empty.
-
-    ```php
-    'optional_field' => 'nullable'
-    ```
-
-16. **Password Rule**
-    - Validates that a field is a `secure password`.
-
-    ```php
-    'password' => 'password'
-    ```
-
-17. **Same Rule**
-    - Validates that a field's value is the same as the value of another field.
-
-    ```php
-    'password_confirmation' => 'same:password'
-    ```
-
-18. **Max Length Rule**
-    - Specifies the minimum length of a string field.
-
-    ```php
-    'username' => 'min:8'
-    ```
-
-19. **Not In Rule**
-    - Validates that a field's value is not in a specified set.
-
-    ```php
-    'value' => 'not_in:foo,bar'
-    ```
-
-20. **Required With Rule**
-    - Requires the field to be present if another specified field is present.
-
-    ```php
-    'firstname' => 'required_with:lastname',
-    ```
-
-21. **Valid IP Rule**
-    - Validates that a field's value is a valid IP address.
-
-    ```php
-    'client_ip' => 'ip',
-    ```
-
-22. **Json Rule**
-    - Validates that a field's value is a valid JSON string.
-
-    ```php
-    'config' => 'json',
-    ```
-
-23. **URL Rule**
-    - Validates that a field's value is a valid URL.
-
-    ```php
-    'website' => 'url',
-    ```
-
-24. **Alpha Numeric Rule**
-
-    - Validates that a field's value contains only alphanumeric characters.
-
-    ```php
-    'pseudo' => 'alpha_num',
-    ```
-
-25. **Boolean Rule**
-
-    - Validates that a field's value is a boolean.
-
-    ```php
-    'is_admin' => 'bool',
-    ```
-
-26. **Size Rule**
-    - Validates that the size of a string, integer, array, or file is equal to a specified value.
-
-    ```php
-        [
-            'string' =>'size:7', // strlen(string) == 7
-            'integer' =>'size:7', // integer == 7
-            'array' =>'size:7', // count(array) == 7
-            'file' =>'size:512', // file size (kb) == 512
-        ]
-    ```
-
-27. **Not Required With Rule**
-    - Requires the field not be present if another specified field is present.
-
-    ```php
-    'email' => 'not_required_with:phone_number',
-    ```
-
-## Custom Rule
-
-In addition to the predefined rules, you can create custom validation rules by implementing the `Rule` Interface. Here's an example of how to create and use a custom rule:
-
-### CustomPasswordRule.php
+**Size Rule Examples:**
 
 ```php
-// CustomPasswordRule.php
+[
+    'string' => 'size:7',          // strlen(string) == 7
+    'integer' => 'size:7',         // integer == 7
+    'array' => 'size:7',           // count(array) == 7
+    'file' => 'size:512',          // file size (kb) == 512
+]
+```
+
+### Comparison Validation
+
+| Rule | Example | Description |
+|------|---------|-------------|
+| `in` | `'role' => 'in:admin,editor,viewer'` | Value must be in a predefined list |
+| `not_in` | `'value' => 'not_in:foo,bar'` | Value must not be in the specified list |
+| `same` | `'password_confirmation' => 'same:password'` | Field value equals another field's value |
+| `confirmed` | `'password_confirmation' => 'confirmed:password'` | Field matches another field (for confirmation) |
+
+### Security Validation
+
+| Rule | Example | Description |
+|------|---------|-------------|
+| `password` | `'password' => 'password'` | Validates a secure password |
+
+### File and URL Validation
+
+| Rule | Example | Description |
+|------|---------|-------------|
+| `file` | `'file' => 'file'` | Validates that a field is a file upload |
+| `url` | `'website' => 'url'` | Validates that a field is a valid URL |
+| `active_url` | `'website' => 'active_url'` | Validates that a field is a valid, active URL |
+
+### Format Validation
+
+| Rule | Example | Description |
+|------|---------|-------------|
+| `bool` | `'is_admin' => 'bool'` | Validates that a field is a boolean |
+| `ip` | `'client_ip' => 'ip'` | Validates that a field is a valid IP address |
+| `json` | `'config' => 'json'` | Validates that a field is a valid JSON string |
+
+### Conditional Validation
+
+| Rule | Example | Description |
+|------|---------|-------------|
+| `accepted` | `'terms_and_conditions' => 'accepted'` | Field is "yes", "on", "1", or true (useful for checkboxes) |
+| `accepted_if` | `'terms_and_conditions' => 'accepted_if:is_adult,true'` | Field is accepted if another field equals a value |
+| `required_with` | `'firstname' => 'required_with:lastname'` | Field is required if another field is present |
+| `not_required_with` | `'email' => 'not_required_with:phone_number'` | Field must not be present if another field is present |
+
+---
+
+## Extract Validated Data
+
+The `validated()` method returns only fields that:
+
+- have validation rules
+- passed validation successfully
+
+```php
+$data = [
+    'name' => 'John',
+    'age' => 30,
+    'extra_field' => 'ignored'
+];
+
+$validator = new Validator($data, [
+    'name' => 'required',
+    'age' => 'required',
+]);
+
+$validated = $validator->validated();
+
+// Result:
+[
+    'name' => 'John',
+    'age' => 30
+]
+```
+
+---
+
+## Create Custom Rules
+
+Beyond predefined rules, you can create your own validation rules by implementing the `Rule` interface.
+
+### Example: CustomPasswordRule.php
+
+```php
 namespace YourNameSpace\Rules;
 
 use BlakvGhost\PHPValidator\Contracts\Rule;
@@ -370,103 +285,120 @@ class CustomPasswordRule implements Rule
     {
         $this->field = $field;
         // Implement your custom validation logic here
-        // Example: Check if the password is equal to confirm_password
+        // Example: Check if the password equals confirm_password
         return $value === $data['confirm_password'];
     }
 
     public function message(): string
     {
-        return "Vos deux mot de passes ne sont pas identiques";
+        return "Your passwords do not match";
     }
 }
 ```
 
 ### Usage in Validator
 
-- Use your custom class directly
+**Method 1: Use your class directly**
 
-    ```php
+```php
+use BlakvGhost\PHPValidator\Validator;
+use BlakvGhost\PHPValidator\ValidatorException;
+use YourNameSpace\CustomPasswordRule;
 
-    use BlakvGhost\PHPValidator\Validator;
-    use BlakvGhost\PHPValidator\ValidatorException;
+try {
+    $data = [
+        'password' => '42',
+        'confirm_password' => '142',
+    ];
 
-    use YourNameSpace\CustomPasswordRule;
+    $validator = new Validator($data, [
+        'password' => ['required', new CustomPasswordRule()],
+    ]);
 
-
-    // ...
-
-    try {
-
-        $data = [
-            'password' => '42',
-            'confirm_password' => '142',
-        ];
-        // or
-        // $data = $_POST;
-
-        $validator = new Validator($data, [
-            'password' => ['required', new CustomPasswordRule()],
-        ]);
-
-        if ($validator->isValid()) {
-            echo "Validation passed!";
-        } else {
-            $errors = $validator->getErrors();
-            print_r($errors);
-        }
-    } catch (ValidatorException $e) {
-        echo "Validation error: " . $e->getMessage();
+    if ($validator->isValid()) {
+        echo "Validation passed!";
+    } else {
+        print_r($validator->getErrors());
     }
-    ```
+} catch (ValidatorException $e) {
+    echo "Error: " . $e->getMessage();
+}
+```
 
-- Add your custom class to the rules list and use it as if it were native
+**Method 2: Add to the rules list and use as a native rule**
 
-    ```php
+```php
+use BlakvGhost\PHPValidator\Validator;
+use BlakvGhost\PHPValidator\ValidatorException;
+use BlakvGhost\PHPValidator\Mapping\RulesMaped;
+use YourNameSpace\CustomPasswordRule;
 
-    use BlakvGhost\PHPValidator\Validator;
-    use BlakvGhost\PHPValidator\ValidatorException;
-    use BlakvGhost\PHPValidator\Mapping\RulesMaped;
+// Add your rule with an alias and the full namespace
+RulesMaped::addRule('c_password', CustomPasswordRule::class);
 
-    use YourNameSpace\CustomPasswordRule;
+try {
+    $data = [
+        'password' => '42',
+        'confirm_password' => '142',
+    ];
 
-    // Add your rule here using an alias and the full namespace of your custom class
-    RulesMaped::addRule('c_password', CustomPasswordRule::class);
+    $validator = new Validator($data, [
+        'password' => 'required|c_password',
+    ]);
 
-    try {
-
-        $data = [
-            'password' => '42',
-            'confirm_password' => '142',
-        ];
-
-        $validator = new Validator($data, [
-            'password' => 'required|c_password',
-        ]);
-
-        if ($validator->isValid()) {
-            echo "Validation passed!";
-        } else {
-            $errors = $validator->getErrors();
-            print_r($errors);
-        }
-    } catch (ValidatorException $e) {
-        echo "Validation error: " . $e->getMessage();
+    if ($validator->isValid()) {
+        echo "Validation passed!";
+    } else {
+        print_r($validator->getErrors());
     }
-    ```
+} catch (ValidatorException $e) {
+    echo "Error: " . $e->getMessage();
+}
+```
 
-In this example, we created a CustomPasswordRule that checks if the password is equal to confirm_password. You can customize the passes method to implement your specific validation logic.
+---
+
+## Testing
+
+PHPValidator is fully tested using [PestPHP](https://pestphp.com/).
+
+Run all tests:
+
+```bash
+composer test
+```
+
+Or manually:
+
+```bash
+./vendor/bin/pest
+```
+
+Tests are located in the `/tests/Feature` directory and include examples for:
+
+- `nullable` and `not_nullable` rules
+- `validated()` behavior
+- Nested and wildcard validations
+
+---
 
 ## Contributing
 
 If you would like to contribute to PHPValidator, please follow our [Contribution Guidelines](CONTRIBUTING.md).
 
-## Authors
+---
 
-- [Kabirou ALASSANE](https://github.com/BlakvGhost)
+## Author
+
+**Kabirou ALASSANE** - [GitHub](https://github.com/BlakvGhost)
+
+---
 
 ## Support
 
-For support, you can reach out to me by email at <kabirou.alassane@ferraydigitalsolutions.bj>. Feel free to contact me if you have any questions or need assistance with PHPValidator.
+For questions or assistance with PHPValidator, you can contact me at [https://kabiroualassane.link](https://kabiroualassane.link).
+
+---
 
 ## License
 

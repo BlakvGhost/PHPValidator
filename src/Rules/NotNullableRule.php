@@ -1,7 +1,7 @@
 <?php
 
 /**
- * NullableRule - A validation rule implementation for checking if a field's value is nullable.
+ * NotNullableRule - A validation rule implementation for checking if a field's value is not null.
  *
  * @package BlakvGhost\PHPValidator\Rules
  * @author Kabirou ALASSANE
@@ -14,7 +14,7 @@ namespace BlakvGhost\PHPValidator\Rules;
 use BlakvGhost\PHPValidator\Contracts\Rule;
 use BlakvGhost\PHPValidator\Lang\LangManager;
 
-class NullableRule implements Rule
+class NotNullableRule implements Rule
 {
     /**
      * Name of the field being validated.
@@ -24,7 +24,7 @@ class NullableRule implements Rule
     protected $field;
 
     /**
-     * Constructor of the NullableRule class.
+     * Constructor of the NotNullableRule class.
      *
      * @param array $parameters Parameters for the rule, not used in this rule.
      */
@@ -34,31 +34,34 @@ class NullableRule implements Rule
     }
 
     /**
-     * Check if a field's value is nullable.
+     * Check if a field's value is not null.
      *
      * @param string $field Name of the field being validated.
      * @param mixed $value Value of the field being validated.
      * @param array $data All validation data.
-     * @return bool True always, nullable does not fail validation itself.
+     * @return bool True if the field's value is not null, false otherwise.
      */
     public function passes(string $field, $value, array $data): bool
     {
-        // Set the field property for use in the message method.
+        // Store field name for message replacement
         $this->field = $field;
 
-        // Nullable never fails by itself
+        if (!$value || $value === null || (is_string($value) && trim($value) === '')) {
+            return false;
+        }
+
         return true;
     }
 
     /**
-     * Get the validation error message for the nullable rule.
+     * Get the validation error message for the not-nullable rule.
      *
      * @return string Validation error message.
      */
     public function message(): string
     {
-        // Use LangManager to get a translated validation message
-        return LangManager::getTranslation('validation.nullable_rule', [
+        // Use LangManager to get a translated validation error message.
+        return LangManager::getTranslation('validation.not_nullable_rule', [
             'attribute' => $this->field,
         ]);
     }

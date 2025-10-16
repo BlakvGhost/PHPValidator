@@ -50,6 +50,7 @@ trait Lang
             'validation.url' => "Le champ :attribute doit être un url valide.",
             'validation.valid_ip' => "Le champ :attribute doit être une addresse ip valide.",
             'validation.size' => "Le champ :attribute doit avoir la longeur réquise :value.",
+            'validation.not_nullable_rule' => 'Le champ :attribute ne doit pas être nul.',
         ],
         'en' => [
             // English translations
@@ -82,6 +83,7 @@ trait Lang
             'validation.url' => "The :attribute field must be a valid url.",
             'validation.valid_ip' => "The :attribute field must be a valid IP address.",
             'validation.size' => "The :attribute field must have the required length :value.",
+            'validation.not_nullable_rule' => 'The :attribute field must not be null.',
         ],
     ];
 }
