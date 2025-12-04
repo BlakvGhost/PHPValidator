@@ -11,6 +11,7 @@
 
 namespace BlakvGhost\PHPValidator\Mapping;
 
+use BlakvGhost\PHPValidator\Contracts\Rule;
 use BlakvGhost\PHPValidator\Lang\LangManager;
 use BlakvGhost\PHPValidator\ValidatorException;
 
@@ -49,14 +50,37 @@ class RulesMaped
     }
 
     /**
+     * @param Rule|class-string<Rule> $rule
+     */
+    protected static function getAlias(Rule|string $rule): ?string
+    {
+        if (!is_string($rule)) {
+            $rule = $rule::class;
+        }
+        $reversed = array_flip(self::$rules);
+
+        return $reversed[$rule] ?? null;
+    }
+
+    /**
      * Add a new rule to the mapping.
      *
      * @param string $alias Rule alias.
      * @param string $className Rule class name.
      * @return void
+     * @throws ValidatorException if the rule exists under a different alias
      */
     public static function addRule(string $alias, string $className): void
     {
+        if ($key = array_search($className, self::$rules)) {
+            $translatedMessage = LangManager::getTranslation('validation.rule_exists', [
+                'ruleName' => $className,
+                'alias' => $key,
+            ]);
+
+            throw new ValidatorException($translatedMessage);
+        }
+
         self::$rules[$alias] = $className;
     }
 }
