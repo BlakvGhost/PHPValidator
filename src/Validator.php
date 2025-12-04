@@ -199,21 +199,22 @@ class Validator extends RulesMaped
      *
      * @param mixed $validator Instance of the rule to check.
      * @param string $field Field associated with the rule.
-     * @param ?string $ruleName Associated rule alias.
      */
-    protected function checkPasses(mixed $validator, string $field, ?string $ruleName = null)
+    protected function checkPasses(RuleInterface $validator, string $field)
     {
         $value = $this->getNestedValue($this->data, $field);
 
+        $ruleAlias = self::getAlias($validator);
+
         $skipNullRules = ['required', 'not_nullable'];
 
-        if ($value === null && !in_array($ruleName, $skipNullRules)) {
+        if ($value === null && !in_array($ruleAlias, $skipNullRules)) {
             return;
         }
 
         if (!$validator->passes($field, $value, $this->data)) {
-            $assert = isset($ruleName) && isset($this->messages[$field][$ruleName]);
-            $message = $assert ? $this->messages[$field][$ruleName] : $validator->message();
+            $assert = isset($ruleAlias) && isset($this->messages[$field][$ruleAlias]);
+            $message = $assert ? $this->messages[$field][$ruleAlias] : $validator->message();
             $this->addError($field, $message);
         }
     }
