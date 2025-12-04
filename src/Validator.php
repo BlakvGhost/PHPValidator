@@ -243,6 +243,10 @@ class Validator extends RulesMaped
     {
         $segment = array_shift($segments);
 
+        if ($segment === null) {
+            return $data;
+        }
+
         if ($segment === '*') {
             if (!is_array($data) && !is_object($data)) return null;
 
@@ -271,6 +275,8 @@ class Validator extends RulesMaped
             } elseif ($segment && ctype_digit($segment) && isset($data[(int)$segment])) {
                 return $this->resolveWildcardSegment($data[(int)$segment], $segments);
             }
+
+            return null;
         }
 
         return $data;
