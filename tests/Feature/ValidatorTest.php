@@ -1,5 +1,6 @@
 <?php
 
+use BlakvGhost\PHPValidator\Contracts\Rule;
 use BlakvGhost\PHPValidator\Lang\LangManager;
 use BlakvGhost\PHPValidator\Mapping\RulesMaped;
 use BlakvGhost\PHPValidator\Rules\RequiredRule;
@@ -21,7 +22,31 @@ it('throws exception if rule not found', function () {
         ->toThrow(ValidatorException::class, LangManager::getTranslation('validation.rule_not_found', ['ruleName' => 'nonexistent']));
 });
 
+it ('prevents adding a rule that already exists', function () {
+    expect(fn() => RulesMaped::addRule('duplicate', RequiredRule::class))
+        ->toThrow(ValidatorException::class, LangManager::getTranslation('validation.rule_exists', [
+            'ruleName' => RequiredRule::class,
+            'alias' => 'required',
+        ]));
+
+});
+
 it('validates custom rule (required) rule successfully', function () {
+
+    class MyCustomRule implements Rule
+    {
+        public function __construct(array $parameters) {}
+
+        public function passes(string $field, string $value, array $data): bool
+        {
+            return true;
+        }
+
+        public function message(): string
+        {
+            return 'Custom';
+        }
+    }
 
     $validator = new Validator(['field' => 'value'], ['field' => new RequiredRule([])]);
     expect($validator->isValid())->toBeTrue();
@@ -32,7 +57,7 @@ it('validates custom rule (required) rule successfully', function () {
     $validator = new Validator(['field' => 'value'], ['field' => ['string', new RequiredRule([])]]);
     expect($validator->isValid())->toBeTrue();
 
-    RulesMaped::addRule('custom_required', RequiredRule::class);
+    RulesMaped::addRule('custom_required', MyCustomRule::class);
 
     $validator = new Validator(['field' => 'value'], ['field' => 'string|custom_required']);
     expect($validator->isValid())->toBeTrue();
