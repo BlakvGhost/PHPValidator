@@ -660,3 +660,15 @@ it('validates size rule (file) successfully', function () {
         ])
     );
 });
+
+
+it('allows missing data if field is nullable', function () {
+    $validator = new Validator([], ['field' => 'nullable|email']);
+    expect($validator->isValid())->toBeTrue();
+
+    $validator = new Validator(['field' => 'not_an_email'], ['field' => 'nullable|email']);
+    expect($validator->isValid())->toBeFalse();
+
+    $validator = new Validator(['field' => 'email@example.com'], ['field' => 'nullable|email']);
+    expect($validator->isValid())->toBeTrue();
+});

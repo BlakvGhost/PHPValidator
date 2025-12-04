@@ -14,7 +14,7 @@ namespace BlakvGhost\PHPValidator;
 use BlakvGhost\PHPValidator\Lang\LangManager;
 use BlakvGhost\PHPValidator\Mapping\RulesMaped;
 use BlakvGhost\PHPValidator\Contracts\Rule as RuleInterface;
-use BlakvGhost\PHPValidator\ValidatorException;
+use BlakvGhost\PHPValidator\Rules\NullableRule;
 
 class Validator extends RulesMaped
 {
@@ -173,26 +173,57 @@ class Validator extends RulesMaped
      * @param string $field The field name to validate.
      * @param mixed $fieldRules The rules to apply (array, string, or RuleInterface).
      */
-    protected function applyRulesToField(string $field, array|string|RuleInterface $fieldRules)
+    protected function applyRulesToField(string $field, array|string|RuleInterface $fieldRules): void
     {
-        if (is_a($fieldRules, RuleInterface::class, true)) {
-            return $this->checkPasses($fieldRules, $field);
-        }
+        $rulesArray = $this->resolveRules($fieldRules);
 
-        $rulesArray = is_array($fieldRules) ? $fieldRules : explode('|', $fieldRules);
-
-        foreach ($rulesArray as $rule) {
-            if (is_a($rule, RuleInterface::class, true)) {
-                $this->checkPasses($rule, $field);
-            } else {
-                [$ruleName, $parameters] = $this->parseRule($rule);
-                $ruleClass = $this->resolveRuleClass($ruleName);
-
-                $validator = new $ruleClass($parameters);
-                $this->checkPasses($validator, $field, $ruleName);
+        $value = $this->getNestedValue($this->data, $field);
+        if ($value === null) {
+            foreach ($rulesArray as $rule) {
+                if ($rule instanceof NullableRule) {
+                    return;
+                }
             }
         }
+
+        foreach ($rulesArray as $rule) {
+            $this->checkPasses($rule, $field);
+        }
     }
+
+    /**
+     * @param string|RuleInterface|(string|RuleInterface)[] $rules
+     *
+     * @return RuleInterface[]
+     */
+    private function resolveRules(string|array|RuleInterface $rules): array
+    {
+        if (is_string($rules)) {
+            $rules = explode('|', $rules);
+        }
+
+        if (!is_array($rules)) {
+            $rules = [$rules];
+        }
+
+        return array_map($this->resolveRule(...), $rules);
+    }
+
+    /**
+     * @throws ValidatorException
+     */
+    private function resolveRule(RuleInterface|string $rule): RuleInterface
+    {
+        if ($rule instanceof RuleInterface) {
+            return $rule;
+        }
+
+        [$ruleName, $parameters] = $this->parseRule($rule);
+        $ruleClass = $this->resolveRuleClass($ruleName);
+
+        return new ($ruleClass)($parameters);
+    }
+
 
     /**
      * Check if a rule passes validation and add an error if it fails.
@@ -273,8 +304,8 @@ class Validator extends RulesMaped
         if (is_array($data)) {
             if (array_key_exists($segment, $data)) {
                 return $this->resolveWildcardSegment($data[$segment], $segments);
-            } elseif ($segment && ctype_digit($segment) && isset($data[(int)$segment])) {
-                return $this->resolveWildcardSegment($data[(int)$segment], $segments);
+            } elseif ($segment && ctype_digit($segment) && isset($data[(int) $segment])) {
+                return $this->resolveWildcardSegment($data[(int) $segment], $segments);
             }
 
             return null;
