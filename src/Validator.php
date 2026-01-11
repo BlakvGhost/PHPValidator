@@ -66,7 +66,7 @@ class Validator extends RulesMaped
      * @return string Fully qualified class namespace of the rule class.
      * @throws ValidatorException If the rule does not exist.
      */
-    protected function resolveRuleClass($ruleName): string
+    protected function resolveRuleClass(string $ruleName): string
     {
         if (is_a($ruleName, RuleInterface::class, true)) {
             return $ruleName::class;
