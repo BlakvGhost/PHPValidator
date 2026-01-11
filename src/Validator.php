@@ -72,7 +72,7 @@ class Validator extends RulesMaped
             return $ruleName::class;
         }
 
-        return $this->getRule($ruleName);
+        return self::getRule($ruleName);
     }
 
     /**
