@@ -30,6 +30,7 @@ class Validator extends RulesMaped
      * @param array $data Data to be validated.
      * @param array $rules Validation rules to apply.
      * @param array $messages Validation rules messages to apply when failed.
+     * @throws ValidatorException
      */
     public function __construct(
         private array $data,
