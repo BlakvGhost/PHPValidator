@@ -30,6 +30,7 @@ class Validator extends RulesMaped
      * @param array $data Data to be validated.
      * @param array $rules Validation rules to apply.
      * @param array $messages Validation rules messages to apply when failed.
+     * @throws ValidatorException
      */
     public function __construct(
         private array $data,
@@ -65,13 +66,13 @@ class Validator extends RulesMaped
      * @return string Fully qualified class namespace of the rule class.
      * @throws ValidatorException If the rule does not exist.
      */
-    protected function resolveRuleClass($ruleName): string
+    protected function resolveRuleClass(string $ruleName): string
     {
         if (is_a($ruleName, RuleInterface::class, true)) {
             return $ruleName::class;
         }
 
-        return $this->getRule($ruleName);
+        return self::getRule($ruleName);
     }
 
     /**
@@ -80,7 +81,7 @@ class Validator extends RulesMaped
      * @param string $field Field associated with the error.
      * @param string $message Error message.
      */
-    protected function addError($field, $message)
+    protected function addError($field, $message): void
     {
         $this->errors[$field][] = $message;
     }
@@ -88,7 +89,7 @@ class Validator extends RulesMaped
     /**
      * Validate fields based on specified rules, entry point.
      */
-    protected function validate()
+    protected function validate(): void
     {
         foreach ($this->rules as $field => $fieldRules) {
             if (str_contains($field, '*')) {
@@ -154,7 +155,7 @@ class Validator extends RulesMaped
      * @param string $wildcardField Field name containing a wildcard.
      * @param mixed $fieldRules Rules to apply to the matched paths(array, string, or RuleInterface).
      */
-    protected function applyRulesToWildcardField(string $wildcardField, array|string|RuleInterface $fieldRules)
+    protected function applyRulesToWildcardField(string $wildcardField, array|string|RuleInterface $fieldRules): void
     {
         $paths = $this->resolveWildcardPaths($this->data, explode('.', $wildcardField));
         if (empty($paths)) {
@@ -231,7 +232,7 @@ class Validator extends RulesMaped
      * @param mixed $validator Instance of the rule to check.
      * @param string $field Field associated with the rule.
      */
-    protected function checkPasses(RuleInterface $validator, string $field)
+    protected function checkPasses(RuleInterface $validator, string $field): void
     {
         $value = $this->getNestedValue($this->data, $field);
 
@@ -258,7 +259,7 @@ class Validator extends RulesMaped
      * @param string $key Key to search for, using dot notation for nested keys.
      * @return mixed Resolved value or null if not found.
      */
-    protected function getNestedValue(array $data, string $key)
+    protected function getNestedValue(array $data, string $key): mixed
     {
         $segments = explode('.', $key);
         return $this->resolveWildcardSegment($data, $segments);
@@ -271,7 +272,7 @@ class Validator extends RulesMaped
      * @param array $segments Remaining segments of the path.
      * @return mixed The resolved value or null.
      */
-    protected function resolveWildcardSegment($data, array $segments)
+    protected function resolveWildcardSegment($data, array $segments): mixed
     {
         $segment = array_shift($segments);
 
@@ -319,7 +320,7 @@ class Validator extends RulesMaped
      *
      * @throws ValidatorException If data or rules are empty.
      */
-    protected function validateConstructorInputs()
+    protected function validateConstructorInputs(): void
     {
         if (!isset($this->data)) {
             throw new ValidatorException(

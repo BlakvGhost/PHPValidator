@@ -47,7 +47,7 @@ trait RulesAlias
     /**
      * @var array Mapping of rule aliases to their corresponding rule classes.
      */
-    private static $rules = [
+    private static array $rules = [
         'accepted' => AcceptedRule::class,
         'accepted_if' => AcceptedIfRule::class,
         'active_url' => ActiveURLRule::class,
